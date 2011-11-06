@@ -2,6 +2,8 @@
 
 <html>
 <head>
+
+<!-- mobile tags -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">	<!-- sets document with to device width -->
 <meta name="apple-mobile-web-app-capable" content="yes"> <!-- tags as web app for iOS -->
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- status bar translucent -->
@@ -17,6 +19,29 @@ window.addEventListener('load', function(e) {
   }, false);
 </script>
 
+<script>
+function doShow(id_to_show)
+{
+	document.getElementById(id_to_show).style.display = 'inline';
+	document.getElementById(id_to_show + "_link").style.display = 'none';
+	document.getElementById(id_to_show + "_input").focus();
+}
+
+function showBasementFields()
+{
+	document.getElementById("basement_tr_1").style.display = 'table-row';
+	document.getElementById("basement_tr_2").style.display = 'table-row';
+	document.getElementById("basement_tr_3").style.display = 'table-row';
+}
+
+function hideBasementFields()
+{
+	document.getElementById("basement_tr_1").style.display = 'none';
+	document.getElementById("basement_tr_2").style.display = 'none';
+	document.getElementById("basement_tr_3").style.display = 'none';
+}
+</script>
+
 <body>
 
 <div class='success_message'>Begin disaster entry #1 for this session</div>
@@ -25,7 +50,11 @@ window.addEventListener('load', function(e) {
 <form>
 
 <div class='sub_form'>	
-	<input type="tel" placeholder="House #" style="width:30%"> <b> Forbes Ave</b><br />
+	<input type="tel" placeholder="House #" style="width:28%"> 
+	<b> Forbes Ave</b> <a href='#' id='id_apt_link' onClick="doShow('id_apt')" />(Add Apt. #)</a>
+	<span id='id_apt' style='display:none'># 
+		<input type="tel" placeholder="Apt #" style="width:20%;" id="id_apt_input"></span><br />
+		
 	Pittsburgh, PA 15213 <a href='#'>(edit)</a></div>
 	
 	<div class='sub_form'>
@@ -40,7 +69,7 @@ window.addEventListener('load', function(e) {
 	<br />
 	
 	<b>Owner Information:</b><br />
-	<select name='dwelling_type'>
+	<select name='owner_information'>
 		<option name='choose'>Choose one...</option>
 		<option name='S'>Single-family home</option>
 		<option name='A'>Apartment</option>
@@ -50,7 +79,7 @@ window.addEventListener('load', function(e) {
 	<br />
 	
 	<b>Insurance Information:</b><br />
-	<select name='dwelling_type'>
+	<select name='insurance_information'>
 		<option name='choose'>Choose one...</option>
 		<option name='S'>Single-family home</option>
 		<option name='A'>Apartment</option>
@@ -60,13 +89,102 @@ window.addEventListener('load', function(e) {
 	</div>
 
 	<h1>Client Information Entry</h1>
+	<div class='sub_form'>
+	<b>Please enter the name of the client at this address.</b><br />
 	<input type='text' name='first_name' placeholder='First Name' style='width:45%'>
 	<input type='text' name='last_name' placeholder='Last Name' style='width:45%'>
-	<br />
-	<h1>General Damage Assess.</h1>
-	<br />
-	<b>Number of floors: <a href='#'>-</a> <input type='text' name='number_floors' value=1 style='width:3em' /> <a href='#'>+</a><br />
+	</div>
 	
-	<b>Is there a basement?
+	<h1>General Damage Assess.</h1>	
+	
+	<div class='sub_form'>
+	<table style='form_table'>
+	
+	<tr>
+		<td class='form_table_label'><b>Number of floors:</b></td>
+		<td class='form_table_input'><a href='#' onClick='decrNumFloors()'><img src='images/minus.png' style='width:35px;vertical-align:middle' border=0></a> 
+			<input type='text' name='number_floors' value=1 style='width:2em' />
+			<a href='#' onClick='incrNumFloors()'><img src='images/plus.png' style='width:35px;vertical-align:middle' border=0></a>
+		</td>
+	</tr>
+	<tr>
+		<td class='form_table_label'><b>Is there a basement?</b></td>
+		<td class='form_table_input'>
+			<div style='float:left;text-align:center;font-weight:bold;'>YES<br />
+			<input type='radio' name='is_basement' value='yes' onClick="showBasementFields()" / >
+			</div>
+			<div style='float:left;margin-left:20px;text-align:center;font-weight:bold;' onClick="hideBasementFields()">NO<br />
+			<input type='radio' name='is_basement' value='no' / >
+			</div>
+		</td>
+	</tr>
+	
+	<tr id='basement_tr_1' style='display:none'>
+		<td class='form_table_label'><b>Is the basement occupied?</b></td>
+		<td class='form_table_input'>
+			<div style='float:left;text-align:center;font-weight:bold;'>YES<br />
+			<input type='radio' name='is_basement_occupied' value='yes' / >
+			</div>
+			<div style='float:left;margin-left:20px;text-align:center;font-weight:bold;'>NO<br />
+			<input type='radio' name='is_basement_occupied' value='no' / >
+			</div>
+		</td>
+	</tr>
+	
+	<tr id='basement_tr_2' style='display:none'>
+		<td colspan=2>
+			<b>Please describe the way in which the basement is being used:</b><br />
+			<textarea style='width:100%;height:70px;' placeholder="Enter text..."></textarea>
+		</td>
+	</tr>
+	
+	<tr>
+		<td class='form_table_label'><b>How much water is in the main living area?</b></td>
+		<td class='form_table_input'>
+			<input type='tel' name='water_in_living_area' style='width:2.5em' /> inches
+			</div>
+		</td>
+	</tr>
+	
+	<tr id='basement_tr_3' style='display:none'>
+		<td class='form_table_label'><b>How much water is in the basement?</b></td>
+		<td class='form_table_input'>
+			<input type='tel' name='water_in_living_area' style='width:2.5em' /> inches
+			</div>
+		</td>
+	</tr>
+	
+	<tr>
+		<td class='form_table_label'><b>Is the electricity on?</b></td>
+		<td class='form_table_input'>
+			<div style='float:left;text-align:center;font-weight:bold;'>YES<br />
+			<input type='radio' name='electric' value='yes' / >
+			</div>
+			<div style='float:left;margin-left:20px;text-align:center;font-weight:bold;'>NO<br />
+			<input type='radio' name='electric' value='no' / >
+			</div>
+		</td>
+	</tr>
+	
+	<tr>
+		<td class='form_table_label'><b>Is the gas on?</b></td>
+		<td class='form_table_input'>
+			<div style='float:left;text-align:center;font-weight:bold;'>YES<br />
+			<input type='radio' name='gas' value='yes' / >
+			</div>
+			<div style='float:left;margin-left:20px;text-align:center;font-weight:bold;'>NO<br />
+			<input type='radio' name='gas' value='no' / >
+			</div>
+		</td>
+	</tr>
+	
+</table>
+</div>
+
+<h1>Detailed Damage Assess.</h1>
+
+<div class='sub_form'>
+Is there damage to the following physical plant or appliance items?
+</div>
 	</form>
 	</body>
