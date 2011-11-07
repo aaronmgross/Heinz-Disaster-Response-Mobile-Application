@@ -7,6 +7,8 @@
 	<link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" media="all" href="style.css" />
 	<title>Disaster Response App</title>
+	
+<!-- scripts -->
 	<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=true"></script>
 
 <!-- script immediately scrolls the page one pixel to hide the address bar -->
@@ -96,14 +98,16 @@
 <div id="map_canvas" style="height: 50%; border: 1px solid black;"></div>
 
 <div class='sub_form'>
-Is this the correct street to perform a disaster assessment for?<br />
+<div class='instruction_text'>Is this the correct street to perform a disaster assessment for?</div>
+
 <form action='assess_form.html' method='post'>
-	<input type='radio' id='geolocate_street' name='street_name' value=''>Yes, use <span style='font-weight:bold' id="address_data2"></span><br />
+	<input type='radio' id='geolocate_street' name='street_name' value=''>Yes, use <span style='font-weight:bold' id="address_data2"></span>
+	<div class='spacer'></div>
 	<input type='radio' name='street_name' value='other'>No, use this street name: <br />
 	<input type='text' style='margin-left:2.5em' name='street_name_user' />
-	<br /><br />
-	<input type='submit' value='Continue...' />
-</form>
 </div>
+<div class='bottom_button_row'>
+	<input type='submit' value='Continue...' /></div>
+</form>
 </body>
 </html>

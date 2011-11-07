@@ -6,8 +6,13 @@ body
 {
 	padding:0px;
 	margin:4px;
-	font-family:Tahoma, Helvetica, Arial, sans-serif;
-	font-size:13pt;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size:12pt;
+}
+
+a
+{
+	color:#058cf5;
 }
 
 /* h1 tag is used as the header for each section or page */
@@ -41,6 +46,39 @@ div.success_message
 	text-align:center;
 }
 
+div.instruction_text
+{
+	font-weight:bold;
+	font-style:italic;
+	margin-bottom:10px;
+}
+
+div.js_edit_link
+{
+	font-size:10pt;
+	padding-top:4px;
+	padding-bottom:4px;
+}
+
+span.js_edit_link
+{
+	font-size:10pt;
+	padding-left:4px;
+	padding-right:4px;
+}
+
+div.spacer
+{
+	margin-top:6px;
+	margin-bottom:6px;
+}
+
+div.bottom_button_row
+{
+	text-align:center;
+	margin:auto;
+	padding:4px;
+}
 /* Surrounds a set of form fields */
 div.sub_form
 {
@@ -64,8 +102,8 @@ input, textarea, select
 input, textarea 
 {
 	border: 1px solid #555;
-	padding: 0.5em;
-	font-size: 13pt;
+	padding: 0.4em;
+	font-size: 12pt;
 	line-height: 1.2em;
 	width: 80%;
 	background: #fff;
@@ -78,8 +116,8 @@ input, textarea
 select
 {
 	border: 1px solid #555;
-	padding: 0.5em;
-	font-size: 13pt;
+	padding: 0.4em;
+	font-size: 12pt;
 	line-height: 1.2em;
 	width: 80%;
 }
@@ -131,6 +169,9 @@ td.form_table_label
 {
 	font-size:13pt;
 	text-align:right;
+	border-top:1px solid #cccccc;
+	padding-top:4px;
+	padding-bottom:4px;
 }
 
 td.form_table_input
@@ -139,4 +180,7 @@ td.form_table_input
 	text-align:left;
 	padding-left:10px;
 	width:45%;
+	border-top:1px solid #cccccc;
+	padding-top:4px;
+	padding-bottom:4px;
 }

@@ -36,17 +36,21 @@ function noLocation()
 <body>
 	<h1>Mobile Disaster Reporting</h1>
 	
-	<p><b>Welcome to the Red Cross disaster response mobile application.</b> Please log in below to access the application.</p>
+	<div class='instruction_text'>Welcome to the Red Cross disaster response mobile application.</b> Please log in below to access the application.</div>
 
 <div class='sub_form'>	
 	<form action='find_location.html' method='post'>
 		
 	<input type='hidden' name='lat' >
-	<b>Username:</b><br />
-	<input type='text' name='username'/><br /><br />
+	Username:<br />
+	<input type='text' name='username'/>
 	
-	<b>Password:</b><br />
-	<input type='password' name='password'/><br /><br />
+	<div class='spacer'></div>
+	
+	Password:<br />
+	<input type='password' name='password'/>
+</div>
+<div class='bottom_button_row'>
 
 	<input type='submit' value='Log in...' />
 </div>
