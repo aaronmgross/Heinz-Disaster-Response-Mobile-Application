@@ -91,6 +91,7 @@ div.sub_form
 
 }
 
+<<<<<<< HEAD
 div.waiver_form
 {
 	border:1px solid #cccccc;
@@ -102,6 +103,8 @@ div.waiver_form
 
 }
 
+=======
+>>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 /* ############## Form field styling ############### */
 
 /* Apply base styles for all form fields */
@@ -145,6 +148,7 @@ input[type=radio] {
 	-webkit-border-radius: 0.25em;
 	vertical-align: text-top;
 }
+<<<<<<< HEAD
 
 input[type=radio] {
 	-webkit-border-radius: 2em; /* Make radios round */
@@ -163,11 +167,27 @@ input[type=submit] {
 input[type=button] {
 	background: #058cf5;
 	width:10em;
+=======
+
+input[type=radio] {
+	-webkit-border-radius: 2em; /* Make radios round */
+}
+
+input[type=radio]:checked {
+	background: #058cf5;
+    -webkit-background-size: 28px 28px;
+}
+
+input[type=submit] {
+	background: #058cf5;
+	width:7em;
+>>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 }
 
 input:focus, textarea:focus, select:focus {
 	outline: none;
 	border: 2px solid #058cf5;
+<<<<<<< HEAD
 }
 
 textarea {
@@ -181,6 +201,21 @@ table.form_table
 	border:0px;
 }
 
+=======
+}
+
+textarea {
+	height: 55px;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #aaa), color-stop(0.05, #fff));
+}
+
+/* Define a table style for form labels and responses */
+table.form_table
+{
+	border:0px;
+}
+
+>>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 td.form_table_label
 {
 	font-size:13pt;

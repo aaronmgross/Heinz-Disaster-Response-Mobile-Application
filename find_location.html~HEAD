@@ -54,17 +54,10 @@ function incrNumFloors()
 function decrNumFloors()
 {
 	document.getElementById("number_floors_input").value = parseInt(document.getElementById("number_floors_input").value) - 1;
-<<<<<<< HEAD
 
 	if (parseInt(document.getElementById("number_floors_input").value) < 0)
 		document.getElementById("number_floors_input").value = 0;
 
-=======
-	
-	if (parseInt(document.getElementById("number_floors_input").value) < 0)
-		document.getElementById("number_floors_input").value = 0;
-		
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	return false;
 }
 
@@ -89,13 +82,8 @@ function doEditAddress()
 </script>
 
 <body>
-<<<<<<< HEAD
 
 <form action="summary_review.html" method="post">
-=======
-	
-<form action="#" method="post">
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 
 <div class='success_message'>Begin disaster entry #1 for this session</div>
 <h1>Address Entry</h1>
@@ -139,11 +127,7 @@ function doEditAddress()
 
 <div class='sub_form'>
 	<div class="instruction_text">Please enter as much information as possible about the dwelling.</div>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	Dwelling type:<br />
 	<select name='dwelling_type'>
 		<option name='choose'>Choose one...</option>
@@ -154,11 +138,7 @@ function doEditAddress()
 	</select>
 
 	<div class="spacer"></div>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	Ownership information:<br />
 	<select name='owner_information' id="owner_information" onChange="checkRenterInfo()">
 		<option name='choose'>Choose one...</option>
@@ -166,7 +146,6 @@ function doEditAddress()
 		<option name='rent_furnished'>Rent (furnished)</option>
 		<option name='rent_unfurnished'>Rent (unfurnished)</option>
 	</select>
-<<<<<<< HEAD
 
 	<div class="spacer"></div>
 
@@ -182,23 +161,6 @@ function doEditAddress()
 		<div class="spacer"></div>
 	</div>
 
-=======
-	
-	<div class="spacer"></div>
-	
-	<div style='display:none' id="renter_information">
-		Landlord's name, if known:<br />
-		<input type='text' name='landlord_name' placeholder='Landlord Name'>
-		
-		<div class="spacer"></div>
-		
-		Landlord's phone #, if known:<br />		
-		<input type='tel' name='last_name' placeholder='Landlord Phone'>
-		
-		<div class="spacer"></div>
-	</div>
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	Insurance Information:<br />
 	<select name='insurance_information'>
 		<option name='choose'>Choose one...</option>
@@ -208,20 +170,12 @@ function doEditAddress()
 		<option name='C'>Contents/Renters</option>
 	</select>
 	</div>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	<h1>General Damage Assess.</h1>	
 
 	<div class='sub_form'>
 	<table style='form_table' cellpadding=0 cellspacing=0 width=100%>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	<tr>
 		<td class='form_table_label' style='border:0px'>Number of floors:</td>
 		<td class='form_table_input' style='border:0px'><a href="javascript:;" onClick="decrNumFloors()"><img src='images/minus.png' style='width:35px;vertical-align:middle' border=0></a> 
@@ -240,11 +194,7 @@ function doEditAddress()
 			</div>
 		</td>
 	</tr>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	<tr id='basement_tr_1' style='display:none'>
 		<td class='form_table_label'>Is the basement occupied?</td>
 		<td class='form_table_input'>
@@ -256,11 +206,7 @@ function doEditAddress()
 			</div>
 		</td>
 	</tr>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	<tr id='basement_tr_2' style='display:none'>
 		<td colspan=2>
 			Please describe the way in which the basement is being used:
@@ -268,11 +214,7 @@ function doEditAddress()
 			<textarea style='width:100%;height:70px;' placeholder="Enter text..."></textarea>
 		</td>
 	</tr>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	<tr>
 		<td class='form_table_label'>How much water is in the main living area?</td>
 		<td class='form_table_input'>
@@ -280,11 +222,7 @@ function doEditAddress()
 			</div>
 		</td>
 	</tr>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	<tr id='basement_tr_3' style='display:none'>
 		<td class='form_table_label'>How much water is in the basement?</td>
 		<td class='form_table_input'>
@@ -292,11 +230,7 @@ function doEditAddress()
 			</div>
 		</td>
 	</tr>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	<tr>
 		<td class='form_table_label'>Is the electricity on?</td>
 		<td class='form_table_input'>
@@ -308,11 +242,7 @@ function doEditAddress()
 			</div>
 		</td>
 	</tr>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	<tr>
 		<td class='form_table_label'>Is the gas on?</td>
 		<td class='form_table_input'>
@@ -324,11 +254,7 @@ function doEditAddress()
 			</div>
 		</td>
 	</tr>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 </table>
 </div>
 
@@ -362,11 +288,7 @@ function doEditAddress()
 			</div>
 		</td>
 	</tr>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	<tr>
 		<td class='form_table_label'>Hot water heater</td>
 		<td class='form_table_input'>
@@ -378,11 +300,7 @@ function doEditAddress()
 			</div>
 		</td>
 	</tr>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	<tr>
 		<td class='form_table_label'>Washer</td>
 		<td class='form_table_input'>
@@ -394,11 +312,7 @@ function doEditAddress()
 			</div>
 		</td>
 	</tr>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	<tr>
 		<td class='form_table_label'>Dryer</td>
 		<td class='form_table_input'>
@@ -410,11 +324,7 @@ function doEditAddress()
 			</div>
 		</td>
 	</tr>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	<tr>
 		<td class='form_table_label'>Stove</td>
 		<td class='form_table_input'>
@@ -426,11 +336,7 @@ function doEditAddress()
 			</div>
 		</td>
 	</tr>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	<tr>
 		<td class='form_table_label'>Refrigerator</td>
 		<td class='form_table_input'>
@@ -447,11 +353,7 @@ function doEditAddress()
 
 <h1>Overall Assessment</h1>
 <div class='sub_form'>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	<div class="instruction_text">Based on the Red Cross guidelines for classification, what is your overall assessment of the damage for this property?</div>
 	<select name='dwelling_type'>
 		<option name='choose'>Choose one...</option>
@@ -461,11 +363,7 @@ function doEditAddress()
 		<option name='Affected'>Affected</option>
 		<option name='Inaccessible'>Inaccessible</option>
 	</select>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
 	<div class="spacer"></div>
 	Please provide a detailed reasoning behind your classification:<br />
 	<textarea style='width:100%;height:90px;' placeholder="Enter text..."></textarea>
@@ -480,7 +378,3 @@ function doEditAddress()
 </div>
 	</form>
 	</body>
-<<<<<<< HEAD
-
-=======
->>>>>>> 70a100adec0558d1c3f3e94791528244a001b0ef
