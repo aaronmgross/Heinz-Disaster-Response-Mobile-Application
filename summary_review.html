@@ -1,0 +1,234 @@
+<!-- draft page -->
+
+<html>
+<head>
+
+<!-- mobile tags -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">	<!-- sets document with to device width -->
+<meta name="apple-mobile-web-app-capable" content="yes"> <!-- tags as web app for iOS -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- status bar translucent -->
+
+<link rel="stylesheet" media="all" href="style.css" />
+<title>Disaster Response App</title>
+</head>
+
+<!-- script immediately scrolls the page one pixel to hide the address bar -->
+<script type="text/javascript">
+window.addEventListener('load', function(e) {
+    setTimeout(function() { window.scrollTo(0, 1); }, 1);
+  }, false);
+
+function func(){
+document.location = 'assess_form.html';
+
+}
+</script>
+
+
+<body>
+
+<form method="post" action="sign_form.html">
+
+<div class='success_message'>Review Assessment</div>
+<h1>Address Entry</h1>
+
+<div class='sub_form'>	
+	<center>
+	<div class="instruction_text">Address are you currently at:</div>
+	
+	<div id="prefilled_address_info">5000, Forbes Ave, Pittsburgh, PA 15213</div>
+	
+	</center>
+	
+</div>
+
+
+<div class='sub_form'>
+<center>
+<div class="instruction_text">Client Name: </div>
+<table><tr><td>First Name:</td><td> Steve</td></tr>
+<tr><td>Last Name: </td><td>Waugh</td></tr></table>
+</center>
+</div>
+
+<div class='sub_form'>
+<center>
+<table>
+	<div class="instruction_text">Dwelling Information</div>
+
+	<tr><td>Dwelling type:</td><td> S</td></tr>
+	
+
+	
+	<tr><td>Ownership info: </td><td>Rent</td></tr>
+	
+
+	
+
+	<tr><td>		Landlord's name:</td>
+		<td> Mike Stevens </td></tr>
+
+		
+
+		<tr><td>Landlord's phone #:</td><td>111-111-1111	</td></tr>	
+		
+	
+<tr><td>
+	Insurance Info:</td><td>None</td></tr>
+</table>
+</center>
+		</div>
+
+
+
+
+
+
+
+
+	<h1>General Damage Assessment</h1>	
+
+	<div class='sub_form'>
+
+	
+
+	<table style='form_table' cellpadding=0 cellspacing=0 width=100%>
+
+	<tr>
+		<td class='form_table_label' style='border:0px'>Number of floors:</td>
+		<td class='form_table_input' style='border:0px'>2		</td>
+	</tr>
+	<tr>
+		<td class='form_table_label'>Is there a basement?</td>
+		<td class='form_table_input'>
+			Yes
+		</td>
+	</tr>
+
+	<tr id='basement_tr_1' style='display:none'>
+		<td class='form_table_label'>Is the basement occupied?</td>
+		<td class='form_table_input'>
+			Yes
+		</td>
+	</tr>
+
+	<tr id='basement_tr_2' style='display:none'>
+		<td colspan=2>
+			Please describe the way in which the basement is being used:
+			<div class="spacer"></div>
+			<textarea style='width:100%;height:70px;' placeholder="Enter text..."></textarea>
+		</td>
+	</tr>
+
+	<tr>
+		<td class='form_table_label'>How much water is in the main living area?</td>
+		<td class='form_table_input'>
+			10 inches
+			</div>
+		</td>
+	</tr>
+
+	<tr id='basement_tr_3' style='display:none'>
+		<td class='form_table_label'>How much water is in the basement?</td>
+		<td class='form_table_input'>
+			10 inches
+			</div>
+		</td>
+	</tr>
+
+	<tr>
+		<td class='form_table_label'>Is the electricity on?</td>
+		<td class='form_table_input'>
+			Yes
+		</td>
+	</tr>
+
+	<tr>
+		<td class='form_table_label'>Is the gas on?</td>
+		<td class='form_table_input'>
+			Yes
+		</td>
+	</tr>
+
+</table>
+</div>
+
+<h1>Detailed Damage Assessment</h1>
+
+<div class='sub_form'>
+<div class='instruction_text'>Is there damage to the following physical plant or appliance items?</div>
+
+<table style='form_table' cellpadding=0 cellspacing=0 width=100%>
+
+	<tr>
+		<td class='form_table_label'>Electrical service box :</td>
+		<td class='form_table_input'>
+			Yes
+		</td>
+	</tr>
+
+	<tr>
+		<td class='form_table_label'>Furnace :</td>
+		<td class='form_table_input'>
+			Yes
+		</td>
+	</tr>
+
+	<tr>
+		<td class='form_table_label'>Hot water heater :</td>
+		<td class='form_table_input'>
+			No
+		</td>
+	</tr>
+
+	<tr>
+		<td class='form_table_label'>Washer :</td>
+		<td class='form_table_input'>
+			No		</td>
+	</tr>
+
+	<tr>
+		<td class='form_table_label'>Dryer :</td>
+		<td class='form_table_input'>
+		No	
+		</td>
+	</tr>
+
+	<tr>
+		<td class='form_table_label'>Stove :</td>
+		<td class='form_table_input'>
+			No
+		</td>
+	</tr>
+
+	<tr>
+		<td class='form_table_label'>Refrigerator :</td>
+		<td class='form_table_input'>
+			No
+		</td>
+	</tr>
+</table>
+</div>
+
+<h1>Overall Assessment</h1>
+<div class='sub_form'>
+
+	<div class="instruction_text">Based on the Red Cross guidelines for classification, what is your overall assessment of the damage for this property?</div>
+	<div class="spacer"></div>
+	Major
+	<div class="spacer"></div>
+	<div class="instruction_text">Detailed reasoning behind your classification:</div>
+
+	
+	Water level in basement
+	<div class="spacer"></div>
+	<div class="instruction_text">Comments about this overall disaster entry:</div>
+	
+	None</div>
+
+<div class="bottom_button_row">
+<input type='button' value='Back' style='text-align:center;margin:auto' onClick="func()"/ >
+<input type='submit' value='Next' style='text-align:center;margin:auto' / >
+</div>
+	</form>
+	</body>

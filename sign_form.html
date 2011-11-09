@@ -1,0 +1,50 @@
+<!-- draft page -->
+
+<html>
+<head>
+
+<!-- mobile tags -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">	<!-- sets document with to device width -->
+<meta name="apple-mobile-web-app-capable" content="yes"> <!-- tags as web app for iOS -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- status bar translucent -->
+
+<link rel="stylesheet" media="all" href="style.css" />
+<title>Disaster Response App</title>
+</head>
+
+<!-- script immediately scrolls the page one pixel to hide the address bar -->
+<script type="text/javascript">
+window.addEventListener('load', function(e) {
+    setTimeout(function() { window.scrollTo(0, 1); }, 1);
+  }, false);
+
+function func(){
+document.location = 'summary_review.html';
+
+}
+
+</script>
+
+
+<body>
+
+<form method="post" action="final_steps.html">
+
+<div class='success_message'>Accept terms of agreement and confirm submission</div>
+<h1>Sign Waiver</h1>
+
+<div class='waiver_form'>	
+	<center>	I, Joe Smith , hereby authorize the release of information contained in this form to the American Redcross, North Hills Community Outreach, Salvation Army, the United Way, the Coordinated Assistance network ,other faith-based, federal and and state embergency assistance agenciesfor the expressed and singular purpose of assisting efforts to meet my disaster needs. This information will not be made public or used for anything other than its intended use; disaster relief assistance. I also understand the the information provided here is truthful and accurate and i could face prosecution for fraud if it is discovered that the information is false or intended to defarud the agencies providing assistance.	
+
+
+	</center>
+	
+</div>
+
+
+<div class="bottom_button_row">
+<input type='button' value='Back' style='text-align:center;margin:auto' onClick="func()"/ >
+<input type='submit' value='Agree' style='text-align:center;margin:auto' / >
+</div>
+	</form>
+	</body>
