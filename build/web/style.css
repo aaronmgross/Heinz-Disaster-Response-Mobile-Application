@@ -1,0 +1,196 @@
+/* Stylesheet for Red Cross Mobile Disaster Assessment Application */
+/* Please use these styles for all mobile interfaces. */
+
+/* ############## General text styling ############### */
+body
+{
+	padding:0px;
+	margin:4px;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size:12pt;
+}
+
+a
+{
+	color:#058cf5;
+}
+
+/* h1 tag is used as the header for each section or page */
+h1
+{
+	font-size:18pt;
+	line-height:175%;
+	font-weight:bold;
+	background-color:#cccccc;
+	text-align:center;
+	padding:3px;
+	margin-left:-4px;
+	margin-right:-4px;
+	margin-top:-4px;
+	margin-bottom:5px;
+}
+
+/* Should appear at the top of a page, above the header, to indicate success of an action */
+div.success_message
+{
+	font-size:12pt;
+	-webkit-shadow: 1px 1px 1px #fff;
+	color:white;
+	background-color:green;
+	font-weight:bold;
+	padding:3px;
+	margin-left:-4px;
+	margin-right:-4px;
+	margin-top:-4px;
+	margin-bottom:4px;
+	text-align:center;
+}
+
+div.instruction_text
+{
+	font-weight:bold;
+	font-style:italic;
+	margin-bottom:10px;
+}
+
+div.js_edit_link
+{
+	font-size:10pt;
+	padding-top:4px;
+	padding-bottom:4px;
+}
+
+span.js_edit_link
+{
+	font-size:10pt;
+	padding-left:4px;
+	padding-right:4px;
+}
+
+div.spacer
+{
+	margin-top:6px;
+	margin-bottom:6px;
+}
+
+div.bottom_button_row
+{
+	text-align:center;
+	margin:auto;
+	padding:4px;
+}
+/* Surrounds a set of form fields */
+div.sub_form
+{
+	border:1px solid #cccccc;
+	padding:8px;
+	margin:4px;
+	margin-bottom:10px;
+	-webkit-border-radius: 0.5em;
+	-webkit-box-shadow: 1px 1px 1px #ddd;
+
+}
+
+div.waiver_form
+{
+	border:1px solid #cccccc;
+	padding:8px;
+	margin:50px;
+	margin-bottom:10px;
+	-webkit-border-radius: 0.5em;
+	-webkit-box-shadow: 1px 1px 1px #ddd;
+
+}
+
+/* ############## Form field styling ############### */
+
+/* Apply base styles for all form fields */
+input, textarea, select
+{
+	margin-bottom:10px;
+}
+
+input, textarea 
+{
+	border: 1px solid #555;
+	padding: 0.4em;
+	font-size: 12pt;
+	line-height: 1.2em;
+	width: 80%;
+	background: #fff;
+	-webkit-appearance: none;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#eee));
+	-webkit-box-shadow: 1px 1px 1px #fff;
+	-webkit-border-radius: 0.2em;
+}
+
+select
+{
+	border: 1px solid #555;
+	padding: 0.4em;
+	font-size: 12pt;
+	line-height: 1.2em;
+	width: 80%;
+}
+
+input[type=checkbox],
+input[type=radio] {
+	display: inline-block;
+	font-size: 15px;
+	line-height: 1em;
+	margin: 0 0.25em 0 0;
+	padding: 0;
+	width: 2.5em;
+	height: 2.5em;
+	-webkit-border-radius: 0.25em;
+	vertical-align: text-top;
+}
+input[type=radio] {
+	-webkit-border-radius: 2em; /* Make radios round */
+}
+
+input[type=radio]:checked {
+	background: #058cf5;
+    -webkit-background-size: 28px 28px;
+}
+
+input[type=submit] {
+	background: #058cf5;
+	width:7em;
+}
+
+input:focus, textarea:focus, select:focus {
+	outline: none;
+	border: 2px solid #058cf5;
+}
+
+textarea {
+	height: 55px;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #aaa), color-stop(0.05, #fff));
+}
+
+/* Define a table style for form labels and responses */
+table.form_table
+{
+	border:0px;
+}
+
+td.form_table_label
+{
+	font-size:13pt;
+	text-align:right;
+	border-top:1px solid #cccccc;
+	padding-top:4px;
+	padding-bottom:4px;
+}
+
+td.form_table_input
+{
+	font-size:13pt;
+	text-align:left;
+	padding-left:10px;
+	width:45%;
+	border-top:1px solid #cccccc;
+	padding-top:4px;
+	padding-bottom:4px;
+}
