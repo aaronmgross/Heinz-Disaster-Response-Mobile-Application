@@ -159,6 +159,11 @@ input[type=submit] {
 	width:7em;
 }
 
+input[type=button] {
+	background: #058cf5;
+	width:7em;
+}
+
 input:focus, textarea:focus, select:focus {
 	outline: none;
 	border: 2px solid #058cf5;

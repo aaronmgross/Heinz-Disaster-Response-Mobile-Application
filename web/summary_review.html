@@ -22,6 +22,21 @@ function func(){
 document.location = 'assess_form.html';
 
 }
+
+var jsonObject = "";
+
+function getSerializedJSON()
+{
+	var storedJSON = localStorage.getItem(localStorage.getItem("disasterKey"));
+	jsonObject = eval('(' + storedJSON + ')');
+	var jsonString = JSON.stringify(jsonObject);
+	document.write(jsonString);
+}
+
+function objGet(field_name)
+{
+	document.write(jsonObject[field_name]);
+}
 </script>
 
 
@@ -30,6 +45,13 @@ document.location = 'assess_form.html';
 <form method="post" action="FillInForm">
 
 <div class='success_message'>Review Assessment</div>
+
+<h1>JSON</h1>
+<div class='sub_form'>
+	<div class='instruction_text'>Serialized JSON passed to this page:</div>
+	
+	<script>getSerializedJSON()</script>
+</div>
 <h1>Address Entry</h1>
 
 <div class='sub_form'>	
@@ -47,7 +69,7 @@ document.location = 'assess_form.html';
 <div class='sub_form'>
 <center>
 <div class="instruction_text">Client Name: </div>
-<table><tr><td>First Name:</td><td> Steve</td></tr>
+<table><tr><td>First Name:</td><td> <script> objGet("txt_first_name"); </script></td></tr>
 <tr><td>Last Name: </td><td>Waugh</td></tr></table>
 </center>
 </div>

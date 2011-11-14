@@ -86,6 +86,22 @@
 	}   
 }
 </script>
+
+<script>
+// This script stores the desired street name locally.
+function localstore_street_name()
+{
+	// Check which street name is full.
+	if (document.getElementById("street_name_user").value != "")
+		window.localStorage.setItem("street_name", document.getElementById("street_name_user").value);
+	else if (document.getElementById("address_data").innerHTML != "ERROR: Couldn't get location.")
+		window.localStorage.setItem("street_name", document.getElementById("address_data").innerHTML);
+	else
+		window.localStorage.setItem("street_name", "");
+		
+	window.location = "assess_form.html";
+}
+</script>
 </head>
 
 <body onload="codeLatLng()">
@@ -104,10 +120,10 @@
 	<input type='radio' id='geolocate_street' name='street_name' value=''>Yes, use <span style='font-weight:bold' id="address_data2"></span>
 	<div class='spacer'></div>
 	<input type='radio' name='street_name' value='other'>No, use this street name: <br />
-	<input type='text' style='margin-left:2.5em' name='street_name_user' />
+	<input type='text' style='margin-left:2.5em' id='street_name_user' name='street_name_user' />
 </div>
 <div class='bottom_button_row'>
-	<input type='submit' value='Continue...' /></div>
+	<input type='button' value='Continue...' onClick="localstore_street_name()" /></div>
 </form>
 </body>
 </html>
