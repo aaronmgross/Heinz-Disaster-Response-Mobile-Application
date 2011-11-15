@@ -30,7 +30,7 @@ function getSerializedJSON()
 	var storedJSON = localStorage.getItem(localStorage.getItem("disasterKey"));
 	jsonObject = eval('(' + storedJSON + ')');
 	var jsonString = JSON.stringify(jsonObject);
-	document.write(jsonString);
+	
 }
 
 function objGet(field_name)
@@ -42,216 +42,203 @@ function objGet(field_name)
 
 <body>
 
-<form method="post" action="FillInForm">
+<form method="post" action="final_steps.html">
 
-<div class='success_message'>Review Assessment</div>
+<div class='info_message'>Please show this summary screen to the client and ask them to verify the information entered.</div>
 
-<h1>JSON</h1>
-<div class='sub_form'>
-	<div class='instruction_text'>Serialized JSON passed to this page:</div>
-	
 	<script>getSerializedJSON()</script>
-</div>
-<h1>Address Entry</h1>
 
-<div class='sub_form'>	
-	<center>
-	<div class="instruction_text">Address are you currently at:</div>
-	
-        <div id="prefilled_address_info"><input type="text" id="address" value="5000 Forbes Ave. " readonly="true" /></div>
+	<h1>Disaster Data Summary</h1>
 
-	
+	<div class='sub_form'>	
+		<center>
+			<div class="instruction_text">Dwelling address:</div>
+
+			<script> objGet("tel_house_num");</script>&nbsp;<script>objGet("street_name"); </script><br> <script> objGet("txt_city"); </script>, <script> objGet("txt_state"); </script> <script> objGet("tel_zip"); </script>
+
+		</script>
+
+
 	</center>
-	
-</div>
 
-
-<div class='sub_form'>
-<center>
-<div class="instruction_text">Client Name: </div>
-<table><tr><td>First Name:</td><td> <script> objGet("txt_first_name"); </script></td></tr>
-<tr><td>Last Name: </td><td>Waugh</td></tr></table>
-</center>
 </div>
 
 <div class='sub_form'>
-<center>
-<table>
-	<div class="instruction_text">Dwelling Information</div>
+	<center>
+		<div class="instruction_text">Dwelling information:</div>
+		<table class='form_table' cellpadding=0 cellspacing=0>
 
-	<tr><td>Dwelling type:</td><td> S</td></tr>
-	
+			<tr><td class='form_table_label'>Client Name:</td><td class='form_table_input'> <script> objGet("txt_first_name"); </script> <script> objGet("txt_last_name"); </script></td></tr>
+			<tr><td class='form_table_label'>Dwelling type:</td><td class='form_table_input'> <script> objGet("dwelling_type"); </script></td></tr>
 
-	
-	<tr><td>Ownership info: </td><td>Rent</td></tr>
-	
+			<tr><td class='form_table_label'>Ownership info: </td><td class='form_table_input'> <script> objGet("owner_information"); </script></td></tr>
 
-	
+			<tr><td class='form_table_label'>		Landlord's name:</td>
+				<td class='form_table_input'> <script> objGet("landlord_name"); </script> </td></tr>
 
-	<tr><td>		Landlord's name:</td>
-		<td> Mike Stevens </td></tr>
+				<tr><td class='form_table_label'>Landlord's phone #:</td><td class='form_table_input'><script>objGet("landlord_tel"); </script>	</td></tr>	
 
-		
 
-		<tr><td>Landlord's phone #:</td><td>111-111-1111	</td></tr>	
-		
-	
-<tr><td>
-	Insurance Info:</td><td>None</td></tr>
-</table>
-</center>
+				<tr><td class='form_table_label'>
+					Insurance Info:</td><td class='form_table_input'> <script> objGet("insurance_information"); </script></td></tr>
+				</table>
+			</center>
 		</div>
 
 
+		<div class='sub_form'>
+<center>
+<div class='instruction_text'>General damage assessment:</div>
 
+			<table style='form_table' cellpadding=0 cellspacing=0 width=100%>
 
+				<tr>
+					<td class='form_table_label' style='border:0px'>Number of floors:</td>
+					<td class='form_table_input' style='border:0px'> <script> objGet("number_floors");</script>		</td>
+				</tr>
+				<tr>
+					<td class='form_table_label'>Is there a basement?</td>
+					<td class='form_table_input'>
+						<script> objGet("is_basement"); </script>
+					</td>
+				</tr>
 
+				<tr id='basement_tr_1' style='display:none'>
+					<td class='form_table_label'>Is the basement occupied?</td>
+					<td class='form_table_input'>
+						<script> objGet("is_basement_occupied"); </script>
+					</td>
+				</tr>
 
+				<tr id='basement_tr_2' style='display:none'>
+					<td colspan=2>
+						Please describe the way in which the basement is being used:
+						<div class="spacer"></div>
+						<script> objGet("txtarea_basement_comment");	</script>	</td>
+					</tr>
 
+					<tr>
+						<td class='form_table_label'>How much water is in the main living area?</td>
+						<td class='form_table_input'>
+							<script> objGet("water_in_living_area"); </script> inches
+						</div>
+					</td>
+				</tr>
 
-	<h1>General Damage Assessment</h1>	
+				<tr id='basement_tr_3' style='display:none'>
+					<td class='form_table_label'>How much water is in the basement?</td>
+					<td class='form_table_input'>
+						<script> objGet("water_in_basement");</script> inches
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Is the electricity on?</td>
+				<td class='form_table_input'>
+					<script> objGet("electric"); </script>
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Is the gas on?</td>
+				<td class='form_table_input'>
+					<script> objGet("gas"); </script>
+				</td>
+			</tr>
+
+		</table>
+</center>
+	</div>
 
 	<div class='sub_form'>
+		<div class='instruction_text'>Is there damage to the following physical plant or appliance items?</div>
 
-	
+		<center>
 
-	<table style='form_table' cellpadding=0 cellspacing=0 width=100%>
+		<table style='form_table' cellpadding=0 cellspacing=0 width=100%>
 
-	<tr>
-		<td class='form_table_label' style='border:0px'>Number of floors:</td>
-		<td class='form_table_input' style='border:0px'>2		</td>
-	</tr>
-	<tr>
-		<td class='form_table_label'>Is there a basement?</td>
-		<td class='form_table_input'>
-			Yes
-		</td>
-	</tr>
+			<tr>
+				<td class='form_table_label'>Electrical service box:</td>
+				<td class='form_table_input'>
+					<script> objGet("d_electrical"); </script>
+				</td>
+			</tr>
 
-	<tr id='basement_tr_1' style='display:none'>
-		<td class='form_table_label'>Is the basement occupied?</td>
-		<td class='form_table_input'>
-			Yes
-		</td>
-	</tr>
+			<tr>
+				<td class='form_table_label'>Furnace:</td>
+				<td class='form_table_input'>
+					<script> objGet("d_furnace"); </script>
+				</td>
+			</tr>
 
-	<tr id='basement_tr_2' style='display:none'>
-		<td colspan=2>
-			Please describe the way in which the basement is being used:
+			<tr>
+				<td class='form_table_label'>Hot water heater:</td>
+				<td class='form_table_input'>
+					<script> objGet("d_water"); </script>
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Washer:</td>
+				<td class='form_table_input'>
+					<script> objGet("d_washer");	</script></td>
+				</tr>
+
+				<tr>
+					<td class='form_table_label'>Dryer:</td>
+					<td class='form_table_input'>
+						<script> objGet("d_dryer"); </script>
+					</td>
+				</tr>
+
+				<tr>
+					<td class='form_table_label'>Stove:</td>
+					<td class='form_table_input'>
+						<script> objGet("d_stove");	</script>
+					</td>
+				</tr>
+
+				<tr>
+					<td class='form_table_label'>Refrigerator:</td>
+					<td class='form_table_input'>
+						<script> objGet("d_fridge"); </script>
+					</td>
+				</tr>
+			</table>
+		</center>
+		</div>
+
+		<div class='sub_form'>
+
+			<div class="instruction_text">Based on the Red Cross guidelines for classification, the overall assessment of the damage for this property is:</div>
 			<div class="spacer"></div>
-			<textarea style='width:100%;height:70px;' placeholder="Enter text..."></textarea>
-		</td>
-	</tr>
+			<script> objGet("select_classification"); </script>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="instruction_text">Classification rationale:</div>
+			<script> objGet("txtArea_classification_reason"); </script>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="instruction_text">Additional comments about this disaster entry: </div>
 
-	<tr>
-		<td class='form_table_label'>How much water is in the main living area?</td>
-		<td class='form_table_input'>
-			10 inches
-			</div>
-		</td>
-	</tr>
+			<script> objGet("txtArea_comment"); </script> </div>
 
-	<tr id='basement_tr_3' style='display:none'>
-		<td class='form_table_label'>How much water is in the basement?</td>
-		<td class='form_table_input'>
-			10 inches
-			</div>
-		</td>
-	</tr>
+<h1>Waiver Signature</h1>
 
-	<tr>
-		<td class='form_table_label'>Is the electricity on?</td>
-		<td class='form_table_input'>
-			Yes
-		</td>
-	</tr>
+<div class='info_message'>The CLIENT must read and indicate acceptance of the waiver below.</div>
 
-	<tr>
-		<td class='form_table_label'>Is the gas on?</td>
-		<td class='form_table_input'>
-			Yes
-		</td>
-	</tr>
+<div class='sub_form'>	
+I, <b><script> objGet("txt_first_name"); </script> <script> objGet("txt_last_name"); </script></b>, hereby authorize the release of information contained in this form to the American Red Cross, North Hills Community Outreach, Salvation Army, the United Way, the Coordinated Assistance Network, other faith-based, federal and and state emergency assistance agencies for the express and singular purpose of assisting efforts to meet my disaster needs. This information will not be made public or used for anything other than its intended use - disaster relief assistance. I also understand the the information provided here is truthful and accurate and I could face prosecution for fraud if it is discovered that the information is false or intended to defraud the agencies providing assistance.<br /><br />
 
-</table>
+<div class='instruction_text'>Please initial below to indicate your acceptance of these terms:</div>
+<input type='text' placeholder='Initials' style='width:5em' />
 </div>
-
-<h1>Detailed Damage Assessment</h1>
-
-<div class='sub_form'>
-<div class='instruction_text'>Is there damage to the following physical plant or appliance items?</div>
-
-<table style='form_table' cellpadding=0 cellspacing=0 width=100%>
-
-	<tr>
-		<td class='form_table_label'>Electrical service box :</td>
-		<td class='form_table_input'>
-			Yes
-		</td>
-	</tr>
-
-	<tr>
-		<td class='form_table_label'>Furnace :</td>
-		<td class='form_table_input'>
-			Yes
-		</td>
-	</tr>
-
-	<tr>
-		<td class='form_table_label'>Hot water heater :</td>
-		<td class='form_table_input'>
-			No
-		</td>
-	</tr>
-
-	<tr>
-		<td class='form_table_label'>Washer :</td>
-		<td class='form_table_input'>
-			No		</td>
-	</tr>
-
-	<tr>
-		<td class='form_table_label'>Dryer :</td>
-		<td class='form_table_input'>
-		No	
-		</td>
-	</tr>
-
-	<tr>
-		<td class='form_table_label'>Stove :</td>
-		<td class='form_table_input'>
-			No
-		</td>
-	</tr>
-
-	<tr>
-		<td class='form_table_label'>Refrigerator :</td>
-		<td class='form_table_input'>
-			No
-		</td>
-	</tr>
-</table>
-</div>
-
-<h1>Overall Assessment</h1>
-<div class='sub_form'>
-
-	<div class="instruction_text">Based on the Red Cross guidelines for classification, what is your overall assessment of the damage for this property?</div>
-	<div class="spacer"></div>
-	Major
-	<div class="spacer"></div>
-	<div class="instruction_text">Detailed reasoning behind your classification:</div>
-
-	
-	Water level in basement
-	<div class="spacer"></div>
-	<div class="instruction_text">Comments about this overall disaster entry:</div>
-	
-	None</div>
 
 <div class="bottom_button_row">
-<input type='button' value='Back' style='text-align:center;margin:auto' onClick="func()"/ >
-<input type='submit' value='Next' style='text-align:center;margin:auto' / >
+<input type='button' value='Back' style='text-align:center;margin:auto;background-color:#dddddd' onClick="func()"/ >
+<input type='submit' value='Submit' style='text-align:center;margin:auto' / >
 </div>
 	</form>
 	</body>
+</html>

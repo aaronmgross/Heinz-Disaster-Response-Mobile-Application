@@ -30,15 +30,26 @@ document.location = 'index.html';
 
 <form method="post" action="find_location.html">
 
-<div class='success_message'>You have successfully submitted the assessment</div>
-<h1>Next Steps..</h1>
+<div class='success_message'>Your entry was saved to the database.</div>
+<h1>Success!</h1>
 
+<div class='sub_form'>
 
+<div class='instruction_text'>Your record was successfully saved. What would you like to do now?</div>
 
+<div class='bottom_button_row'>
+	
+	<input type='button' value='Next Assessment on This Street' style='text-align:center;margin:auto;width:100%' onClick="javascript:window.location='assess_form.html'" / ><br /><br />
 
-<div class="bottom_button_row">
-<input type='button' value='End' style='text-align:center;margin:auto' onClick="func()"/ >
-<input type='submit' value='Next Assessment' style='text-align:center;margin:auto'/ >
+	<input type='button' value='Change Street Name' style='text-align:center;margin:auto;width:100%;background-color:#cccccc' onClick="javascript:window.location='find_location.html'" / ><br /><br />
+	
+		<input type='button' value='Check System Sync Statu' style='text-align:center;margin:auto;width:100%;background-color:#cccccc' onClick="javascript:window.location='find_location.html'" / ><br />
 </div>
+</div>
+
+
 	</form>
 	</body>
+
+
+</html>

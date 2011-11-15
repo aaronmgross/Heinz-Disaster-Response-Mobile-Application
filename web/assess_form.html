@@ -18,61 +18,153 @@
 // Create and load into local storage a JSON object for this disaster entry
 function save_disaster_entry()
 {
-	var keyToUse = parseInt(localStorage.getItem("disasterKey")) + 1;
+	var s=validate();
 	
-	// Construct the JSON object
-	var this_entry = 
+	if(s!=null)
 	{
-		"id" : keyToUse, 	// Same as the key of the <key, value> local storage pair
-		"volunteer_id" : localStorage.getItem("volunteer_id"),
-		"volunteer_name" : localStorage.getItem("volunteer_name"),
-		"start_time" : "", // TODO
-		"end_time" : "", // TODO
-		"street_name" : document.getElementById("street_name_input").value,
-		"tel_house_num" : document.getElementById("houseNum").value,
-		"tel_apt" : document.getElementById("id_apt_input").value,
-		"txt_state" : document.getElementById("txt_state").value,
-		"txt_city" : document.getElementById("edit_address_info").value,
-		"tel_zip" : document.getElementById("tel_zip").value,
-		"txt_first_name" : document.getElementById("txt_first_name").value,
-		"txt_last_name" : document.getElementById("txt_last_name").value,
-		"dwelling_type" : document.getElementById("dwelling_type").value,
-		"owner_information" : document.getElementById("owner_information").value,
-		"landlord_name" : document.getElementById("landlord_name").value,
-		"landlord_tel" : document.getElementById("landlord_tel").value,
-		"insurance_information" : document.getElementById("insurance_information").value,
-		"number_floors" : document.getElementById("number_floors_input").value,
-		"is_basement" : get_radio_value("is_basement"),
-		"is_basement_occupied" : get_radio_value("is_basement_occupied"),
-		"txtarea_basement_comment" : document.getElementById("txtarea_basement_comment").value,
-		"water_in_living_area" : document.getElementById("water_in_living_area").value,
-		"water_in_basement" : document.getElementById("water_in_basement").value,
-		"electric" : get_radio_value("electric"),
-		"gas" : get_radio_value("gas"),
-		"d_electrical" : get_radio_value("d_electrical"),
-		"d_furnace" : get_radio_value("d_furnace"),
-		"d_water" : get_radio_value("d_water"),
-		"d_washer" : get_radio_value("d_washer"),
-		"d_dryer" : get_radio_value("d_dryer"),
-		"d_stove" : get_radio_value("d_stove"),
-		"d_fridge" : get_radio_value("d_fridge"),
-		"select_classification" : document.getElementById("select_classification").value,
-		"txtArea_classification_reason" : document.getElementById("txtArea_classification_reason").value,
-		"txtArea_comment" : document.getElementById("txtArea_comment").value,
-		// TODO:
-		// lat
-		// long
-		// waiver_signature_time
+		document.getElementById("error_container").style.display = "block";
+		document.getElementById("inperror").innerHTML =s;
+		scroll(0,0);
+	}
+	else
+	{
+		var keyToUse = parseInt(localStorage.getItem("disasterKey")) + 1;
+
+		// Construct the JSON object
+		var this_entry = 
+		{
+			"id" : keyToUse, 	// Same as the key of the <key, value> local storage pair
+			"volunteer_id" : localStorage.getItem("volunteer_id"),
+			"volunteer_name" : localStorage.getItem("volunteer_name"),
+			"start_time" : "", // TODO
+			"end_time" : "", // TODO
+			"street_name" : document.getElementById("street_name_input").value,
+			"tel_house_num" : document.getElementById("houseNum").value,
+			"tel_apt" : document.getElementById("id_apt_input").value,
+			"txt_state" : document.getElementById("txt_state").value,
+			"txt_city" : document.getElementById("edit_address_info_input").value,
+			"tel_zip" : document.getElementById("tel_zip").value,
+			"txt_first_name" : document.getElementById("txt_first_name").value,
+			"txt_last_name" : document.getElementById("txt_last_name").value,
+			"dwelling_type" : document.getElementById("dwelling_type").value,
+			"owner_information" : document.getElementById("owner_information").value,
+			"landlord_name" : document.getElementById("landlord_name").value,
+			"landlord_tel" : document.getElementById("landlord_tel").value,
+			"insurance_information" : document.getElementById("insurance_information").value,
+			"number_floors" : document.getElementById("number_floors_input").value,
+			"is_basement" : get_radio_value("is_basement"),
+			"is_basement_occupied" : get_radio_value("is_basement_occupied"),
+			"txtarea_basement_comment" : document.getElementById("txtarea_basement_comment").value,
+			"water_in_living_area" : document.getElementById("water_in_living_area").value,
+			"water_in_basement" : document.getElementById("water_in_basement").value,
+			"electric" : get_radio_value("electric"),
+			"gas" : get_radio_value("gas"),
+			"d_electrical" : get_radio_value("d_electrical"),
+			"d_furnace" : get_radio_value("d_furnace"),
+			"d_water" : get_radio_value("d_water"),
+			"d_washer" : get_radio_value("d_washer"),
+			"d_dryer" : get_radio_value("d_dryer"),
+			"d_stove" : get_radio_value("d_stove"),
+			"d_fridge" : get_radio_value("d_fridge"),
+			"select_classification" : document.getElementById("select_classification").value,
+			"txtArea_classification_reason" : document.getElementById("txtArea_classification_reason").value,
+			"txtArea_comment" : document.getElementById("txtArea_comment").value,
+			// TODO:
+			// lat
+			// long
+			// waiver_signature_time
+		}
+
+		// Save JSON object to local storage
+		localStorage.setItem(keyToUse, JSON.stringify(this_entry));
+
+		// Reset the disasterKey element so that we don't overwrite this element next time
+		localStorage.setItem("disasterKey", keyToUse);
+
+		// Go to review page
+		document.location = "summary_review.html";
+
+	}
+}
+
+
+function validate(){
+
+	var s;
+	var fname="Please enter a first name. <br>";
+	var lname="Please enter a last name. <br>";
+	var dwellingtype="Please enter a dwelling type.<br>";
+	var ownerinfo="Please indicate ownership information.<br>";
+	var insurance="Please enter insurance information.<br>";
+	var numFloors="Please enter the number of floors in this dwelling. <br>";
+	var isbasement="Please specify if there is a basement. <br>";
+	var isboccupied="Please specify if basement is occupied. <br>";
+	var waterliving="Please specify how much water is in the living area. <br>";
+	var waterliving1="The amount of water in the living area is not a number. <br>";
+	var waterbasement="Please specify how much water is in the basement. <br>";
+	var gasOn="Please specify if gas is on. <br>";
+	var elecOn="Please specify if electricity is on. <br>";
+	var damage="Please choose an overall damage classification. <br>";
+	
+	if(!document.getElementById("txt_first_name").value)
+	{
+		s=fname;
+	}
+
+	if(!document.getElementById("txt_last_name").value)
+	{
+		s=(s==null)?lname:(s+lname);
+	}
+
+	if(document.getElementById("dwelling_type").value=='NONE')
+	{
+		s=(s==null)?dwellingtype:(s+dwellingtype);
+	}
+
+	if(document.getElementById("insurance_information").value=='NONE')
+	{
+		s=(s==null)?insurance:(s+insurance);
 	}
 	
-	// Save JSON object to local storage
-	localStorage.setItem(keyToUse, JSON.stringify(this_entry));
-	
-	// Reset the disasterKey element so that we don't overwrite this element next time
-	localStorage.setItem("disasterKey", keyToUse);
-	
-	// Go to review page
-	document.location = "summary_review.html";
+	if(!(document.getElementById("is_basement").value=="yes" || document.getElementById("is_basement").value=="no"))
+	{
+		s=(s==null)?isbasement:(s+isbasement);
+	}
+
+	if(!(document.getElementById("water_in_living_area").value))
+	{
+		s=(s==null)?waterliving:(s+waterliving);
+	}
+	else {
+
+		if(isNaN(document.getElementById("water_in_living_area").value))
+		{
+			s=(s==null)?waterliving1:(s+waterliving1);
+		}
+	}
+
+
+	if(document.getElementById("select_classification").value=="NONE")
+	{
+		s=(s==null)?damage:(s+damage);
+	}
+	/*
+
+if(!(document.getElementById("electric").value=="yes" || document.getElementById("electric").value=="no"))
+{
+
+s=(s==null)?elecOn:(s+elecOn);
+}
+
+if(!(document.getElementById("gas").value=="yes" || document.getElementById("gas").value=="no"))
+{
+
+s=(s==null)?gasOn:(s+gasOn);
+}
+*/
+
+return s;
+
 }
 
 // Return the value of a radio group 
@@ -86,7 +178,7 @@ function get_radio_value(field_name)
 			theValue = document.disaster_form.elements[field_name][i].value;
 	}
 
-	return theValue;docu
+	return theValue;
 }
 </script>
 
@@ -165,7 +257,12 @@ function echoStoredStreetName()
 
 <body>
 <form action="FillInForm" method="post" name="disaster_form">
-<div class='success_message'>Begin disaster entry #1 for this session</div>
+<div class='info_message'>Welcome, Test Volunteer! <br />This is disaster entry #<script>document.write(parseInt(localStorage.getItem("disasterKey"))+1)</script>.</div>
+
+<div id="error_container" class='failure_message' style='display:none'>
+	<div class='instruction_text'>Sorry, there are a few errors on the form!</div>
+	<div id="inperror"></div>
+</div>
 <h1>Address Entry</h1>
 
 <div class='sub_form'>	
@@ -173,7 +270,7 @@ function echoStoredStreetName()
 	<div class="instruction_text">What address are you currently at?</div>
 
         <input id="houseNum" name="tel_house_num" type="tel" placeholder="House #" style="width:28%" />
-	<input type="text" style="display:none;width:7em" id="street_name_input" />
+	<input type="text" style="display:none;width:7em" id="street_name_input" name="street_name_input"/>
 	<span id="street_name"><script>echoStoredStreetName()</script></span>
 	<span class="js_edit_link">
 		<a href='javascript:;' id='id_apt_link' onClick="doShow('id_apt')">(add apt. #)</a>

@@ -7,7 +7,7 @@
 	<link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" media="all" href="style.css" />
 	<title>Disaster Response App</title>
-	
+
 <!-- scripts -->
 	<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=true"></script>
 
@@ -51,7 +51,7 @@
     	}
 
 		map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-		
+
 		var latlng = new google.maps.LatLng(myLatitude, myLongitude);
 	    geocoder.geocode({'latLng': latlng}, function(results, status) {
 	      if (status == google.maps.GeocoderStatus.OK) {
@@ -62,8 +62,8 @@
 	              map: map
 	          }); 
 	          infowindow.setContent(results[1].formatted_address);
-			
-			
+
+
 			document.getElementById("address_data").innerHTML = results[0].address_components[1].long_name;		
 			document.getElementById("geolocate_street").value = results[0].address_components[1].long_name;	
 			document.getElementById("address_data2").innerHTML = results[0].address_components[1].long_name;		
@@ -98,14 +98,14 @@ function localstore_street_name()
 		window.localStorage.setItem("street_name", document.getElementById("address_data").innerHTML);
 	else
 		window.localStorage.setItem("street_name", "");
-		
+
 	window.location = "assess_form.html";
 }
 </script>
 </head>
 
 <body onload="codeLatLng()">
-<div class='success_message'>Successfully logged in</div>
+<div class='success_message'>Logged in as Test Volunteer!</div>
 <h1>Locating you...</h1>
 
 <p>We've checked your location, and we think you're on:
