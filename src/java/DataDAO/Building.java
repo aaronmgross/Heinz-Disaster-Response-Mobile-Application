@@ -17,19 +17,19 @@ import java.sql.*;
 public class Building {
 
     private int buildId;
-    private String landlordName;
-    private String contactInfo;
-    private String dwellingType;
-    private String insurance;
-    private String ownership;
+    private String landlordName="";
+    private String contactInfo="";
+    private String dwellingType="";
+    private String insurance="";
+    private String ownership="";
 
     public Building(String landlordName, String contactInfo, String dwellingType,
-            String insurance, String ownership){      
-        this.landlordName = landlordName;
-        this.contactInfo = contactInfo;
-        this.dwellingType = dwellingType;
-        this.insurance = insurance;
-        this.ownership = ownership;
+            String insurance, String ownership){ 
+        this.landlordName = landlordName==null?"":landlordName;
+        this.contactInfo = contactInfo==null?"":contactInfo;
+        this.dwellingType = dwellingType==null?"":dwellingType;
+        this.insurance = insurance==null?"":insurance;
+        this.ownership = ownership==null?"":ownership;
     }
 
     public Building(){}
@@ -66,15 +66,15 @@ public class Building {
              String sql ="select Build_Id from Building where Landlord_Name =? and Contact_information=? and Dwelling_Type =? and Insurance=? and Ownership=?";
             statement = con.prepareStatement(sql);            
             statement.setString(1, landlordName);        
-            statement.setString(2, contactInfo);
-            
+            statement.setString(2, contactInfo);            
             statement.setString(3, dwellingType);
             statement.setString(4, insurance);
             statement.setString(5, ownership);
             
             ResultSet rs = statement.executeQuery();
+            //buildId=100;
             while (rs.next()) {
-            	buildId   = rs.getInt("Build_id");
+            	buildId = rs.getInt("Build_Id");
 
             }
             System.out.println("Successfully selected from Building");

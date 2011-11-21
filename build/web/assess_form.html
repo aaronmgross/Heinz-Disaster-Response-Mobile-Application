@@ -10,9 +10,7 @@
 
 <link rel="stylesheet" media="all" href="style.css" />
 <title>Disaster Response App</title>
-</head>
 
-<!-- script immediately scrolls the page one pixel to hide the address bar -->
 <script>
 
 // Create and load into local storage a JSON object for this disaster entry
@@ -87,6 +85,10 @@ function save_disaster_entry()
 	}
 }
 
+function check_filled()
+{
+	
+}
 
 function validate(){
 
@@ -255,8 +257,9 @@ function echoStoredStreetName()
 }
 </script>
 
+</head>
 <body>
-<form action="FillInForm" method="post">
+<form action="" method="post" name="disaster_form">
 <div class='info_message'>Welcome, Test Volunteer! <br />This is disaster entry #<script>document.write(parseInt(localStorage.getItem("disasterKey"))+1)</script>.</div>
 
 <div id="error_container" class='failure_message' style='display:none'>
@@ -372,12 +375,14 @@ function echoStoredStreetName()
 	<tr id='basement_tr_1' style='display:none'>
 		<td class='form_table_label'>Is the basement occupied?</td>
 		<td class='form_table_input'>
+			<fieldset data-role="controlgroup" data-type="horizontal" >
 			<div style='float:left;text-align:center;font-weight:bold;'>YES<br />
 			<input type='radio' name='is_basement_occupied' value='yes' />
 			</div>
 			<div style='float:left;margin-left:20px;text-align:center;font-weight:bold;'>NO<br/>
 			<input type='radio' name='is_basement_occupied' value='no' />
 			</div>
+			</fieldset>
 		</td>
 	</tr>
 

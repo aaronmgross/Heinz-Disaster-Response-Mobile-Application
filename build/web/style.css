@@ -125,6 +125,7 @@ div.bottom_button_row
 	padding:4px;
 }
 /* Surrounds a set of form fields */
+
 div.sub_form
 {
 	border:1px solid #cccccc;
@@ -145,6 +146,33 @@ div.waiver_form
 	-webkit-border-radius: 0.5em;
 	-webkit-box-shadow: 1px 1px 1px #ddd;
 
+}
+
+a.mainlink_side_by_side
+{
+	width:44%;
+}
+
+div.mainlink_big_head
+{
+	font-size:25pt;
+	font-weight:bold;
+	color:black;
+	text-decoration:none;
+}
+
+div.mainlink_subtitle
+{
+	font-size:14pt;
+	font-weight:bold;
+	color:black;
+	text-decoration:none;
+}
+
+a.remove_formatting
+{
+	text-decoration:none;
+	color:black;
 }
 
 /* ############## Form field styling ############### */
