@@ -1,5 +1,15 @@
 <!-- BEGIN PAGE HEADER -->
 
+<!--
+
+TODO:
+- Finish validation (Aaron)
+- Create the form for curbside assessment (Aaron)
+- Add 'gender' to the form (Aaron)
+- Add popups for disaster classifications
+
+-->
+
 <html>
 
 <head>
@@ -56,7 +66,9 @@ function save_disaster_entry()
 			"owner_information" : document.getElementById("owner_information").value,
 			"landlord_name" : document.getElementById("landlord_name").value,
 			"landlord_tel" : document.getElementById("landlord_tel").value,
-			"insurance_information" : document.getElementById("insurance_information").value,
+			"insurance_information_f" : document.getElementById("insurance_information_f").value,
+			"insurance_information_s" : document.getElementById("insurance_information_s").value,
+			"insurance_information_c" : document.getElementById("insurance_information_c").value,
 			"number_floors" : document.getElementById("number_floors_input").value,
 			"is_basement" : get_radio_value("is_basement"),
 			"is_basement_occupied" : get_radio_value("is_basement_occupied"),
@@ -88,9 +100,23 @@ function save_disaster_entry()
 		localStorage.setItem("disasterKey", keyToUse);
 
 		// Go to review page
-		document.location = "summary_review.html";
+		document.location = "assess_form.html#review";
 
 	}
+}
+
+var jsonObject = "";
+
+function getSerializedJSON()
+{
+	var storedJSON = localStorage.getItem(localStorage.getItem("disasterKey"));
+	jsonObject = eval('(' + storedJSON + ')');
+	var jsonString = JSON.stringify(jsonObject);	
+}
+
+function objGet(field_name)
+{
+	document.write(jsonObject[field_name]);
 }
 
 function validate(){
@@ -126,12 +152,7 @@ function validate(){
 		s=(s==null)?dwellingtype:(s+dwellingtype);
 	}
 
-	if(document.getElementById("insurance_information").value=='NONE')
-	{
-		s=(s==null)?insurance:(s+insurance);
-	}
-	
-	if(!(document.getElementById("is_basement").value=="yes" || document.getElementById("is_basement").value=="no"))
+	if(!(get_radio_value("is_basement") == "yes" || get_radio_value("is_basement").value=="no"))
 	{
 		s=(s==null)?isbasement:(s+isbasement);
 	}
@@ -333,6 +354,13 @@ function preparePage()
 
 		<div data-role="content">	
 		
+			<div id="error_container" class='failure_message' style='display:none'>
+				<div class='instruction_text'>Sorry, there are a few errors on the form!</div>
+				<div id="inperror"></div>
+			</div>
+			
+		<form name='disaster_form'>
+		
 		<div class='sub_form'>
 			<div class="instruction_text">Please enter the name of the client at this address.</div>
 			<table><tr>
@@ -368,14 +396,19 @@ function preparePage()
 				<input type='tel' id='landlord_tel' placeholder='Landlord Phone'>
 			</div>
 
-			What type of insurance does the client have?<br />
-			<select id='insurance_information'>
-				<option value='NONE'>Choose one...</option>
-				<option value ='N'>None</option>
-				<option value ='F'>Flood</option>
-				<option value ='S'>Structure</option>
-				<option value ='C'>Contents/Renters</option>
-			</select>
+			What type of insurance, if any, does the client have?<br />
+			<div data-role="fieldcontain" class="iOS-fc-fix" style='margin:auto;text-align:center'>
+				<fieldset data-role="controlgroup">
+				<input type='checkbox' id='insurance_information_f' value ='F' />
+				<label for='insurance_information_f'>Flood</label>
+				
+				<input type='checkbox' id='insurance_information_s' value ='S' />
+				<label for='insurance_information_s'>Structure</label>
+				
+				<input type='checkbox' id='insurance_information_c' value ='C' />
+				<label for='insurance_information_c'>Contents/Renters</label>
+				</fieldset>
+			</div>
 
 		</div>
 		
@@ -395,46 +428,33 @@ function preparePage()
 		<tr>
 			<td class='form_table_label'>Is there a basement?</td>
 			<td class='form_table_input'>
-			
-				<div data-role="fieldcontain">
-				<label for="flip-b">Flip switch:</label>
-					<select name="slider" id="flip-b" data-role="slider">
-						<option value="no">No</option>
-						<option value="yes" onClick="showBasementFields()">Yes</option>
-					</select> 
+				<div data-role="fieldcontain" class="iOS-fc-fix">
+					<fieldset data-role="controlgroup" data-type="horizontal">
+					<input type="radio" name="is_basement" id="is_basement-1" value="yes" onClick="showBasementFields()"/>
+					<label for="is_basement-1">Yes</label>
+					<input type="radio" name="is_basement" id="is_basement-2" value="no" onClick="hideBasementFields()" />
+					 <label for="is_basement-2">No</label>
+					</fieldset>
 				</div>
-			
-			
-			<div data-role="fieldcontain" data-theme="e">
-			
-				<fieldset data-role="controlgroup" data-theme="e">
-					<input type="radio" name="is_basement" id="radio-choice-1" value="choice-1" onClick="showBasementFields()"/>
-					<label for="radio-choice-1">Yes</label>
-					
-					<input type="radio" name="is_basement" id="radio-choice-2" value="choice-2" onClick="hideBasementFields()" />
-					         	<label for="radio-choice-2">No</label>
-				</fieldset>
-			</div>
-			
 			</td>
 		</tr>
 
 		<tr id='basement_tr_1' style='display:none'>
 			<td class='form_table_label'>Is the basement occupied?</td>
 			<td class='form_table_input'>
-				<fieldset data-role="controlgroup" data-type="horizontal" >
-				<div style='float:left;text-align:center;font-weight:bold;'>YES<br />
-				<input type='radio' name='is_basement_occupied' value='yes' />
+				<div data-role="fieldcontain" class="iOS-fc-fix">
+					<fieldset data-role="controlgroup" data-type="horizontal">
+					<input type="radio" name="is_basement_occupied" id="is_basement_occupied-1" value="yes" />
+					<label for="is_basement_occupied-1">Yes</label>
+					<input type="radio" name="is_basement_occupied" id="is_basement_occupied-2" value="no" />
+					 <label for="is_basement_occupied-2">No</label>
+					</fieldset>
 				</div>
-				<div style='float:left;margin-left:20px;text-align:center;font-weight:bold;'>NO<br/>
-				<input type='radio' name='is_basement_occupied' value='no' />
-				</div>
-				</fieldset>
 			</td>
 		</tr>
 
 		<tr id='basement_tr_2' style='display:none'>
-			<td colspan=2>
+			<td colspan=2 class='form_table_input'>
 				Please describe the way in which the basement is being used:
 				<div class="spacer"></div>
 				<textarea id="txtarea_basement_comment" style='width:100%;height:70px;' placeholder="Enter text..."></textarea>
@@ -442,27 +462,29 @@ function preparePage()
 		</tr>
 
 		<tr>
-			<td class='form_table_label'>How much water is in the main living area?</td>
+			<td class='form_table_label'>How much water is in the living area?</td>
 			<td class='form_table_input'>
-				<input type='tel' id='water_in_living_area' style='width:2.5em' /> inches
+				<table><tr><td><input type='tel' id='water_in_living_area' style='width:2.5em' /></td><td> <label for="water_in_living_area">inches</label></td></tr></table>
 			</td>
 		</tr>
 
 		<tr id='basement_tr_3' style='display:none'>
 			<td class='form_table_label'>How much water is in the basement?</td>
 			<td class='form_table_input'>
-				<input type='tel' id='water_in_basement' style='width:2.5em' /> inches
+				<table><tr><td><input type='tel' id='water_in_basement' style='width:2.5em' /></td><td>inches</td></tr></table>
 			</td>
 		</tr>
 
 		<tr>
 			<td class='form_table_label'>Is the electricity on?</td>
 			<td class='form_table_input'>
-				<div style='float:left;text-align:center;font-weight:bold;'>YES<br />
-				<input type='radio' name='electric' value='yes' />
-				</div>
-				<div style='float:left;margin-left:20px;text-align:center;font-weight:bold;'>NO<br />
-				<input type='radio' name='electric' value='no' />
+				<div data-role="fieldcontain" class="iOS-fc-fix">
+					<fieldset data-role="controlgroup" data-type="horizontal">
+					<input type="radio" name="electric" id="electric-1" value="yes" />
+					<label for="electric-1">Yes</label>
+					<input type="radio" name="electric" id="electric-2" value="no" />
+					 <label for="electric-2">No</label>
+					</fieldset>
 				</div>
 			</td>
 		</tr>
@@ -470,11 +492,13 @@ function preparePage()
 		<tr>
 			<td class='form_table_label'>Is the gas on?</td>
 			<td class='form_table_input'>
-				<div style='float:left;text-align:center;font-weight:bold;'>YES<br />
-				<input type='radio' name='gas' value='yes' />
-				</div>
-				<div style='float:left;margin-left:20px;text-align:center;font-weight:bold;'>NO<br/>
-				<input type='radio' name='gas' value='no' />
+				<div data-role="fieldcontain" class="iOS-fc-fix">
+					<fieldset data-role="controlgroup" data-type="horizontal">
+					<input type="radio" name="gas" id="gas-1" value="yes" />
+					<label for="gas-1">Yes</label>
+					<input type="radio" name="gas" id="gas-2" value="no" />
+					 <label for="gas-2">No</label>
+					</fieldset>
 				</div>
 			</td>
 		</tr>
@@ -482,11 +506,145 @@ function preparePage()
 		</table>
 		</div>
 		
+		
+		<div class='sub_form'>
+		<div class='instruction_text'>Is there damage to the following physical plant items?</div>
+
+		<table style='form_table' cellpadding=0 cellspacing=0 width=100%>
+
+			<tr>
+				<td class='form_table_label'>Electrical service box</td>
+				<td class='form_table_input'>
+					<div data-role="fieldcontain" class="iOS-fc-fix">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="d_electrical" id="d_electrical-1" value="yes" />
+						<label for="d_electrical-1">Yes</label>
+						<input type="radio" name="d_electrical" id="d_electrical-2" value="no" />
+						 <label for="d_electrical-2">No</label>
+						</fieldset>
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Furnace</td>
+				<td class='form_table_input'>
+					<div data-role="fieldcontain" class="iOS-fc-fix">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="d_furnace" id="d_furnace-1" value="yes" />
+						<label for="d_furnace-1">Yes</label>
+						<input type="radio" name="d_furnace" id="d_furnace-2" value="no" />
+						 <label for="d_furnace-2">No</label>
+						</fieldset>
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Hot water heater</td>
+				<td class='form_table_input'>
+					<div data-role="fieldcontain" class="iOS-fc-fix">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="d_water" id="d_water-1" value="yes" />
+						<label for="d_water-1">Yes</label>
+						<input type="radio" name="d_water" id="d_water-2" value="no" />
+						 <label for="d_water-2">No</label>
+						</fieldset>
+					</div>
+				</td>
+			</tr>
+		</table>
+		</div>
+		
+		<div class='sub_form'>
+			<div class='instruction_text'>Is there damage to the following appliance items?</div>
+		
+		<table style='form_table' cellpadding=0 cellspacing=0 width="100%">
+			<tr>
+				<td class='form_table_label'>Washer</td>
+				<td class='form_table_input'>
+					<div data-role="fieldcontain" class="iOS-fc-fix">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="d_washer" id="d_washer-1" value="yes" />
+						<label for="d_washer-1">Yes</label>
+						<input type="radio" name="d_washer" id="d_washer-2" value="no" />
+						 <label for="d_washer-2">No</label>
+						</fieldset>
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Dryer</td>
+				<td class='form_table_input'>
+					<div data-role="fieldcontain" class="iOS-fc-fix">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="d_dryer" id="d_dryer-1" value="yes" />
+						<label for="d_dryer-1">Yes</label>
+						<input type="radio" name="d_dryer" id="d_dryer-2" value="no" />
+						 <label for="d_dryer-2">No</label>
+						</fieldset>
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Stove</td>
+				<td class='form_table_input'>
+					<div data-role="fieldcontain" class="iOS-fc-fix">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="d_stove" id="d_stove-1" value="yes" />
+						<label for="d_stove-1">Yes</label>
+						<input type="radio" name="d_stove" id="d_stove-2" value="no" />
+						 <label for="d_stove-2">No</label>
+						</fieldset>
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Refrigerator</td>
+				<td class='form_table_input'>
+					<div data-role="fieldcontain" class="iOS-fc-fix">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="d_fridge" id="d_fridge-1" value="yes" />
+						<label for="d_fridge-1">Yes</label>
+						<input type="radio" name="d_fridge" id="d_fridge-2" value="no" />
+						 <label for="d_fridge-2">No</label>
+						</fieldset>
+					</div>
+				</td>
+			</tr>
+		</table>
+		</div>
+
+		<div class='sub_form'>
+
+			<div class="instruction_text">Based on the <a href='#popup' data-rel="dialog" data-transition="pop">Red Cross guidelines for classification</a>, what is your overall assessment of the damage for this property?</div>
+			<select id='select_classification'>
+				<option name='choose' value="NONE">Choose one...</option>
+				<option name='Destroyed' value="DE">Destroyed</option>
+				<option name='Major' value="MA">Major</option>
+				<option name='Minor' value="MI">Minor</option>
+				<option name='Affected' value="AF">Affected</option>
+				<option name='Inaccessible' value="IN">Inaccessible</option>
+			</select>
+
+			<div class="spacer"></div>
+			Please provide a detailed reasoning behind your classification:<br />
+			<textarea id="txtArea_classification_reason" style='width:100%;height:90px;' placeholder="Enter text..."></textarea>
+
+			<div class="spacer"></div>
+			If you have any additional comments about this overall disaster entry, please add them:<br />
+			<textarea id="txtArea_comment" style='width:100%;height:60px;' placeholder="Enter text..."></textarea>
+		</div>
+		
+		</form>
+
+		<a href='javascript:;' data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b" onClick='save_disaster_entry()'><div class='mainlink_big_head'>Continue</div></a>
+		
 		</div><!-- /content -->
 
-		<div data-role="footer">
-			<h4>Page Footer</h4>
-		</div><!-- /footer -->
 	</div><!-- /page two -->
 
 
@@ -494,7 +652,7 @@ function preparePage()
 	<div data-role="page" id="popup">
 
 		<div data-role="header" data-theme="e">
-			<h1>Dialog</h1>
+			<h2>Damage Classification Guidelines
 		</div><!-- /header -->
 
 		<div data-role="content" data-theme="d">	
@@ -507,6 +665,7 @@ function preparePage()
 			<h4>Page Footer</h4>
 		</div><!-- /footer -->
 	</div><!-- /page popup -->
+
 
 	</body>
 	</html>
