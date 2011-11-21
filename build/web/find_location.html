@@ -7,7 +7,7 @@
 	<link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" media="all" href="style.css" />
 	<title>Disaster Response App</title>
-	
+
 <!-- scripts -->
 	<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=true"></script>
 
@@ -51,7 +51,7 @@
     	}
 
 		map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-		
+
 		var latlng = new google.maps.LatLng(myLatitude, myLongitude);
 	    geocoder.geocode({'latLng': latlng}, function(results, status) {
 	      if (status == google.maps.GeocoderStatus.OK) {
@@ -62,8 +62,8 @@
 	              map: map
 	          }); 
 	          infowindow.setContent(results[1].formatted_address);
-			
-			
+
+
 			document.getElementById("address_data").innerHTML = results[0].address_components[1].long_name;		
 			document.getElementById("geolocate_street").value = results[0].address_components[1].long_name;	
 			document.getElementById("address_data2").innerHTML = results[0].address_components[1].long_name;		
@@ -86,10 +86,26 @@
 	}   
 }
 </script>
+
+<script>
+// This script stores the desired street name locally.
+function localstore_street_name()
+{
+	// Check which street name is full.
+	if (document.getElementById("street_name_user").value != "")
+		window.localStorage.setItem("street_name", document.getElementById("street_name_user").value);
+	else if (document.getElementById("address_data").innerHTML != "ERROR: Couldn't get location.")
+		window.localStorage.setItem("street_name", document.getElementById("address_data").innerHTML);
+	else
+		window.localStorage.setItem("street_name", "");
+
+	window.location = "assess_form.html";
+}
+</script>
 </head>
 
 <body onload="codeLatLng()">
-<div class='success_message'>Successfully logged in</div>
+<div class='success_message'>Logged in as Test Volunteer!</div>
 <h1>Locating you...</h1>
 
 <p>We've checked your location, and we think you're on:
@@ -104,10 +120,10 @@
 	<input type='radio' id='geolocate_street' name='street_name' value=''>Yes, use <span style='font-weight:bold' id="address_data2"></span>
 	<div class='spacer'></div>
 	<input type='radio' name='street_name' value='other'>No, use this street name: <br />
-	<input type='text' style='margin-left:2.5em' name='street_name_user' />
+	<input type='text' style='margin-left:2.5em' id='street_name_user' name='street_name_user' />
 </div>
 <div class='bottom_button_row'>
-	<input type='submit' value='Continue...' /></div>
+	<input type='button' value='Continue...' onClick="localstore_street_name()" /></div>
 </form>
 </body>
 </html>

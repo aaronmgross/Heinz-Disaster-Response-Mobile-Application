@@ -14,6 +14,176 @@
 
 <!-- script immediately scrolls the page one pixel to hide the address bar -->
 <script>
+
+// Create and load into local storage a JSON object for this disaster entry
+function save_disaster_entry()
+{
+	var s=validate();
+	
+	if(s!=null)
+	{
+		document.getElementById("error_container").style.display = "block";
+		document.getElementById("inperror").innerHTML =s;
+		scroll(0,0);
+	}
+	else
+	{
+		var keyToUse = parseInt(localStorage.getItem("disasterKey")) + 1;
+
+		// Construct the JSON object
+		var this_entry = 
+		{
+			"id" : keyToUse, 	// Same as the key of the <key, value> local storage pair
+			"volunteer_id" : localStorage.getItem("volunteer_id"),
+			"volunteer_name" : localStorage.getItem("volunteer_name"),
+			"start_time" : "", // TODO
+			"end_time" : "", // TODO
+			"street_name" : document.getElementById("street_name_input").value,
+			"tel_house_num" : document.getElementById("houseNum").value,
+			"tel_apt" : document.getElementById("id_apt_input").value,
+			"txt_state" : document.getElementById("txt_state").value,
+			"txt_city" : document.getElementById("edit_address_info_input").value,
+			"tel_zip" : document.getElementById("tel_zip").value,
+			"txt_first_name" : document.getElementById("txt_first_name").value,
+			"txt_last_name" : document.getElementById("txt_last_name").value,
+			"dwelling_type" : document.getElementById("dwelling_type").value,
+			"owner_information" : document.getElementById("owner_information").value,
+			"landlord_name" : document.getElementById("landlord_name").value,
+			"landlord_tel" : document.getElementById("landlord_tel").value,
+			"insurance_information" : document.getElementById("insurance_information").value,
+			"number_floors" : document.getElementById("number_floors_input").value,
+			"is_basement" : get_radio_value("is_basement"),
+			"is_basement_occupied" : get_radio_value("is_basement_occupied"),
+			"txtarea_basement_comment" : document.getElementById("txtarea_basement_comment").value,
+			"water_in_living_area" : document.getElementById("water_in_living_area").value,
+			"water_in_basement" : document.getElementById("water_in_basement").value,
+			"electric" : get_radio_value("electric"),
+			"gas" : get_radio_value("gas"),
+			"d_electrical" : get_radio_value("d_electrical"),
+			"d_furnace" : get_radio_value("d_furnace"),
+			"d_water" : get_radio_value("d_water"),
+			"d_washer" : get_radio_value("d_washer"),
+			"d_dryer" : get_radio_value("d_dryer"),
+			"d_stove" : get_radio_value("d_stove"),
+			"d_fridge" : get_radio_value("d_fridge"),
+			"select_classification" : document.getElementById("select_classification").value,
+			"txtArea_classification_reason" : document.getElementById("txtArea_classification_reason").value,
+			"txtArea_comment" : document.getElementById("txtArea_comment").value,
+			// TODO:
+			// lat
+			// long
+			// waiver_signature_time
+		}
+
+		// Save JSON object to local storage
+		localStorage.setItem(keyToUse, JSON.stringify(this_entry));
+
+		// Reset the disasterKey element so that we don't overwrite this element next time
+		localStorage.setItem("disasterKey", keyToUse);
+
+		// Go to review page
+		document.location = "summary_review.html";
+
+	}
+}
+
+
+function validate(){
+
+	var s;
+	var fname="Please enter a first name. <br>";
+	var lname="Please enter a last name. <br>";
+	var dwellingtype="Please enter a dwelling type.<br>";
+	var ownerinfo="Please indicate ownership information.<br>";
+	var insurance="Please enter insurance information.<br>";
+	var numFloors="Please enter the number of floors in this dwelling. <br>";
+	var isbasement="Please specify if there is a basement. <br>";
+	var isboccupied="Please specify if basement is occupied. <br>";
+	var waterliving="Please specify how much water is in the living area. <br>";
+	var waterliving1="The amount of water in the living area is not a number. <br>";
+	var waterbasement="Please specify how much water is in the basement. <br>";
+	var gasOn="Please specify if gas is on. <br>";
+	var elecOn="Please specify if electricity is on. <br>";
+	var damage="Please choose an overall damage classification. <br>";
+	
+	if(!document.getElementById("txt_first_name").value)
+	{
+		s=fname;
+	}
+
+	if(!document.getElementById("txt_last_name").value)
+	{
+		s=(s==null)?lname:(s+lname);
+	}
+
+	if(document.getElementById("dwelling_type").value=='NONE')
+	{
+		s=(s==null)?dwellingtype:(s+dwellingtype);
+	}
+
+	if(document.getElementById("insurance_information").value=='NONE')
+	{
+		s=(s==null)?insurance:(s+insurance);
+	}
+	
+	if(!(document.getElementById("is_basement").value=="yes" || document.getElementById("is_basement").value=="no"))
+	{
+		s=(s==null)?isbasement:(s+isbasement);
+	}
+
+	if(!(document.getElementById("water_in_living_area").value))
+	{
+		s=(s==null)?waterliving:(s+waterliving);
+	}
+	else {
+
+		if(isNaN(document.getElementById("water_in_living_area").value))
+		{
+			s=(s==null)?waterliving1:(s+waterliving1);
+		}
+	}
+
+
+	if(document.getElementById("select_classification").value=="NONE")
+	{
+		s=(s==null)?damage:(s+damage);
+	}
+	/*
+
+if(!(document.getElementById("electric").value=="yes" || document.getElementById("electric").value=="no"))
+{
+
+s=(s==null)?elecOn:(s+elecOn);
+}
+
+if(!(document.getElementById("gas").value=="yes" || document.getElementById("gas").value=="no"))
+{
+
+s=(s==null)?gasOn:(s+gasOn);
+}
+*/
+
+return s;
+
+}
+
+// Return the value of a radio group 
+function get_radio_value(field_name)
+{
+	var theValue = "blank";
+
+	for( i = 0; i < document.disaster_form.elements[field_name].length; i++ )
+	{
+		if( document.disaster_form.elements[field_name][i].checked == true )
+			theValue = document.disaster_form.elements[field_name][i].value;
+	}
+
+	return theValue;
+}
+</script>
+
+<script>
+// Scroll the page one pixel to hide the menu bar
 window.addEventListener('load', function(e) {
     setTimeout(function() { window.scrollTo(0, 1); }, 1);
   }, false);
@@ -77,11 +247,22 @@ function doEditAddress()
 	document.getElementById("street_name_input").style.display = 'inline';
 	doShow("edit_address_info");
 }
+
+function echoStoredStreetName()
+{
+	document.write(localStorage.getItem("street_name"));
+	document.getElementById("street_name_input").value = localStorage.getItem("street_name");
+}
 </script>
 
 <body>
 <form action="FillInForm" method="post">
-<div class='success_message'>Begin disaster entry #1 for this session</div>
+<div class='info_message'>Welcome, Test Volunteer! <br />This is disaster entry #<script>document.write(parseInt(localStorage.getItem("disasterKey"))+1)</script>.</div>
+
+<div id="error_container" class='failure_message' style='display:none'>
+	<div class='instruction_text'>Sorry, there are a few errors on the form!</div>
+	<div id="inperror"></div>
+</div>
 <h1>Address Entry</h1>
 
 <div class='sub_form'>	
@@ -89,14 +270,14 @@ function doEditAddress()
 	<div class="instruction_text">What address are you currently at?</div>
 
         <input id="houseNum" name="tel_house_num" type="tel" placeholder="House #" style="width:28%" />
-	<input type="text" name="txt_street_name" style="display:none;width:7em" id="street_name_input" />
-	<span id="street_name">Forbes Ave</span>
+	<input type="text" style="display:none;width:7em" id="street_name_input" name="street_name_input"/>
+	<span id="street_name"><script>echoStoredStreetName()</script></span>
 	<span class="js_edit_link">
 		<a href='javascript:;' id='id_apt_link' onClick="doShow('id_apt')">(add apt. #)</a>
 	</span>
 
 	<span id='id_apt' style='display:none'>
-		# <input type="tel" name="tel_apt" placeholder="Apt" style="width:15%;" id="id_apt_input">
+		# <input type="tel" id="id_apt_input" name="tel_apt" placeholder="Apt" style="width:15%;" id="id_apt_input" />
 	</span>
 
 	<br />
@@ -106,9 +287,9 @@ function doEditAddress()
 	</div>
 
 	<div id="edit_address_info" style='display:none'>
-		<input id="edit_address_info_input" type='text' name='txt_city' placeholder='Pittsburgh' value='Pittsburgh' style='width:7em' />
-		<input type='text' name='txt_state' placeholder='PA' value='PA' style='width:2.5em' />
-		<input type='tel' name='tel_zip' placeholder='15213' value='15213' style='width:4em' />
+		<input id="edit_address_info_input" type='text' placeholder='Pittsburgh' value='Pittsburgh' style='width:7em' />
+		<input type='text' id='txt_state' placeholder='PA' value='PA' style='width:2.5em' />
+		<input type='tel' id='tel_zip' placeholder='15213' value='15213' style='width:4em' />
 	</div>
 </div>
 
@@ -117,14 +298,14 @@ function doEditAddress()
 
 <div class="instruction_text">Please enter the name of the client at this address.</div>
 
-<input type='text' name='txt_first_name' placeholder='First Name' style='width:45%'>
-<input type='text' name='txt_last_name' placeholder='Last Name' style='width:45%'>
+<input type='text' id='txt_first_name' placeholder='First Name' style='width:45%'>
+<input type='text' id='txt_last_name' placeholder='Last Name' style='width:45%'>
 </div>
 
 <div class='sub_form'>
 	<div class="instruction_text">Please enter as much information as possible about the dwelling.</div>
 	Dwelling type:<br />
-	<select name='dwelling_type'>
+	<select id='dwelling_type'>
 		<option value="NONE">Choose one...</option>
 		<option value='S'>Single-family home</option>
 		<option value='A'>Apartment</option>
@@ -135,7 +316,7 @@ function doEditAddress()
 	<div class="spacer"></div>
 
 	Ownership information:<br />
-	<select name='owner_information' id="owner_information" onChange="checkRenterInfo()">
+	<select id='owner_information' id="owner_information" onChange="checkRenterInfo()">
 		<option value='NONE'>Choose one...</option>
 		<option value='OW'>Own</option>
 		<option value='RF'>Rent (furnished)</option>
@@ -145,17 +326,17 @@ function doEditAddress()
 
 	<div style='display:none' id="renter_information">
 		Landlord's name, if known:<br />
-		<input type='text' name='landlord_name' placeholder='Landlord Name'>
+		<input type='text' id='landlord_name' placeholder='Landlord Name'>
 
 		<div class="spacer"></div>
 
 		Landlord's phone #, if known:<br />		
-		<input type='tel' name='landlord_tel' placeholder='Landlord Phone'>
+		<input type='tel' id='landlord_tel' placeholder='Landlord Phone'>
 
 		<div class="spacer"></div>
 	</div>
 	Insurance Information:<br />
-	<select name='insurance_information'>
+	<select id='insurance_information'>
 		<option value='NONE'>Choose one...</option>
 		<option value ='N'>None</option>
 		<option value ='F'>Flood</option>
@@ -172,7 +353,7 @@ function doEditAddress()
 	<tr>
 		<td class='form_table_label' style='border:0px'>Number of floors:</td>
 		<td class='form_table_input' style='border:0px'><a href="javascript:;" onClick="decrNumFloors()"><img src='images/minus.png' style='width:35px;vertical-align:middle' border=0></a>
-			<input type='tel' name='number_floors' id='number_floors_input' value="1" style='width:2em' />
+			<input type='tel' id='number_floors_input' value="1" style='width:2em' />
 			<a href="javascript:;" onClick="incrNumFloors()"><img src='images/plus.png' style='width:35px;vertical-align:middle' border=0></a>
 		</td>
 	</tr>
@@ -180,10 +361,10 @@ function doEditAddress()
 		<td class='form_table_label'>Is there a basement?</td>
 		<td class='form_table_input'>
 			<div style='float:left;text-align:center;font-weight:bold;'>YES<br />
-			<input type='radio' name='is_basement' value='yes' onClick="showBasementFields()" />
+			<input type='radio' id='is_basement' name='is_basement' value='yes' onClick="showBasementFields()" />
 			</div>
 			<div style='float:left;margin-left:20px;text-align:center;font-weight:bold;' onClick="hideBasementFields()">NO<br />
-			<input type='radio' name='is_basement' value='no' />
+			<input type='radio' id='is_basement' name='is_basement' value='no' />
 			</div>
 		</td>
 	</tr>
@@ -204,21 +385,21 @@ function doEditAddress()
 		<td colspan=2>
 			Please describe the way in which the basement is being used:
 			<div class="spacer"></div>
-			<textarea name="txtarea_basement_comment" style='width:100%;height:70px;' placeholder="Enter text..."></textarea>
+			<textarea id="txtarea_basement_comment" style='width:100%;height:70px;' placeholder="Enter text..."></textarea>
 		</td>
 	</tr>
 
 	<tr>
 		<td class='form_table_label'>How much water is in the main living area?</td>
 		<td class='form_table_input'>
-			<input type='tel' name='water_in_living_area' style='width:2.5em' /> inches
+			<input type='tel' id='water_in_living_area' style='width:2.5em' /> inches
 		</td>
 	</tr>
 
 	<tr id='basement_tr_3' style='display:none'>
 		<td class='form_table_label'>How much water is in the basement?</td>
 		<td class='form_table_input'>
-			<input type='tel' name='water_in_basement' style='width:2.5em' /> inches
+			<input type='tel' id='water_in_basement' style='width:2.5em' /> inches
 		</td>
 	</tr>
 
@@ -346,7 +527,7 @@ function doEditAddress()
 <div class='sub_form'>
 
 	<div class="instruction_text">Based on the Red Cross guidelines for classification, what is your overall assessment of the damage for this property?</div>
-	<select name='select_classification'>
+	<select id='select_classification'>
 		<option name='choose' value="NONE">Choose one...</option>
 		<option name='Destroyed' value="DE">Destroyed</option>
 		<option name='Major' value="MA">Major</option>
@@ -357,15 +538,15 @@ function doEditAddress()
 
 	<div class="spacer"></div>
 	Please provide a detailed reasoning behind your classification:<br />
-	<textarea name="txtArea_classification_reason" style='width:100%;height:90px;' placeholder="Enter text..."></textarea>
+	<textarea id="txtArea_classification_reason" style='width:100%;height:90px;' placeholder="Enter text..."></textarea>
 
 	<div class="spacer"></div>
 	If you have any additional comments about this overall disaster entry, please add them:<br />
-	<textarea name="txtArea_comment" style='width:100%;height:60px;' placeholder="Enter text..."></textarea>
+	<textarea id="txtArea_comment" style='width:100%;height:60px;' placeholder="Enter text..."></textarea>
 </div>
 
 <div class="bottom_button_row">
-<input type='submit' value='Continue...' style='text-align:center;margin:auto' />
+<input type='button' value='Continue...' style='text-align:center;margin:auto' onClick="save_disaster_entry()"/>
 </div>
 	</form>
 	</body>

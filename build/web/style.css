@@ -31,6 +31,22 @@ h1
 }
 
 /* Should appear at the top of a page, above the header, to indicate success of an action */
+div.info_message
+{
+	font-size:12pt;
+	-webkit-shadow: 1px 1px 1px #fff;
+	color:white;
+	background-color:#058cf5;
+	font-weight:bold;
+	padding:3px;
+	margin-left:-4px;
+	margin-right:-4px;
+	margin-top:-4px;
+	margin-bottom:4px;
+	text-align:center;
+}
+
+
 div.success_message
 {
 	font-size:12pt;
@@ -45,6 +61,35 @@ div.success_message
 	margin-bottom:4px;
 	text-align:center;
 }
+
+div.failure_message
+{
+	border:3px solid red;
+	background-color:#F8BDBD;
+	padding:8px;
+	margin:4px;
+	margin-bottom:10px;
+	-webkit-border-radius: 0.5em;
+	-webkit-box-shadow: 1px 1px 1px #ddd;
+
+}
+
+/*
+div.failure_message
+{
+	font-size:12pt;
+	-webkit-shadow: 1px 1px 1px #fff;
+	color:white;
+	background-color:red;
+	font-weight:bold;
+	padding:3px;
+	margin-left:-4px;
+	margin-right:-4px;
+	margin-top:-4px;
+	margin-bottom:4px;
+	text-align:center;
+}
+*/
 
 div.instruction_text
 {
@@ -155,6 +200,11 @@ input[type=radio]:checked {
 }
 
 input[type=submit] {
+	background: #058cf5;
+	width:7em;
+}
+
+input[type=button] {
 	background: #058cf5;
 	width:7em;
 }

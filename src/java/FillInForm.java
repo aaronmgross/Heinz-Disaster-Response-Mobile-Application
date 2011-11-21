@@ -4,11 +4,12 @@
  */
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import Utility.*;
+//import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 
 /**
  *
@@ -26,6 +27,16 @@ public class FillInForm extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+                //System.out.println("request: "+request.toString());
+       // System.out.println("jsonObject:"+request.getParameter("jsonObject"));
+        //ObjectMapper mapper = new ObjectMapper();
+        //jsonObject object = mapper.readValue(jsonObject, jsonObject.class);
+
+        String ojbec = (String)request.getParameter("electric");
+
+        System.out.println("electric:"+ojbec);
+
         String houseNum = (String) request.getParameter("tel_house_num");
         //Can not retrieve street name because it is hard coded in html
         String streetName = (String) request.getParameter("txt_street_name");
@@ -36,15 +47,19 @@ public class FillInForm extends HttpServlet {
         String address = houseNum + " " + streetName + "#" + apt + " " + city + " " + state + " " + zip;
         System.out.println(address);
 
+        
+
 
         String firstName = (String) request.getParameter("txt_first_name");
         String lastName = (String) request.getParameter("txt_last_name");
+
         String dwellingType = (String) request.getParameter("dwelling_type");
         String ownerInfo = (String) request.getParameter("owner_information");
         System.out.println(firstName + " " + lastName);
         System.out.println(dwellingType);
         System.out.println(ownerInfo);
-        String landlordName, landlordPhone;
+        String landlordName=null;
+        String landlordPhone=null;
         if (!ownerInfo.equals("OW")) {
             landlordName = (String) request.getParameter("landlord_name");
             landlordPhone = (String) request.getParameter("landlord_tel");
@@ -121,6 +136,13 @@ public class FillInForm extends HttpServlet {
          System.out.println("select_classification:" + classification);
          System.out.println("txtArea_classification_reason:" + reason);
          System.out.println("txtArea_comment:" + comments);
+
+         try{
+         FillInFormMain fim = new FillInFormMain(streetName,apt,city,state,zip,"","",firstName,lastName,"",landlordName,landlordPhone,dwellingType,insuranceInfo,ownerInfo);
+        }
+         catch(Exception e){
+             e.printStackTrace();
+         }
 
     }
 }

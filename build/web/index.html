@@ -16,35 +16,56 @@ window.addEventListener('load', function(e) {
     setTimeout(function() { window.scrollTo(0, 1); }, 1);
   }, false);
 
+function forgot_password()
+{
+	document.location = 'forgot_password.html';
+}
 
+function initialize_disaster_session()
+{
+	// TODO: Check to see if there are any elements in local storage already to deal with.
+	//		 Present the user with a screen to address those.
 
-function func(){
-document.location = 'forgot_password.html';
+	// Check to see if a disaster reporting key incrementor exists - if not, set it at zero.
+	if(localStorage.getItem("disasterKey") == null)
+		localStorage.setItem("disasterKey", "0");
+
+	// Add the volunteer User ID and Name to local storage
+	localStorage.setItem("volunteer_id", "1"); // TODO: Get this from remote
+	localStorage.setItem("volunteer_name", "Aaron"); // TODO: Get this from database
+
+	// We're all set - forward the page.
+	document.location = "find_location.html";
 }
 </script>
 
 <body>
 	<h1>Mobile Disaster Reporting</h1>
-	<p><b>Welcome to the Red Cross disaster response mobile application.</b> Please log in below to access the application.</p>
+	<div class='instruction_text'>Welcome to the disaster response reporting mobile application. Please log in below to access the application.</div>
 
 <div class='sub_form'>	
 	<form action='find_location.html' method='post'>
 
 	<input type='hidden' name='lat' >
 	<b>Username:</b><br />
-	<input type='text' name='username'/><br /><br />
-
+	<input type='text' name='username'/>
+	<div class='spacer'></div>
 	<b>Password:</b><br />
-	<input type='password' name='password'/><br /><br />
-	<b>Disaster</b><br />
+	<input type='password' name='password'/>
+	<div class='spacer'></div>
+	<b>Choose Disaster Incident:</b><br />
 	<select name="Disaster">
-	<option value="Flood">Flood </option>
+	<option value='none'>choose...</option>
+	<option value="TEST">User Testing 11/15/11 </option>
 	</select>
-<br><br>
-<center>
-	<input type='submit' value='Log in...' />
-	<input type='button' value="Forgot Password" onclick="func()">
-</center>
+	<div class='spacer'></div>
+
+</div>
+<div class='bottom_button_row'>
+	<input type='button' value='Log in...' onClick="initialize_disaster_session()" /><br />
+	<a href='javascript:;' onclick="forgot_password()">Forgot password?</a>
+	<a href='#'>Register</a>
+</div>
 </div>
 </body>
 
