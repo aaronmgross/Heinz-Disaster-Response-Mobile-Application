@@ -41,10 +41,65 @@ public class FillInForm extends HttpServlet {
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
-        String tryone = request.getParameter("jsonStringName");
-        System.out.println("jsonStringName"+tryone);
+       // String tryone = request.getParameter("jsonStringName");
+        //System.out.println("jsonStringName"+tryone);
+        String s = (String)request.getParameter("test");
+        System.out.println("test:"+s);
+        //String attribute = (String)request.getAttribute("volunteer_name");
+        //System.out.println("volunteer_name:"+attribute);
 
-       /*Client Table(missing Munipality and County)*/
+//       int id = -1;
+//       String volunteerId = null;
+//       String volunteerName = null;
+//       //Date startTime;
+//       //Date endTime;
+//       String streetName = null;
+//       String houseNum = null;
+//       String apt = null;
+//       String city = null;
+//       String state = null;
+//       String zip = null;
+//       String address = null;
+//       String firstName = null;
+//       String lastName = null;
+//       String dwellingType = null;
+//       String ownerInfo = null;
+//       String landlordName = null;
+//       String landlordPhone = null;
+//       String insuranceInfo = null;
+//       String floorNum = null;
+//       String waterLiving = null;
+//
+//       String json = (String) request.getParameter("1");
+//
+//       try {
+//           JSONObject j = new JSONObject(json);
+//           id = (Integer) j.get("id");
+//           System.out.println("id = " + id);
+//           volunteerId = (String) j.get("volunteer_id");
+//           volunteerName = (String) j.get("volunteer_name");
+//           //Date startTime= (Date)j.get("start_time");
+//           //Date endTime= (Date)j.get("end_time");
+//           streetName = (String) j.get("street_name");
+//           houseNum = (String) j.get("tel_house_num");
+//           apt = (String) j.get("tel_apt");
+//           city = (String) j.get("txt_city");
+//           state = (String) j.get("txt_state");
+//           zip = (String) j.get("tel_zip");
+//           firstName = (String) j.get("txt_first_name");
+//           lastName = (String) j.get("txt_last_name");
+//           dwellingType = (String) j.get("dwelling_type");
+//           ownerInfo = (String) j.get("owner_information");
+//           landlordName = (String) j.get("landlord_name");
+//           landlordPhone = (String) j.get("landlord_tel");
+//           insuranceInfo = (String) j.get("insurance_information");
+//           floorNum = (String) j.get("number_floors");
+//           waterLiving = (String) j.get("water_in_living_area");
+//       } catch (JSONException e) {
+//           e.printstack();
+//                   }
+
+        /*Client Table(missing Munipality and County)*/
         String houseNum = (String) request.getParameter("tel_house_num");
         //Can not retrieve street name because it is hard coded in html
         String streetName = (String) request.getParameter("txt_street_name");
@@ -53,7 +108,7 @@ public class FillInForm extends HttpServlet {
         String state = (String) request.getParameter("txt_state");
         String zip = (String) request.getParameter("tel_zip");
         //String address = houseNum + " " + streetName + "#" + apt + " " + city + " " + state + " " + zip;
-       //System.out.println(address);
+        //System.out.println(address);
         String firstName = (String) request.getParameter("txt_first_name");
         String lastName = (String) request.getParameter("txt_last_name");
 
@@ -67,8 +122,8 @@ public class FillInForm extends HttpServlet {
         //if (!ownerInfo.equals("OW")) {
         String landlordName = (String) request.getParameter("landlord_name");
         String landlordPhone = (String) request.getParameter("landlord_tel");
-            //System.out.println("landlord_name:" + landlordName);
-            //System.out.println("landlord_tel:" + landlordPhone);
+        //System.out.println("landlord_name:" + landlordName);
+        //System.out.println("landlord_tel:" + landlordPhone);
         //}
         String insuranceInfo = (String) request.getParameter("insurance_information");
         //System.out.println("insurance_information:" + insuranceInfo);
@@ -77,7 +132,7 @@ public class FillInForm extends HttpServlet {
         //Damage_Assessment Table
         int num_of_floor =-1;
         String floorNum = (String) request.getParameter("number_floors");
-        if(!floorNum.equals("")||floorNum!=null)
+        if(floorNum!=null||!floorNum.equals(""))
             num_of_floor = Integer.parseInt(floorNum);
         String waterLiving = (String) request.getParameter("water_in_living_area");
         int waterLivingInt=-1;
@@ -98,7 +153,7 @@ public class FillInForm extends HttpServlet {
         //}
         String isElectricOn =(String) request.getParameter("electric");
         String isGasOn = (String) request.getParameter("gas");
-         //if choose nothing, classification equals null
+        //if choose nothing, classification equals null
         String classification = (String) request.getParameter("select_classification");
         classification = classification.equals("") ? null : classification;
         String reason = (String) request.getParameter("txtArea_classification_reason");
@@ -109,7 +164,7 @@ public class FillInForm extends HttpServlet {
         String Heat_Water_Heater = (String) request.getParameter("d_water");
         String Washer =  (String) request.getParameter("d_washer");
         String Dryer = (String) request.getParameter("d_dryer");
-        String Stove = (String) request.getParameter("d_dryer");
+        String Stove = (String) request.getParameter("d_stove");
         String Regfrigerator = (String) request.getParameter("d_fridge");
         
         System.out.println("electric:" + isElectricOn);
@@ -123,20 +178,19 @@ public class FillInForm extends HttpServlet {
         System.out.println("d_fridge:" + Regfrigerator);
 
 
-        /*Case Table*/
-        String comments = (String) request.getParameter("txtArea_comment");
-
+         /*Case Table*/
+         String comments = (String) request.getParameter("txtArea_comment");
 
          System.out.println("select_classification:" + classification);
          System.out.println("txtArea_classification_reason:" + reason);
          System.out.println("txtArea_comment:" + comments);
 
          try{
-         FillInFormMain fim = new FillInFormMain(streetName,apt,city,state,zip,"","",lastName,firstName,
-                 landlordName,landlordPhone,dwellingType,insuranceInfo,ownerInfo,
-                 Electrical_service_box,Furnace,Heat_Water_Heater,Washer,Dryer,Stove,Regfrigerator,
-                 classification,num_of_floor,isBasement,waterLivingInt,waterBasementInt,isElectricOn,isGasOn,isBasementOccupied,basementComment,reason,sqlDate,sqlDate,
-                 comments);
+              FillInFormMain fim = new FillInFormMain(streetName,apt,city,state,zip,"","",lastName,firstName,
+              landlordName,landlordPhone,dwellingType,insuranceInfo,ownerInfo,
+              Electrical_service_box,Furnace,Heat_Water_Heater,Washer,Dryer,Stove,Regfrigerator,
+              classification,num_of_floor,isBasement,waterLivingInt,waterBasementInt,isElectricOn,isGasOn,isBasementOccupied,basementComment,reason,sqlDate,sqlDate,
+              comments);
          response.sendRedirect("final_steps.html");
         }
          catch(Exception e){
