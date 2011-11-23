@@ -48,7 +48,8 @@ public class FillInFormMain {
             int buildId = building.getId(con);
             System.out.println("BuildingId:"+buildId);
 
-            DamageAssessment ds = new DamageAssessment(classification,"","",floorNum,isBasement,waterLiving,waterBasement,isGasOn,isElectricOn,isBasementOccupied,basementComment,reason,StartTime,EndTime);
+            DamageAssessment ds = new DamageAssessment(classification,"","",floorNum,isBasement,waterLiving,waterBasement,isGasOn,isElectricOn,isBasementOccupied,basementComment,reason,
+                    Electrical_service_box,Furnace,Heat_Water_Heater,Washer,Dryer,Stove,Regfrigerator,StartTime,EndTime);
             ds.insert(con);
             int damageAssessmentId = ds.getId(con);
 
@@ -56,37 +57,37 @@ public class FillInFormMain {
 
             Cases caseInstance = new Cases(comments,clientId,damageAssessmentId,buildId,UserId);
             caseInstance.Insert(con);
-            int case_Id = caseInstance.getId(con);
+            //int case_Id = caseInstance.getId(con);
 
-            Need need = new Need();
-            int Electrical_Service_Box_code= need.getId("Electrical Service Box",con);
-            int Furnace_code = need.getId("Furnace", con);
-            int Hot_Water_Heater_code = need.getId("Hot Water Heater", con);
-            int Washer_code = need.getId("Washer", con);
-            int Dryer_code = need.getId("Dryer", con);
-            int Stove_code = need.getId("Stove", con);
-            int Refrigerator_code = need.getId("Refrigerrator", con);
-
-            CaseNeeds caseNeed_e = new CaseNeeds(case_Id,Electrical_Service_Box_code,Electrical_service_box);
-            caseNeed_e.insert(con);
-
-            CaseNeeds caseNeed_f = new CaseNeeds(case_Id,Furnace_code,Furnace);
-            caseNeed_f.insert(con);
-
-            CaseNeeds caseNeed_h = new CaseNeeds(case_Id,Hot_Water_Heater_code,Heat_Water_Heater);
-            caseNeed_h.insert(con);
-
-            CaseNeeds caseNeed_w = new CaseNeeds(case_Id,Washer_code,Washer);
-            caseNeed_w.insert(con);
-
-            CaseNeeds caseNeed_d = new CaseNeeds(case_Id,Dryer_code,Dryer);
-            caseNeed_d.insert(con);
-
-            CaseNeeds caseNeed_s = new CaseNeeds(case_Id,Stove_code,Stove);
-            caseNeed_s.insert(con);
-
-            CaseNeeds caseNeed_r = new CaseNeeds(case_Id,Refrigerator_code,Regfrigerator);
-            caseNeed_r.insert(con);
+            //Need need = new Need();
+            //int Electrical_Service_Box_code= need.getId("Electrical Service Box",con);
+            //int Furnace_code = need.getId("Furnace", con);
+            //int Hot_Water_Heater_code = need.getId("Hot Water Heater", con);
+//            int Washer_code = need.getId("Washer", con);
+//            int Dryer_code = need.getId("Dryer", con);
+//            int Stove_code = need.getId("Stove", con);
+//            int Refrigerator_code = need.getId("Refrigerrator", con);
+//
+//            CaseNeeds caseNeed_e = new CaseNeeds(case_Id,Electrical_Service_Box_code,Electrical_service_box);
+//            caseNeed_e.insert(con);
+//
+//            CaseNeeds caseNeed_f = new CaseNeeds(case_Id,Furnace_code,Furnace);
+//            caseNeed_f.insert(con);
+//
+//            CaseNeeds caseNeed_h = new CaseNeeds(case_Id,Hot_Water_Heater_code,Heat_Water_Heater);
+//            caseNeed_h.insert(con);
+//
+//            CaseNeeds caseNeed_w = new CaseNeeds(case_Id,Washer_code,Washer);
+//            caseNeed_w.insert(con);
+//
+//            CaseNeeds caseNeed_d = new CaseNeeds(case_Id,Dryer_code,Dryer);
+//            caseNeed_d.insert(con);
+//
+//            CaseNeeds caseNeed_s = new CaseNeeds(case_Id,Stove_code,Stove);
+//            caseNeed_s.insert(con);
+//
+//            CaseNeeds caseNeed_r = new CaseNeeds(case_Id,Refrigerator_code,Regfrigerator);
+//            caseNeed_r.insert(con);
 
         } catch (SQLException e) {
             e.printStackTrace();

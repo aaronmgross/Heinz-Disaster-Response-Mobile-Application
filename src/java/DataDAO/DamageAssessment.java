@@ -21,6 +21,13 @@ public class DamageAssessment {
 	private String isBasementOccupied;
 	private String OccupiedDescription;
 	private String reason;
+        private String electriccalBox;
+        private String furnace;
+        private String hotWaterHeater;
+        private String washer;
+        private String dryer;
+        private String stove;
+        private String refrigerator;
 	private Date startTime;
 	private Date endTime;
 
@@ -31,7 +38,9 @@ public class DamageAssessment {
 	public DamageAssessment(String sd, String da, String bil, int numFloor,
 			String isBasement, int waterLvLivingArea, int waterLvBasement,
 			String isGasOn, String isElectricityOn, String isBasementOccupied,
-			String desc, String reason,Date startTime, Date endTime) {
+			String desc, String reason, String electriccalBox, String furnace,
+                        String hotWaterHeater, String washer, String dryer, String stove,
+                        String refrigerator, Date startTime, Date endTime) {
 
 		this.structuralDamage = sd==null?"":sd;
 		this.debrisAmout = da==null?"":da;
@@ -45,6 +54,13 @@ public class DamageAssessment {
 		this.isBasementOccupied = isBasementOccupied==null?"":isBasementOccupied;
 		this.OccupiedDescription = desc==null?"":desc;
 		this.reason = reason==null?"":reason;
+                this.electriccalBox = electriccalBox==null?"":electriccalBox;
+                this.furnace = furnace==null?"":furnace;
+                this.hotWaterHeater = hotWaterHeater==null?"":hotWaterHeater;
+                this.washer = washer==null?"":washer;
+                this.dryer = dryer==null?"":dryer;
+                this.stove = stove==null?"":stove;
+                this.refrigerator = refrigerator==null?"":refrigerator;
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
@@ -57,8 +73,9 @@ public class DamageAssessment {
 					+ "(Structural_Damage,"
 					+ " Number_Of_Floor, Is_There_Basement, Water_Level_Living_Area,"
 					+ " Water_Level_Basement, Is_Electricity_On, Is_Gas_On, Basement_Occupied,"
-					+ "Occupied_Description, Classification_Reason,Start_Time,Completion_Time"
-					+ ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+					+ "Occupied_Description, Classification_Reason, Electrical_service_box,"
+                                        + "Furnace, Hot_Water_Heater, Washer, Dryer, Stove, Refrigerator,"
+                                        + "Start_Time, Completion_Time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 			stat = con.prepareStatement(SQL);
 			stat.setString(1, structuralDamage);
@@ -73,8 +90,15 @@ public class DamageAssessment {
 			stat.setString(8, isBasementOccupied);
 			stat.setString(9, OccupiedDescription);
 			stat.setString(10, reason);
-			stat.setDate(11, startTime);
-			stat.setDate(12, endTime);
+                        stat.setString(11, electriccalBox);
+                        stat.setString(12, furnace);
+                        stat.setString(13, hotWaterHeater);
+                        stat.setString(14, washer);
+                        stat.setString(15, dryer);
+                        stat.setString(16, stove);
+                        stat.setString(17, refrigerator);
+			stat.setDate(18, startTime);
+			stat.setDate(19, endTime);
                         stat.executeUpdate();
                         System.out.println("Successfully INSERT INTO Damage_Assessment");
 
@@ -91,9 +115,12 @@ public class DamageAssessment {
 
         PreparedStatement stat = null;
          try {
-             String sql ="select Assessment_Id from Damage_Assessment where Structural_Damage =? and Number_Of_Floor=? "
-                     + "and Is_There_Basement=? and Water_Level_Living_Area=? and Water_Level_Basement=? and Is_Electricity_On=? and Is_Gas_On=? and "
-                     + "Basement_Occupied=? and Occupied_Description=? and Classification_Reason=? and Start_Time=? and Completion_Time=?";
+             String sql ="select Assessment_Id from Damage_Assessment where Structural_Damage =? and Number_Of_Floor=? and Is_There_Basement=? "
+                     + "and Water_Level_Living_Area=? and Water_Level_Basement=? and Is_Electricity_On=? and Is_Gas_On=? "
+                     + "and Basement_Occupied=? and Occupied_Description=? and Classification_Reason=? and Electrical_service_box=? "
+                                        + "and Furnace=? and Hot_Water_Heater=? and Washer=? and Dryer=? and Stove=? and Refrigerator=? "
+                                        + "and Start_Time=? and Completion_Time=?";
+             System.out.println(sql);
             stat = con.prepareStatement(sql);
            stat.setString(1, structuralDamage);
 			//stat.setString(2, debrisAmout);
@@ -107,8 +134,15 @@ public class DamageAssessment {
 			stat.setString(8, isBasementOccupied);
 			stat.setString(9, OccupiedDescription);
 			stat.setString(10, reason);
-			stat.setDate(11, startTime);
-			stat.setDate(12, endTime);
+                        stat.setString(11, electriccalBox);
+                        stat.setString(12, furnace);
+                        stat.setString(13, hotWaterHeater);
+                        stat.setString(14, washer);
+                        stat.setString(15, dryer);
+                        stat.setString(16, stove);
+                        stat.setString(17, refrigerator);
+			stat.setDate(18, startTime);
+			stat.setDate(19, endTime);
 
             ResultSet rs = stat.executeQuery();
             while (rs.next()) {

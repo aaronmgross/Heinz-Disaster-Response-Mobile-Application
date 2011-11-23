@@ -78,7 +78,7 @@ public class Client {
 
         PreparedStatement statement = null;
          try {
-             String sql ="select Client_Id from Client where Address =? and Apt_No=? and City =? and State=? and Zip_Code=?"
+             String sql ="select Client_Id from Client where Address =? and Apt_No=? and City =? and State=? and Zip_Code=? "
                      + "and Municipality=? and County=? and Last_Name=? and First_Name=?";
             statement = con.prepareStatement(sql);
             statement.setString(1, address);
