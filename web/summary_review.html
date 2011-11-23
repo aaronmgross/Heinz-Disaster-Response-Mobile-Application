@@ -30,6 +30,7 @@ function getSerializedJSON()
 	var storedJSON = localStorage.getItem(localStorage.getItem("disasterKey"));
 	jsonObject = eval('(' + storedJSON + ')');
 	var jsonString = JSON.stringify(jsonObject);
+	document.write(jsonString);
 	
 }
 
