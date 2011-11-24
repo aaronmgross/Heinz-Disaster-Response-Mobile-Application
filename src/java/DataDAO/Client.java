@@ -26,22 +26,22 @@ public class Client {
     private String lName;
     private String fName;
 
-
     public Client(String address, String aptNum, String city, String state, String zipCode,
-            String municipality, String county, String lName, String fName){
-        this.address = address==null?"":address;
-        this.aptNum = aptNum==null?"":aptNum;
-        this.city = city==null?"":city;
-        this.state = state==null?"":state;
-        this.zipCode = zipCode==null?"":zipCode;
-        this.municipality = municipality==null?"":municipality;
-        this.county = county==null?"":county;
-        this.lName = lName==null?"":lName;
-        this.fName = fName==null?"":fName;
+            String municipality, String county, String lName, String fName) {
+        this.address = address == null ? "" : address;
+        this.aptNum = aptNum == null ? "" : aptNum;
+        this.city = city == null ? "" : city;
+        this.state = state == null ? "" : state;
+        this.zipCode = zipCode == null ? "" : zipCode;
+        this.municipality = municipality == null ? "" : municipality;
+        this.county = county == null ? "" : county;
+        this.lName = lName == null ? "" : lName;
+        this.fName = fName == null ? "" : fName;
 
     }
 
-    public Client(){}
+    public Client() {
+    }
 
     public void Insert(Connection con) throws SQLException {
 
@@ -74,12 +74,12 @@ public class Client {
 
     }
 
-    public int getId(Connection con) throws SQLException{
+    public int getId(Connection con) throws SQLException {
 
         PreparedStatement statement = null;
-         try {
-             String sql ="select Client_Id from Client where Address =? and Apt_No=? and City =? and State=? and Zip_Code=? "
-                     + "and Municipality=? and County=? and Last_Name=? and First_Name=?";
+        try {
+            String sql = "select Client_Id from Client where Address =? and Apt_No=? and City =? and State=? and Zip_Code=? "
+                    + "and Municipality=? and County=? and Last_Name=? and First_Name=?";
             statement = con.prepareStatement(sql);
             statement.setString(1, address);
             statement.setString(2, aptNum);
@@ -93,12 +93,12 @@ public class Client {
 
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-            	clientId = rs.getInt("Client_Id");
+                clientId = rs.getInt("Client_Id");
 
             }
             System.out.println("Successfully selected from Client");
             return clientId;
-         }catch (SQLException e) {
+        } catch (SQLException e) {
 
             e.printStackTrace();
             return -1;
@@ -109,6 +109,25 @@ public class Client {
             }
         }
 
+    }
+
+    public void getByID(Connection con, int clientID) throws SQLException {
+        PreparedStatement stat = con.prepareStatement("SELECT * FROM Client WHERE Client_Id = ? ");
+        stat.setInt(1, clientID);
+        ResultSet rs = stat.executeQuery();
+
+        if (rs.next()) {
+            this.clientId = clientID;
+            this.fName = rs.getString("First_Name");
+            this.lName = rs.getString("Last_Name");
+            this.address = rs.getString("Address");
+            this.aptNum = rs.getString("Apt_No");
+            this.city = rs.getString("City");
+            this.state = rs.getString("State");
+            this.county = rs.getString("County");
+            this.zipCode = rs.getString("Zip_Code");
+            this.municipality = rs.getString("Municipality");
+        }
     }
 
     public String getAddress() {
@@ -190,5 +209,4 @@ public class Client {
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
-
 }

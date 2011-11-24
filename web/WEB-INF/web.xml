@@ -4,9 +4,17 @@
         <servlet-name>FillInForm</servlet-name>
         <servlet-class>FillInForm</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ExportXML</servlet-name>
+        <servlet-class>ExportXML</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>FillInForm</servlet-name>
         <url-pattern>/FillInForm</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExportXML</servlet-name>
+        <url-pattern>/ExportXML</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
