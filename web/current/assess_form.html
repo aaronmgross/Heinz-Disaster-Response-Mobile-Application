@@ -1,0 +1,671 @@
+<!-- BEGIN PAGE HEADER -->
+
+<!--
+
+TODO:
+- Finish validation (Aaron)
+- Create the form for curbside assessment (Aaron)
+- Add 'gender' to the form (Aaron)
+- Add popups for disaster classifications
+
+-->
+
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" media="all" href="style.css" />
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+
+<!-- JavaScript Includes -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+
+<title>Disaster Response Mobile Assessment</title>
+
+<!-- END PAGE HEADER -->
+
+
+<script>
+
+// Create and load into local storage a JSON object for this disaster entry
+function save_disaster_entry()
+{
+	var s=validate();
+	
+	if(s!=null)
+	{
+		document.getElementById("error_container").style.display = "block";
+		document.getElementById("inperror").innerHTML =s;
+		scroll(0,0);
+	}
+	else
+	{
+		var keyToUse = parseInt(localStorage.getItem("disasterKey")) + 1;
+
+		// Construct the JSON object
+		var this_entry = 
+		{
+			"id" : keyToUse, 	// Same as the key of the <key, value> local storage pair
+			"volunteer_id" : localStorage.getItem("volunteer_id"),
+			"volunteer_name" : localStorage.getItem("volunteer_name"),
+			"start_time" : "", // TODO
+			"end_time" : "", // TODO
+			"street_name" : document.getElementById("street_name_input").value,
+			"tel_house_num" : document.getElementById("houseNum").value,
+			"tel_apt" : document.getElementById("id_apt_input").value,
+			"txt_state" : document.getElementById("txt_state").value,
+			"txt_city" : document.getElementById("edit_address_info_input").value,
+			"tel_zip" : document.getElementById("tel_zip").value,
+			"txt_first_name" : document.getElementById("txt_first_name").value,
+			"txt_last_name" : document.getElementById("txt_last_name").value,
+			"dwelling_type" : document.getElementById("dwelling_type").value,
+			"owner_information" : document.getElementById("owner_information").value,
+			"landlord_name" : document.getElementById("landlord_name").value,
+			"landlord_tel" : document.getElementById("landlord_tel").value,
+			"insurance_information_f" : document.getElementById("insurance_information_f").value,
+			"insurance_information_s" : document.getElementById("insurance_information_s").value,
+			"insurance_information_c" : document.getElementById("insurance_information_c").value,
+			"number_floors" : document.getElementById("number_floors_input").value,
+			"is_basement" : get_radio_value("is_basement"),
+			"is_basement_occupied" : get_radio_value("is_basement_occupied"),
+			"txtarea_basement_comment" : document.getElementById("txtarea_basement_comment").value,
+			"water_in_living_area" : document.getElementById("water_in_living_area").value,
+			"water_in_basement" : document.getElementById("water_in_basement").value,
+			"electric" : get_radio_value("electric"),
+			"gas" : get_radio_value("gas"),
+			"d_electrical" : get_radio_value("d_electrical"),
+			"d_furnace" : get_radio_value("d_furnace"),
+			"d_water" : get_radio_value("d_water"),
+			"d_washer" : get_radio_value("d_washer"),
+			"d_dryer" : get_radio_value("d_dryer"),
+			"d_stove" : get_radio_value("d_stove"),
+			"d_fridge" : get_radio_value("d_fridge"),
+			"select_classification" : document.getElementById("select_classification").value,
+			"txtArea_classification_reason" : document.getElementById("txtArea_classification_reason").value,
+			"txtArea_comment" : document.getElementById("txtArea_comment").value,
+			// TODO:
+			// lat
+			// long
+			// waiver_signature_time
+		}
+
+		// Save JSON object to local storage
+		localStorage.setItem(keyToUse, JSON.stringify(this_entry));
+
+		// Reset the disasterKey element so that we don't overwrite this element next time
+		localStorage.setItem("disasterKey", keyToUse);
+
+		// Go to review page
+		document.location = "assess_form.html#review";
+
+	}
+}
+
+var jsonObject = "";
+
+function getSerializedJSON()
+{
+	var storedJSON = localStorage.getItem(localStorage.getItem("disasterKey"));
+	jsonObject = eval('(' + storedJSON + ')');
+	var jsonString = JSON.stringify(jsonObject);	
+}
+
+function objGet(field_name)
+{
+	document.write(jsonObject[field_name]);
+}
+
+function validate(){
+
+	var s;
+	var fname="Please enter a first name. <br>";
+	var lname="Please enter a last name. <br>";
+	var dwellingtype="Please enter a dwelling type.<br>";
+	var ownerinfo="Please indicate ownership information.<br>";
+	var insurance="Please enter insurance information.<br>";
+	var numFloors="Please enter the number of floors in this dwelling. <br>";
+	var isbasement="Please specify if there is a basement. <br>";
+	var isboccupied="Please specify if basement is occupied. <br>";
+	var waterliving="Please specify how much water is in the living area. <br>";
+	var waterliving1="The amount of water in the living area is not a number. <br>";
+	var waterbasement="Please specify how much water is in the basement. <br>";
+	var gasOn="Please specify if gas is on. <br>";
+	var elecOn="Please specify if electricity is on. <br>";
+	var damage="Please choose an overall damage classification. <br>";
+	
+	if(!document.getElementById("txt_first_name").value)
+	{
+		s=fname;
+	}
+
+	if(!document.getElementById("txt_last_name").value)
+	{
+		s=(s==null)?lname:(s+lname);
+	}
+
+	if(document.getElementById("dwelling_type").value=='NONE')
+	{
+		s=(s==null)?dwellingtype:(s+dwellingtype);
+	}
+
+	if(!(get_radio_value("is_basement") == "yes" || get_radio_value("is_basement").value=="no"))
+	{
+		s=(s==null)?isbasement:(s+isbasement);
+	}
+
+	if(!(document.getElementById("water_in_living_area").value))
+	{
+		s=(s==null)?waterliving:(s+waterliving);
+	}
+	else {
+
+		if(isNaN(document.getElementById("water_in_living_area").value))
+		{
+			s=(s==null)?waterliving1:(s+waterliving1);
+		}
+	}
+
+
+	if(document.getElementById("select_classification").value=="NONE")
+	{
+		s=(s==null)?damage:(s+damage);
+	}
+	/*
+
+if(!(document.getElementById("electric").value=="yes" || document.getElementById("electric").value=="no"))
+{
+
+s=(s==null)?elecOn:(s+elecOn);
+}
+
+if(!(document.getElementById("gas").value=="yes" || document.getElementById("gas").value=="no"))
+{
+
+s=(s==null)?gasOn:(s+gasOn);
+}
+*/
+
+return s;
+
+}
+
+// Return the value of a radio group 
+function get_radio_value(field_name)
+{
+	var theValue = "blank";
+
+	for( i = 0; i < document.disaster_form.elements[field_name].length; i++ )
+	{
+		if( document.disaster_form.elements[field_name][i].checked == true )
+			theValue = document.disaster_form.elements[field_name][i].value;
+	}
+
+	return theValue;
+}
+
+// Scroll the page one pixel to hide the menu bar
+window.addEventListener('load', function(e) {
+    setTimeout(function() { window.scrollTo(0, 1); }, 1);
+  }, false);
+
+function doShow(id_to_show)
+{
+	document.getElementById(id_to_show).style.display = 'inline';
+	document.getElementById(id_to_show + "_link").style.display = 'none';
+	document.getElementById(id_to_show + "_input").focus();
+	return false;
+}
+
+function showBasementFields()
+{
+	document.getElementById("basement_tr_1").style.display = 'table-row';
+	document.getElementById("basement_tr_2").style.display = 'table-row';
+	document.getElementById("basement_tr_3").style.display = 'table-row';
+	return false;
+}
+
+function hideBasementFields()
+{
+	document.getElementById("basement_tr_1").style.display = 'none';
+	document.getElementById("basement_tr_2").style.display = 'none';
+	document.getElementById("basement_tr_3").style.display = 'none';
+	return false;
+}
+
+function incrNumFloors()
+{
+	document.getElementById("number_floors_input").value = parseInt(document.getElementById("number_floors_input").value) + 1;
+	return false;
+}
+
+
+function decrNumFloors()
+{
+	document.getElementById("number_floors_input").value = parseInt(document.getElementById("number_floors_input").value) - 1;
+	if (parseInt(document.getElementById("number_floors_input").value) < 0)
+		document.getElementById("number_floors_input").value = 0;
+	return false;
+}
+
+function checkRenterInfo()
+{
+	var select = document.getElementById("owner_information");
+	var chosenOption = select.options[select.selectedIndex].value;
+
+	if (chosenOption == "RF" || chosenOption == "RU")
+		document.getElementById("renter_information").style.display = 'block';
+	else
+		document.getElementById("renter_information").style.display = 'none';
+}
+
+function doEditAddress()
+{
+	document.getElementById("prefilled_address_info").style.display = 'none';
+	document.getElementById("street_name").style.display = 'none';
+	document.getElementById("street_name_input").style.display = 'inline';
+	doShow("edit_address_info");
+}
+
+function echoStoredStreetName()
+{
+	document.write(localStorage.getItem("street_name"));
+	document.getElementById("street_name_input").value = localStorage.getItem("street_name");
+}
+
+function preparePage()
+{
+	document.getElementById("assessment_id").innerHtml = (parseInt(localStorage.getItem("disasterKey")) + 1);
+	
+	if (localStorage.getItem("street_name") != null)
+		document.getElementById("street_name_input").value = localStorage.getItem("street_name");		
+}
+</script>
+
+</head>
+<body onload="preparePage()">
+	
+
+	<!-- Start of first page: #one -->
+	<div data-role="page" id="one">
+
+		<div data-role="header" data-theme="b">
+			<h2>Address Entry</h2>
+			<div class="ui-bar-e" style="padding:4px;text-align:center">
+				This is assessment number <span id="assessment_id"></span>
+			</div>
+		</div><!-- /header -->
+
+		<div data-role="content" >	
+
+			<div class='sub_form'>
+				<div class="instruction_text">What address are you currently at?</div>
+
+				<table><tr>
+			        <td><input id="houseNum" name="tel_house_num" type="tel" placeholder="House #" style="width:5em" /></td>
+				<td><input type="text" id="street_name_input" name="street_name_input" style="width:6.5em" /></td>
+				<td><span class="js_edit_link">
+					<a href='javascript:;' id='id_apt_link' onClick="doShow('id_apt')">(add apt. #)</a>
+				</span>
+
+				<span id='id_apt' style='display:none'>
+						<input type="tel" id="id_apt_input" name="tel_apt" placeholder="Apt #" style="width:3.5em;" id="id_apt_input" />
+				</span>
+				</td></tr></table>
+
+				<div id="edit_address_info">
+					<table><tr>
+						<td><input id="edit_address_info_input" type='text' placeholder='Pittsburgh' value='Pittsburgh' style='width:7em' /></td>
+						<td><input type='text' id='txt_state' placeholder='PA' value='PA' style='width:2.5em' /></td>
+						<td><input type='tel' id='tel_zip' placeholder='15213' value='15213' style='width:4em' /></td>
+
+					</tr></table>
+				</div>
+
+				<div class='instruction_text'>What type of disaster assessment are you performing at this address?</div>
+
+				<a href="#two" data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">
+					<div class='mainlink_big_head'>Detailed</div>
+					<div class='mainlink_subtitle'>disaster interview<br />with client</div>
+				</a>
+
+				<a href='find_location.html' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">
+					<div class='mainlink_big_head'>Curbside</div>
+					<div class='mainlink_subtitle'>quick damage <br />assessment</div>
+				</a>
+
+			</div>		
+		</div><!-- /content -->
+	</div><!-- /page one -->
+
+
+	<!-- Start of second page: #two -->
+	<div data-role="page" id="two">
+
+		<div data-role="header" data-theme="b">
+			<h2>Detailed Interview</h2>
+			<div class="ui-bar-e" style="padding:4px;text-align:center">
+				This is assessment number <span id="assessment_id"></span>
+			</div>
+		</div><!-- /header -->
+
+		<div data-role="content">	
+		
+			<div id="error_container" class='failure_message' style='display:none'>
+				<div class='instruction_text'>Sorry, there are a few errors on the form!</div>
+				<div id="inperror"></div>
+			</div>
+			
+		<form name='disaster_form'>
+		
+		<div class='sub_form'>
+			<div class="instruction_text">Please enter the name of the client at this address.</div>
+			<table><tr>
+			<td><input type='text' id='txt_first_name' placeholder='First Name' /></td>
+			<td><input type='text' id='txt_last_name' placeholder='Last Name' /></td>
+			</tr></table>
+		</div>
+		
+		<div class='sub_form'>
+
+			What type of dwelling is this?<br />
+			<select id='dwelling_type'>
+				<option value="NONE">Choose one...</option>
+				<option value='S'>Single-family home</option>
+				<option value='A'>Apartment</option>
+				<option value='M'>Mobile Home</option>
+				<option value='B'>Business</option>
+			</select>
+
+			Does the client own the dwelling?<br />
+			<select id='owner_information' id="owner_information" onChange="checkRenterInfo()">
+				<option value='NONE'>Choose one...</option>
+				<option value='OW'>Yes, the client owns</option>
+				<option value='RF'>No, the client rents (furnished)</option>
+				<option value='RU'>No, the client rents (unfurnished)</option>
+			</select>
+
+			<div style='display:none' id="renter_information">
+				Landlord's name, if known:<br />
+				<input type='text' id='landlord_name' placeholder='Landlord Name'>
+
+				Landlord's phone #, if known:<br />		
+				<input type='tel' id='landlord_tel' placeholder='Landlord Phone'>
+			</div>
+
+			What type of insurance, if any, does the client have?<br />
+			<div data-role="fieldcontain" class="iOS-fc-fix" style='margin:auto;text-align:center'>
+				<fieldset data-role="controlgroup">
+				<input type='checkbox' id='insurance_information_f' value ='F' />
+				<label for='insurance_information_f'>Flood</label>
+				
+				<input type='checkbox' id='insurance_information_s' value ='S' />
+				<label for='insurance_information_s'>Structure</label>
+				
+				<input type='checkbox' id='insurance_information_c' value ='C' />
+				<label for='insurance_information_c'>Contents/Renters</label>
+				</fieldset>
+			</div>
+
+		</div>
+		
+		<div class='sub_form'>
+		<table style='form_table' cellpadding=0 cellspacing=0 width="100%">
+
+		<tr>
+			<td class='form_table_label' style='border:0px'>Number of floors:</td>
+			<td class='form_table_input' style='border:0px'>
+			<table><tr>
+				<td valign="center"><a href="javascript:;" onClick="decrNumFloors()"><img src='../images/minus.png' style='width:35px;vertical-align:middle' border=0></a></td>
+				<td valign="center"><input type='tel' id='number_floors_input' value="1" style='width:2em' /></td>
+				<td valign="center"><a href="javascript:;" onClick="incrNumFloors()"><img src='../images/plus.png' style='width:35px;vertical-align:middle' border=0></a></td>
+			</tr></table>
+			</td>
+		</tr>
+		<tr>
+			<td class='form_table_label'>Is there a basement?</td>
+			<td class='form_table_input'>
+				<div data-role="fieldcontain" class="iOS-fc-fix">
+					<fieldset data-role="controlgroup" data-type="horizontal">
+					<input type="radio" name="is_basement" id="is_basement-1" value="yes" onClick="showBasementFields()"/>
+					<label for="is_basement-1">Yes</label>
+					<input type="radio" name="is_basement" id="is_basement-2" value="no" onClick="hideBasementFields()" />
+					 <label for="is_basement-2">No</label>
+					</fieldset>
+				</div>
+			</td>
+		</tr>
+
+		<tr id='basement_tr_1' style='display:none'>
+			<td class='form_table_label'>Is the basement occupied?</td>
+			<td class='form_table_input'>
+				<div data-role="fieldcontain" class="iOS-fc-fix">
+					<fieldset data-role="controlgroup" data-type="horizontal">
+					<input type="radio" name="is_basement_occupied" id="is_basement_occupied-1" value="yes" />
+					<label for="is_basement_occupied-1">Yes</label>
+					<input type="radio" name="is_basement_occupied" id="is_basement_occupied-2" value="no" />
+					 <label for="is_basement_occupied-2">No</label>
+					</fieldset>
+				</div>
+			</td>
+		</tr>
+
+		<tr id='basement_tr_2' style='display:none'>
+			<td colspan=2 class='form_table_input'>
+				Please describe the way in which the basement is being used:
+				<div class="spacer"></div>
+				<textarea id="txtarea_basement_comment" style='width:100%;height:70px;' placeholder="Enter text..."></textarea>
+			</td>
+		</tr>
+
+		<tr>
+			<td class='form_table_label'>How much water is in the living area?</td>
+			<td class='form_table_input'>
+				<table><tr><td><input type='tel' id='water_in_living_area' style='width:2.5em' /></td><td> <label for="water_in_living_area">inches</label></td></tr></table>
+			</td>
+		</tr>
+
+		<tr id='basement_tr_3' style='display:none'>
+			<td class='form_table_label'>How much water is in the basement?</td>
+			<td class='form_table_input'>
+				<table><tr><td><input type='tel' id='water_in_basement' style='width:2.5em' /></td><td>inches</td></tr></table>
+			</td>
+		</tr>
+
+		<tr>
+			<td class='form_table_label'>Is the electricity on?</td>
+			<td class='form_table_input'>
+				<div data-role="fieldcontain" class="iOS-fc-fix">
+					<fieldset data-role="controlgroup" data-type="horizontal">
+					<input type="radio" name="electric" id="electric-1" value="yes" />
+					<label for="electric-1">Yes</label>
+					<input type="radio" name="electric" id="electric-2" value="no" />
+					 <label for="electric-2">No</label>
+					</fieldset>
+				</div>
+			</td>
+		</tr>
+
+		<tr>
+			<td class='form_table_label'>Is the gas on?</td>
+			<td class='form_table_input'>
+				<div data-role="fieldcontain" class="iOS-fc-fix">
+					<fieldset data-role="controlgroup" data-type="horizontal">
+					<input type="radio" name="gas" id="gas-1" value="yes" />
+					<label for="gas-1">Yes</label>
+					<input type="radio" name="gas" id="gas-2" value="no" />
+					 <label for="gas-2">No</label>
+					</fieldset>
+				</div>
+			</td>
+		</tr>
+
+		</table>
+		</div>
+		
+		
+		<div class='sub_form'>
+		<div class='instruction_text'>Is there damage to the following physical plant items?</div>
+
+		<table style='form_table' cellpadding=0 cellspacing=0 width=100%>
+
+			<tr>
+				<td class='form_table_label'>Electrical service box</td>
+				<td class='form_table_input'>
+					<div data-role="fieldcontain" class="iOS-fc-fix">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="d_electrical" id="d_electrical-1" value="yes" />
+						<label for="d_electrical-1">Yes</label>
+						<input type="radio" name="d_electrical" id="d_electrical-2" value="no" />
+						 <label for="d_electrical-2">No</label>
+						</fieldset>
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Furnace</td>
+				<td class='form_table_input'>
+					<div data-role="fieldcontain" class="iOS-fc-fix">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="d_furnace" id="d_furnace-1" value="yes" />
+						<label for="d_furnace-1">Yes</label>
+						<input type="radio" name="d_furnace" id="d_furnace-2" value="no" />
+						 <label for="d_furnace-2">No</label>
+						</fieldset>
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Hot water heater</td>
+				<td class='form_table_input'>
+					<div data-role="fieldcontain" class="iOS-fc-fix">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="d_water" id="d_water-1" value="yes" />
+						<label for="d_water-1">Yes</label>
+						<input type="radio" name="d_water" id="d_water-2" value="no" />
+						 <label for="d_water-2">No</label>
+						</fieldset>
+					</div>
+				</td>
+			</tr>
+		</table>
+		</div>
+		
+		<div class='sub_form'>
+			<div class='instruction_text'>Is there damage to the following appliance items?</div>
+		
+		<table style='form_table' cellpadding=0 cellspacing=0 width="100%">
+			<tr>
+				<td class='form_table_label'>Washer</td>
+				<td class='form_table_input'>
+					<div data-role="fieldcontain" class="iOS-fc-fix">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="d_washer" id="d_washer-1" value="yes" />
+						<label for="d_washer-1">Yes</label>
+						<input type="radio" name="d_washer" id="d_washer-2" value="no" />
+						 <label for="d_washer-2">No</label>
+						</fieldset>
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Dryer</td>
+				<td class='form_table_input'>
+					<div data-role="fieldcontain" class="iOS-fc-fix">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="d_dryer" id="d_dryer-1" value="yes" />
+						<label for="d_dryer-1">Yes</label>
+						<input type="radio" name="d_dryer" id="d_dryer-2" value="no" />
+						 <label for="d_dryer-2">No</label>
+						</fieldset>
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Stove</td>
+				<td class='form_table_input'>
+					<div data-role="fieldcontain" class="iOS-fc-fix">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="d_stove" id="d_stove-1" value="yes" />
+						<label for="d_stove-1">Yes</label>
+						<input type="radio" name="d_stove" id="d_stove-2" value="no" />
+						 <label for="d_stove-2">No</label>
+						</fieldset>
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Refrigerator</td>
+				<td class='form_table_input'>
+					<div data-role="fieldcontain" class="iOS-fc-fix">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="d_fridge" id="d_fridge-1" value="yes" />
+						<label for="d_fridge-1">Yes</label>
+						<input type="radio" name="d_fridge" id="d_fridge-2" value="no" />
+						 <label for="d_fridge-2">No</label>
+						</fieldset>
+					</div>
+				</td>
+			</tr>
+		</table>
+		</div>
+
+		<div class='sub_form'>
+
+			<div class="instruction_text">Based on the <a href='#popup' data-rel="dialog" data-transition="pop">Red Cross guidelines for classification</a>, what is your overall assessment of the damage for this property?</div>
+			<select id='select_classification'>
+				<option name='choose' value="NONE">Choose one...</option>
+				<option name='Destroyed' value="DE">Destroyed</option>
+				<option name='Major' value="MA">Major</option>
+				<option name='Minor' value="MI">Minor</option>
+				<option name='Affected' value="AF">Affected</option>
+				<option name='Inaccessible' value="IN">Inaccessible</option>
+			</select>
+
+			<div class="spacer"></div>
+			Please provide a detailed reasoning behind your classification:<br />
+			<textarea id="txtArea_classification_reason" style='width:100%;height:90px;' placeholder="Enter text..."></textarea>
+
+			<div class="spacer"></div>
+			If you have any additional comments about this overall disaster entry, please add them:<br />
+			<textarea id="txtArea_comment" style='width:100%;height:60px;' placeholder="Enter text..."></textarea>
+		</div>
+		
+		</form>
+
+		<a href='javascript:;' data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b" onClick='save_disaster_entry()'><div class='mainlink_big_head'>Continue</div></a>
+		
+		</div><!-- /content -->
+
+	</div><!-- /page two -->
+
+
+	<!-- Start of third page: #popup -->
+	<div data-role="page" id="popup">
+
+		<div data-role="header" data-theme="e">
+			<h2>Damage Classification Guidelines
+		</div><!-- /header -->
+
+		<div data-role="content" data-theme="d">	
+			<h2>Popup</h2>
+			<p>I have an id of "popup" on my page container and only look like a dialog because the link to me had a <code>data-rel="dialog"</code> attribute which gives me this inset look and a <code>data-transition="pop"</code> attribute to change the transition to pop. Without this, I'd be styled as a normal page.</p>		
+			<p><a href="#one" data-rel="back" data-role="button" data-inline="true" data-icon="back">Back to page "one"</a></p>	
+		</div><!-- /content -->
+
+		<div data-role="footer">
+			<h4>Page Footer</h4>
+		</div><!-- /footer -->
+	</div><!-- /page popup -->
+
+
+	</body>
+	</html>

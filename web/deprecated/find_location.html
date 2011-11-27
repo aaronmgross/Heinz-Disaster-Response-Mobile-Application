@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">	<!-- sets document with to device width -->
+	<meta name="apple-mobile-web-app-capable" content="yes"> <!-- tags as web app for iOS -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- status bar translucent -->
+	<link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" media="all" href="style.css" />
+	<title>Disaster Response App</title>
+
+<!-- scripts -->
+	<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=true"></script>
+
+<!-- script immediately scrolls the page one pixel to hide the address bar -->
+	<script>
+	window.addEventListener('load', function(e) {
+	    setTimeout(function() { window.scrollTo(0, 1); }, 1);
+	  }, false);
+	</script>
+
+<script type="text/javascript">
+	var geocoder;
+	var map;
+	var infowindow = new google.maps.InfoWindow();
+	var marker;
+	var myLatitude;
+	var position;
+	var streetName;
+
+  function codeLatLng() {
+    // get the geolocation from a user's device
+	navigator.geolocation.getCurrentPosition(foundLocation, noLocation);
+	var myLongitude;
+
+	// Callback for if location is found
+	function foundLocation(position)
+	{
+		// get latitude and longitude that was returned
+		myLatitude = position.coords.latitude;
+		myLongitude = position.coords.longitude;
+
+		// create a new geocoder object
+		geocoder = new google.maps.Geocoder();
+
+		var latlng = new google.maps.LatLng(myLatitude,myLongitude);
+		var myOptions = 
+		{
+			zoom: 8,
+			center: latlng,
+			mapTypeId: 'roadmap'
+    	}
+
+		map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+		var latlng = new google.maps.LatLng(myLatitude, myLongitude);
+	    geocoder.geocode({'latLng': latlng}, function(results, status) {
+	      if (status == google.maps.GeocoderStatus.OK) {
+	        if (results[1]) {
+	          map.setZoom(15);
+	          marker = new google.maps.Marker({
+	              position: latlng, 
+	              map: map
+	          }); 
+	          infowindow.setContent(results[1].formatted_address);
+
+
+			document.getElementById("address_data").innerHTML = results[0].address_components[1].long_name;		
+			document.getElementById("geolocate_street").value = results[0].address_components[1].long_name;	
+			document.getElementById("address_data2").innerHTML = results[0].address_components[1].long_name;		
+			//document.getElementById("address_data").innerHTML = results[0].formatted_address;
+	        } else {
+	          alert("No results found");
+	        }
+	      } else {
+	        alert("Geocoder failed due to: " + status);
+	      }
+	    });
+	}
+
+	// Callback for if location is not found
+	function noLocation()
+	{
+	  	document.getElementById("address_data").innerHTML = "ERROR: Couldn't get location.";	
+		document.getElementById("geolocate_street").value = "ERROR: Couldn't get location.";
+		document.getElementById("address_data2").innerHTML = "ERROR: Couldn't get location.";
+	}   
+}
+</script>
+
+<script>
+// This script stores the desired street name locally.
+function localstore_street_name()
+{
+	// Check which street name is full.
+	if (document.getElementById("street_name_user").value != "")
+		window.localStorage.setItem("street_name", document.getElementById("street_name_user").value);
+	else if (document.getElementById("address_data").innerHTML != "ERROR: Couldn't get location.")
+		window.localStorage.setItem("street_name", document.getElementById("address_data").innerHTML);
+	else
+		window.localStorage.setItem("street_name", "");
+
+	window.location = "assess_form.html";
+}
+</script>
+</head>
+
+<body onload="codeLatLng()">
+<div class='success_message'>Logged in as Test Volunteer!</div>
+<h1>Locating you...</h1>
+
+<p>We've checked your location, and we think you're on:
+<div id="address_data" style='font-weight:bold'></div></p>
+
+<div id="map_canvas" style="height: 50%; border: 1px solid black;"></div>
+
+<div class='sub_form'>
+<div class='instruction_text'>Is this the correct street to perform a disaster assessment for?</div>
+
+<form action='assess_form.html' method='post'>
+	<input type='radio' id='geolocate_street' name='street_name' value=''>Yes, use <span style='font-weight:bold' id="address_data2"></span>
+	<div class='spacer'></div>
+	<input type='radio' name='street_name' value='other'>No, use this street name: <br />
+	<input type='text' style='margin-left:2.5em' id='street_name_user' name='street_name_user' />
+</div>
+<div class='bottom_button_row'>
+	<input type='button' value='Continue...' onClick="localstore_street_name()" /></div>
+</form>
+</body>
+</html>

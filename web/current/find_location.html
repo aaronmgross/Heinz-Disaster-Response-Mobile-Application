@@ -1,0 +1,136 @@
+<!-- BEGIN PAGE HEADER -->
+
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" media="all" href="style.css" />
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+
+<!-- JavaScript Includes -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+
+<title>Disaster Response Mobile Assessment</title>
+
+</head>
+<!-- END PAGE HEADER -->
+
+<!-- scripts -->
+	<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=true"></script>
+
+<!-- script immediately scrolls the page one pixel to hide the address bar -->
+	<script>
+	window.addEventListener('load', function(e) {
+	    setTimeout(function() { window.scrollTo(0, 1); }, 1);
+	  }, false);
+	</script>
+
+<script type="text/javascript">
+	var geocoder;
+	var map;
+	var infowindow = new google.maps.InfoWindow();
+	var marker;
+	var myLatitude;
+	var position;
+	var streetName;
+
+  function codeLatLng() {
+    // get the geolocation from a user's device
+	navigator.geolocation.getCurrentPosition(foundLocation, noLocation);
+
+	// Callback for if location is found
+	function foundLocation(position)
+	{
+		// get latitude and longitude that was returned
+		myLatitude = position.coords.latitude;
+		myLongitude = position.coords.longitude;
+
+		// create a new geocoder object
+		geocoder = new google.maps.Geocoder();
+
+		var latlng = new google.maps.LatLng(myLatitude,myLongitude);
+		var myOptions = 
+		{
+			zoom: 8,
+			center: latlng,
+			mapTypeId: 'roadmap',
+			draggable: false
+    	}
+
+		map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+		var latlng = new google.maps.LatLng(myLatitude, myLongitude);
+	    
+		geocoder.geocode({'latLng': latlng}, function(results, status) {
+	      if (status == google.maps.GeocoderStatus.OK) {
+	        if (results[1]) {
+	          map.setZoom(15);
+	          marker = new google.maps.Marker({
+	              position: latlng, 
+	              map: map
+	          }); 
+	          infowindow.setContent(results[1].formatted_address);
+
+
+			document.getElementById("address_data").innerHTML = results[0].address_components[1].long_name;		
+			document.getElementById("address_data2").innerHTML = results[0].address_components[1].long_name;		
+	        } else {
+	          alert("No results found");
+	        }
+	      } else {
+	        alert("Geocoder failed due to: " + status);
+	      }
+	    });
+	}
+
+	// Callback for if location is not found
+	function noLocation()
+	{
+	  	window.location = "assess_form.html";
+	}   
+}
+
+// This script stores the desired street name locally.
+function streetNameCorrect()
+{
+	window.localStorage.setItem("street_name", document.getElementById("address_data").innerHTML);
+	window.location = "assess_form.html"
+}
+
+</script>
+</head>
+
+<body onload="codeLatLng()">
+
+<div data-role="page">
+	<div data-role="header" data-theme="b">
+		<h2>Where are you?</h2>
+	</div>
+
+	<div data-role="content">
+
+	<div id="map_canvas" style="height: 140px; border: 1px solid black;"></div>
+
+
+<div class='sub_form'>
+	
+I think you're standing on:
+<div class='mainlink_subtitle' style='margin:auto;text-align:center' id="address_data"></div>
+
+<a href='javascript:;' onClick="streetNameCorrect()" data-role="button" data-icon="arrow-r" data-iconpos="right"/>	
+	<div class='mainlink_big_head'>Correct</div>
+	<div class='mainlink_subtitle'>I'm on <span id='address_data2'></span></div>
+</a>
+
+<a href='javascript:;' onClick="nolocation()" data-role="button" data-icon="arrow-r" data-iconpos="right"/>	
+	<div class='mainlink_big_head'>Incorrect</div>
+	<div class='mainlink_subtitle'>I'm on a different street</div>
+</a>
+</div>
+</div>
+</body>
+</html>

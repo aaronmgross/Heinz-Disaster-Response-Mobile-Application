@@ -1,0 +1,105 @@
+
+<!-- BEGIN PAGE HEADER -->
+
+<html manifest="mobileapp.manifest">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" media="all" href="style.css" />
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+
+<!-- JavaScript Includes 
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+
+-->
+<title>Disaster Response Mobile Assessment</title>
+
+
+<!-- END PAGE HEADER -->
+
+<!-- BEGIN CUSTOM JAVASCRIPT DEFINITIONS -->
+<script type>
+
+window.addEventListener('load', function(e) {
+    setTimeout(function() { window.scrollTo(0, 1); }, 1);
+  }, false);
+
+function validatePassword(){
+	
+		var pwd=document.forms["registerForm"]["volunteer_password"].value;
+		var pwd1=document.forms["registerForm"]["volunteer_password1"].value;
+		if(pwd1!=pwd)
+		{
+			document.getElementById("error_container").style.display = "block";
+			document.getElementById("inperror").innerHTML =s;
+			scroll(0,0);
+			//document.location="register.html";
+		return false;
+		}
+		else{
+			return true;
+		}
+	
+}
+	</script>
+	</head>
+	
+	
+	<!-- END CUSTOM JAVASCRIPT DEFINITIONS -->
+
+	<body>
+		
+<div data-role="page">
+		<div data-role='header' data-theme='b'>
+			<h2>Register for an account</h2>
+	</div>
+		<div data-role='content'>
+			 <div id="error_container" class='failure_message' style='display:none'>
+				<div class='instruction_text'>The passwords entered don't match!</div>
+				<div id="inperror"></div>
+			</div>
+
+					<div class='sub_form'>
+
+			 <form name="registerForm" method="post" onsubmit="javascript:return validatePassword()" action="hello.java">
+							
+						
+							
+							<b>First Name :</b><br />
+							<input type="text" name="volunteer_firstname"/><br />
+							
+								<b>Last Name :</b><br />
+								<input type='text' name='volunteer_lastname'/><br />
+								
+							<b>Username:</b><br />
+							<input type='text' name='volunteer_username'/><br />
+
+							<b>Password:</b><br />
+							<input type="password" name="volunteer_password"/><br />
+							
+								<b>Re-type password:</b><br />
+								<input type="password" name="volunteer_password1"/><br />
+								
+								
+
+							<b>Choose Disaster Incident:</b><br />
+
+							<select name="volunteer_Disaster">
+								<option value='none'>choose...</option>
+								<option value="TEST">User Testing 11/15/11 </option>
+							</select> <br />
+							
+							<input type="submit" value="Register!" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b">
+							
+							</form>
+				</div>
+				</div>
+				</div>
+					</body>
+
+					</html>
+
