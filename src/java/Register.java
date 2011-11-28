@@ -44,7 +44,7 @@ public class Register extends HttpServlet {
         String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
         //String connectionStr = "jdbc:mysql:///DisasterAssessment";
         String user = "root";
-        String pw_con = "";
+        String pw_con = "hello";
         try {
            con = (Connection) DriverManager.getConnection(connectionStr,user,pw_con);
            String firstName = request.getParameter("volunteer_firstname");

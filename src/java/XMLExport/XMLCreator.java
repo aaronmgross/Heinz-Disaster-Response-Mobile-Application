@@ -83,7 +83,7 @@ public class XMLCreator {
         }
         String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
         String user = "root";
-        String pw = "";
+        String pw = "hello";
         try {
 
             con = DriverManager.getConnection(connectionStr, user, pw);
