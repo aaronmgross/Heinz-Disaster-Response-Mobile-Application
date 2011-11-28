@@ -287,7 +287,12 @@ function preparePage()
 	document.getElementById("assessment_id").innerHtml = (parseInt(localStorage.getItem("disasterKey")) + 1);
 	
 	if (localStorage.getItem("street_name") != null)
-		document.getElementById("street_name_input").value = localStorage.getItem("street_name");		
+	{
+		document.getElementById("street_name_input").value = localStorage.getItem("street_name");	
+		document.getElementById("txt_state").value = localStorage.getItem("state");
+		document.getElementById("edit_address_info_input").value = localStorage.getItem("city");
+		document.getElementById("tel_zip").value = localStorage.getItem("zip");
+	}
 }
 </script>
 
@@ -312,7 +317,7 @@ function preparePage()
 
 				<table><tr>
 			        <td><input id="houseNum" name="tel_house_num" type="tel" placeholder="House #" style="width:5em" /></td>
-				<td><input type="text" id="street_name_input" name="street_name_input" style="width:6.5em" /></td>
+				<td><input type="text" id="street_name_input" placeholder="Street Name" name="street_name_input" style="width:6.5em" /></td>
 				<td><span class="js_edit_link">
 					<a href='javascript:;' id='id_apt_link' onClick="doShow('id_apt')">(add apt. #)</a>
 				</span>
@@ -324,9 +329,9 @@ function preparePage()
 
 				<div id="edit_address_info">
 					<table><tr>
-						<td><input id="edit_address_info_input" type='text' placeholder='Pittsburgh' value='Pittsburgh' style='width:7em' /></td>
-						<td><input type='text' id='txt_state' placeholder='PA' value='PA' style='width:2.5em' /></td>
-						<td><input type='tel' id='tel_zip' placeholder='15213' value='15213' style='width:4em' /></td>
+						<td><input id="edit_address_info_input" type='text' placeholder='City' style='width:7em' /></td>
+						<td><input type='text' id='txt_state' placeholder='St.' style='width:2.5em' /></td>
+						<td><input type='tel' id='tel_zip' placeholder='ZIP'  style='width:4em' /></td>
 
 					</tr></table>
 				</div>
@@ -662,22 +667,22 @@ function preparePage()
 
 			<h3>Flood Damage</h3>
 			
-			<table style='border:1px solid black'>
-				<tr><td>&nbsp; </td><td>SFD/Apt.</td><td>MH</td></tr>
-				<tr><td>Destroyed</td><td>60" or higher</td><td>48" or higher</td></tr>
-				<tr><td>Major</td><td>36" to 60"</td><td>24" to 48"</td></tr>
-				<tr><td>Minor</td><td>12" to 36"</td><td>6" to 24"</td></tr>
-				<tr><td>Affected</td><td>0" to 12"</td><td>0" to 6"</td></tr>
+			<table border=1 cellpadding=2 cellspacing=0 style='border:1px solid black;'>
+				<tr><td>&nbsp; </td><td><strong>SFD/Apt.</strong></td><td><strong>MH</strong></td></tr>
+				<tr><td><strong>Destroyed</strong></td><td>60" or higher</td><td>48" or higher</td></tr>
+				<tr><td><strong>Major</strong></td><td>36" to 60"</td><td>24" to 48"</td></tr>
+				<tr><td><strong>Minor</strong></td><td>12" to 36"</td><td>6" to 24"</td></tr>
+				<tr><td><strong>Affected</strong></td><td>0" to 12"</td><td>0" to 6"</td></tr>
 			</table>
 			
 			<h3>Non-flood Damage</h3>
 			
-			<table style='border:1px solid black'>
-				<tr><td>&nbsp; </td><td>SFD/Apt.</td><td>MH</td></tr>
-				<tr><td>Destroyed</td><td>Totally gone or major part missing.</td><td>Walls collapsed, off foundation.</td></tr>
-				<tr><td>Major</td><td>Large parts of roof missing, extensive wall damage.</td><td>Twisted or bowed, forceful penetration of walls.</td></tr>
-				<tr><td>Minor</td><td>Minor structural damage, numerous windows broken, roof parts missing.</td><td>Roofing, siding missing, windows broken.</td></tr>
-				<tr><td>Affected</td><td>Damaged but usable without repairs.</td><td>Damaged but usable without repairs.</td></tr>
+			<table border=1 style='border:1px solid black;' cellspacing=0 cellpadding=2>
+				<tr><td>&nbsp; </td><td><strong>SFD/Apt.</strong></td><td><strong>MH</strong></td></tr>
+				<tr><td><strong>Destroyed</strong></td><td>Totally gone or major part missing.</td><td>Walls collapsed, off foundation.</td></tr>
+				<tr><td><strong>Major</strong></td><td>Large parts of roof missing, extensive wall damage.</td><td>Twisted or bowed, forceful penetration of walls.</td></tr>
+				<tr><td><strong>Minor</strong></td><td>Minor structural damage, numerous windows broken, roof parts missing.</td><td>Roofing, siding missing, windows broken.</td></tr>
+				<tr><td><strong>Affected</strong></td><td>Damaged but usable without repairs.</td><td>Damaged but usable without repairs.</td></tr>
 			</table>
 		</div><!-- /content -->
 	</div><!-- /page popup -->

@@ -37,6 +37,10 @@
 	var myLatitude;
 	var position;
 	var streetName;
+	var city = "";
+	var state = "";
+	var zip = "";
+	var county = "";
 
   function codeLatLng() {
     // get the geolocation from a user's device
@@ -77,7 +81,13 @@
 
 
 			document.getElementById("address_data").innerHTML = results[0].address_components[1].long_name;		
-			document.getElementById("address_data2").innerHTML = results[0].address_components[1].long_name;		
+			document.getElementById("address_data2").innerHTML = results[0].address_components[1].long_name;
+			
+			city = results[0].address_components[3].long_name;
+			county = results[0].address_components[4].long_name;
+			state = results[0].address_components[5].short_name;
+			zip = results[0].address_components[7].long_name;
+			
 	        } else {
 	          alert("No results found");
 	        }
@@ -98,9 +108,24 @@
 function streetNameCorrect()
 {
 	window.localStorage.setItem("street_name", document.getElementById("address_data").innerHTML);
-	window.location = "assess_form.html"
+	window.localStorage.setItem("state", state);
+	window.localStorage.setItem("city", city);
+	window.localStorage.setItem("zip", zip);
+	window.localStorage.setItem("county", county);
+	window.location = "assess_form.html";
 }
 
+function streetNameIncorrect()
+{
+	// Clear bad attempt from local storage
+	window.localStorage.setItem("street_name", "");
+	window.localStorage.setItem("state", "");
+	window.localStorage.setItem("city", "");
+	window.localStorage.setItem("zip", "");
+	window.localStorage.setItem("county", "");
+	
+	window.location = "assess_form.html";
+}
 </script>
 </head>
 
@@ -126,7 +151,7 @@ I think you're standing on:
 	<div class='mainlink_subtitle'>I'm on <span id='address_data2'></span></div>
 </a>
 
-<a href='javascript:;' onClick="nolocation()" data-role="button" data-icon="arrow-r" data-iconpos="right"/>	
+<a href='javascript:;' onClick="streetNameIncorrect()" data-role="button" data-icon="arrow-r" data-iconpos="right"/>	
 	<div class='mainlink_big_head'>Incorrect</div>
 	<div class='mainlink_subtitle'>I'm on a different street</div>
 </a>
