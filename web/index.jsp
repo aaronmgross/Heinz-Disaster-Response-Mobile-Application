@@ -54,8 +54,12 @@
                             if (errors != null) {
                                 for (int i = 0; i < errors.size(); i++) {
                                     out.println("<strong>" + errors.get(i) + "</strong>");
-                                }
-                                }                    
+                                   }
+                                }   
+                 String getMessage = (String)request.getAttribute("RegisterMessage");
+                 if(getMessage!=null)
+                    out.println("<strong>" + getMessage + "</strong>");
+
 
                 %>
 

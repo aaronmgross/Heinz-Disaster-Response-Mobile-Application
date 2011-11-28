@@ -75,7 +75,7 @@ public class User {
 
         PreparedStatement statement = null;
         try {
-            statement = con.prepareStatement("Insert into User(Password,lName,fName,Telephone,Agency,Email) values(?,?,?,?,?,?)");
+            statement = con.prepareStatement("Insert into D_User(Password,lName,fName,Telephone,Agency,Email) values(?,?,?,?,?,?)");
 
             statement.setString(1, password);
             statement.setString(2, lName);

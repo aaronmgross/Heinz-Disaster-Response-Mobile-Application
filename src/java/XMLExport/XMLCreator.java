@@ -419,4 +419,12 @@ public class XMLCreator {
             ie.printStackTrace();
         }
     }
+
+    public static void main(String[] args){
+               //create an instance
+        XMLCreator xce = new XMLCreator();
+
+        //run the example
+        xce.export();
+    }
 }

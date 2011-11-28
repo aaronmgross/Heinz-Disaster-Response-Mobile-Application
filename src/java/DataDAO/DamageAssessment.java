@@ -339,7 +339,7 @@ public class DamageAssessment {
     }
 
     public void getByID(Connection con, int dmgAsmtID) throws SQLException {
-        PreparedStatement stat = con.prepareStatement("SELECT * FROM Client WHERE Assessment_Id = ? ");
+        PreparedStatement stat = con.prepareStatement("SELECT * FROM Damage_Assessment WHERE Assessment_Id = ? ");
         stat.setInt(1, dmgAsmtID);
         ResultSet rs = stat.executeQuery();
 
