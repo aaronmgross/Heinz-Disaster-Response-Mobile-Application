@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.servlet.RequestDispatcher;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -142,6 +143,12 @@ public class FillInForm extends HttpServlet {
                         classification, num_of_floor, isBasement, waterLivingInt, waterBasementInt, isElectricOn, isGasOn, isBasementOccupied, basementComment, reason, sqlDate, sqlDate,
                         comments);
             }
+
+            String destination = "/welcome.jsp";
+            request.setAttribute("FormSubmitMessage", "Your Assessment Form has been submitted successfully!");
+            RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
+            red.forward(request, response);
+            
         } catch (JSONException e) {
             System.out.println(e);
         } catch (SQLException ex) {

@@ -58,7 +58,11 @@ function initialize_disaster_session()
 	<div data-role="content">
         <%HttpSession sessionUser = request.getSession();
         String username = (String)sessionUser.getAttribute("userName");%>
-	Welcome, <strong><%=username%></strong>. Please choose what you would like to do:
+	Welcome, <strong><%=username%></strong>. Please choose what you would like to do:<br>
+        <% String message = (String)request.getAttribute("FormSubmitMessage");
+        if(message!=null)
+            out.println("<strong>" + message + "</strong>");
+        %>
 
 
 	<a href='find_location.html' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">
