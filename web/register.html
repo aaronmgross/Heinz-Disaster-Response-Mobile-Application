@@ -1,4 +1,5 @@
 
+
 <!-- BEGIN PAGE HEADER -->
 
 <html manifest="mobileapp.manifest">
@@ -44,7 +45,6 @@ function validatePassword()
 }
 
 function submitForm(form_name) {
-	alert("submitting for");
 	document.forms[form_name].submit();
 }
 
@@ -70,7 +70,7 @@ function submitForm(form_name) {
 					<div class='sub_form'>
 
 					<div class='instruction_text'>Please enter your information below in order to sign up for a user account.</div>
-			 <form name="registerForm" method="post" action="RegisterServlet">
+			 <form name="registerForm" method="post" action="Register">
 
    <b>First Name:</b><br />
    <input type="text" name="volunteer_firstname"/>
@@ -79,7 +79,7 @@ function submitForm(form_name) {
    <input type='text' name='volunteer_lastname'/>
    	
    <b>E-mail Address:</b><br />
-   <input type='text' name='volunteer_username'/>
+   <input type='text' name='volunteer_email'/>
 
    <b>Password:</b><br />
    <input type="password" name="volunteer_password"/>
@@ -97,4 +97,3 @@ function submitForm(form_name) {
 					</body>
 
 					</html>
-

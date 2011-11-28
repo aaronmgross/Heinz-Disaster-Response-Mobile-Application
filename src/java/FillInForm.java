@@ -79,7 +79,7 @@ public class FillInForm extends HttpServlet {
         int waterLivingInt = -1;
         int waterBasementInt = -1;
 
-        String jsonArray = (String) request.getParameter("3");
+        String jsonArray = (String) request.getParameter("recordJSON");
 
         try {
             JSONArray x = new JSONArray(jsonArray);
