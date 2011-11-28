@@ -189,167 +189,222 @@ public class XMLCreator {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd'T'hh-mm-ss");
 
         Element clientEle = dom.createElement("Client");
-
-        if (c.getSourceAgencyID() != null && !c.getSourceAgencyID().equals("")) {
-            clientEle.setAttribute("sourceAgencyID", c.getSourceAgencyID());
-        }
-        if (c.getSourceAgencyName() != null && !c.getSourceAgencyName().equals("")) {
-            clientEle.setAttribute("sourceAgencyName", c.getSourceAgencyName());
-        }
+        clientEle.setAttribute("sourceAgencyID", "");
+        clientEle.setAttribute("sourceAgencyName", "");
         dataSetEle.appendChild(clientEle);
 
+
+        Element idEle = dom.createElement("ID");
+        idEle.setAttribute("effective", sdf.format(today));
+        idEle.setAttribute("updated", sdf.format(today));
         if (c.getID() != null && !c.getID().equals("")) {
-            Element idEle = dom.createElement("ID");
-            idEle.setAttribute("effective", sdf.format(today));
-            idEle.setAttribute("updated", sdf.format(today));
             idEle.setTextContent(c.getID());
-            clientEle.appendChild(idEle);
+        }else{
+            idEle.setTextContent("");
         }
+        clientEle.appendChild(idEle);
 
+        Element fNameEle = dom.createElement("FirstName");
+        fNameEle.setAttribute("updated", sdf.format(today));
+        fNameEle.setAttribute("effective", sdf.format(today));
         if (c.getFirstName() != null && !c.getFirstName().equals("")) {
-            Element fNameEle = dom.createElement("FirstName");
-            fNameEle.setAttribute("updated", sdf.format(today));
-            fNameEle.setAttribute("effective", sdf.format(today));
             fNameEle.setTextContent(c.getFirstName());
-            clientEle.appendChild(fNameEle);
+        }else{
+            fNameEle.setTextContent("");
         }
+        clientEle.appendChild(fNameEle);
 
-        if (c.getMiddleName() != null && !c.getMiddleName().equals("")) {
-            Element mNameEle = dom.createElement("MiddleName");
-            mNameEle.setAttribute("effective", sdf.format(today));
-            mNameEle.setAttribute("updated", sdf.format(today));
-            mNameEle.setTextContent(c.getMiddleName());
-            clientEle.appendChild(mNameEle);
-        }
-
+        Element lNameEle = dom.createElement("LastName");
+        lNameEle.setAttribute("effective", sdf.format(today));
+        lNameEle.setAttribute("updated", sdf.format(today));
         if (c.getLastName() != null && !c.getLastName().equals("")) {
-            Element lNameEle = dom.createElement("LastName");
-            lNameEle.setAttribute("effective", sdf.format(today));
-            lNameEle.setAttribute("updated", sdf.format(today));
             lNameEle.setTextContent(c.getLastName());
-            clientEle.appendChild(lNameEle);
+        }else{
+            lNameEle.setTextContent("");
         }
-
+        clientEle.appendChild(lNameEle);
 
         Element addresses = dom.createElement("Addresses");
         Element address = dom.createElement("Address");
         address.setAttribute("effective", sdf.format(today));
         address.setAttribute("updated", sdf.format(today));
-        if (c.getAddressId() != null && !c.getAddressId().equals("")) {
-            Element addressId = dom.createElement("ID");
-            addressId.setTextContent("1331-1");
-            address.appendChild(addressId);
-        }
+
+        Element addressId = dom.createElement("ID");
+        addressId.setTextContent(c.getID() + "-1");
+        address.appendChild(addressId);
+
+
+        Element disasterAffected = dom.createElement("DisasterAffected");
         if (c.getDisasterAffected() != null && !c.getDisasterAffected().equals("")) {
-            Element disasterAffected = dom.createElement("DisasterAffected");
             disasterAffected.setTextContent(c.getDisasterAffected());
-            address.appendChild(disasterAffected);
+        }else{
+            disasterAffected.setTextContent("");
         }
+        address.appendChild(disasterAffected);
+
+
+        Element line1 = dom.createElement("Line1");
         if (c.getAddressLine1() != null && !c.getAddressLine1().equals("")) {
-            Element line1 = dom.createElement("Line1");
             line1.setTextContent(c.getAddressLine1());
-            address.appendChild(line1);
+        }else{
+            line1.setTextContent("");
         }
+        address.appendChild(line1);
+
+
+        Element line2 = dom.createElement("Line2");
         if (c.getAddressLine2() != null && !c.getAddressLine2().equals("")) {
-            Element line2 = dom.createElement("Line2");
             line2.setTextContent(c.getAddressLine2());
-            address.appendChild(line2);
+        }else{
+            line2.setTextContent("");
         }
+        address.appendChild(line2);
+
+
+        Element city = dom.createElement("City");
         if (c.getCity() != null && !c.getCity().equals("")) {
-            Element city = dom.createElement("City");
             city.setTextContent(c.getCity());
-            address.appendChild(city);
+        }else{
+            city.setTextContent("");
         }
+        address.appendChild(city);
+
+
+        Element county = dom.createElement("County");
         if (c.getCounty() != null && !c.getCounty().equals("")) {
-            Element county = dom.createElement("County");
             county.setTextContent(c.getCounty());
-            address.appendChild(county);
+        }else{
+            county.setTextContent("");
         }
+        address.appendChild(county);
+
+
+        Element state = dom.createElement("State");
         if (c.getState() != null && !c.getState().equals("")) {
-            Element state = dom.createElement("State");
             state.setTextContent(c.getState());
-            address.appendChild(state);
+        }else{
+            state.setTextContent("");
         }
+        address.appendChild(state);
+
+
+        Element zipcode = dom.createElement("ZipCode");
         if (c.getZipcode() != null && !c.getZipcode().equals("")) {
-            Element zipcode = dom.createElement("ZipCode");
             zipcode.setTextContent(c.getZipcode());
-            address.appendChild(zipcode);
+        }else{
+            zipcode.setTextContent("");
         }
+        address.appendChild(zipcode);
+
         addresses.appendChild(address);
         clientEle.appendChild(addresses);
 
-        if (c.getPhone() != null && !c.getPhone().equals("")) {
-            Element phEle = dom.createElement("BestPhone");
-            phEle.setAttribute("effective", sdf.format(today));
-            phEle.setAttribute("updated", sdf.format(today));
-            phEle.setTextContent(c.getPhone());
-            clientEle.appendChild(phEle);
-        }
-        if (c.getDateOfBirth() != null && !c.getDateOfBirth().equals("")){
-            Element dobEle = dom.createElement("DateOfBirth");
-            dobEle.setAttribute("effective", sdf.format(today));
-            dobEle.setAttribute("updated", sdf.format(today));
-            dobEle.setTextContent(c.getDateOfBirth());
-            clientEle.appendChild(dobEle);
-        }
-        if (c.getGender() != null && !c.getGender().equals("")) {
-            Element gdrEle = dom.createElement("Gender");
-            gdrEle.setAttribute("effective", sdf.format(today));
-            gdrEle.setAttribute("updated", sdf.format(today));
-            gdrEle.setTextContent(c.getGender());
-            clientEle.appendChild(gdrEle);
-        }
-        if (c.getPreDisasterLivingSituation() != null &&!c.getPreDisasterLivingSituation().equals("")) {
-            Element pdlsEle = dom.createElement("PreDisasterLivingSituation");
-            pdlsEle.setAttribute("effective", sdf.format(today));
-            pdlsEle.setAttribute("updated", sdf.format(today));
-            pdlsEle.setTextContent(c.getPreDisasterLivingSituation());
-            clientEle.appendChild(pdlsEle);
-        }
-        if (c.getDmgAssmnt() != null && !c.getDmgAssmnt().equals("")) {
-            Element daEle = dom.createElement("DamageAssessment");
-            daEle.setAttribute("effective", sdf.format(today));
-            daEle.setAttribute("updated", sdf.format(today));
-            daEle.setTextContent(c.getDmgAssmnt());
-            clientEle.appendChild(daEle);
-        }
-        if (c.getDmgAsmntOther() != null && !c.getDmgAsmntOther().equals("")) {
-            Element daOtherEle = dom.createElement("DamageAssessmentOther");
-            daOtherEle.setAttribute("effective", sdf.format(today));
-            daOtherEle.setAttribute("updated", sdf.format(today));
-            daOtherEle.setTextContent(c.getDmgAsmntOther());
-            clientEle.appendChild(daOtherEle);
-        }
-        if (c.getNeeds() != null && !c.getNeeds().equals("")) {
-            Element splNeedsEle = dom.createElement("SpecialNeeds");
-            splNeedsEle.setAttribute("effective", sdf.format(today));
-            splNeedsEle.setAttribute("updated", sdf.format(today));
-            splNeedsEle.setTextContent(c.getNeeds());
-            clientEle.appendChild(splNeedsEle);
-        }
-        if (c.getDisasterName() != null && !c.getDisasterName().equals("")) {
-            Element dNameEle = dom.createElement("DisasterName");
-            dNameEle.setAttribute("effective", sdf.format(today));
-            dNameEle.setAttribute("updated", sdf.format(today));
-            dNameEle.setTextContent(c.getDisasterName());
-            clientEle.appendChild(dNameEle);
-        }
-        if (c.getDisasterName() != null && !c.getDisasterName().equals("")) {
-            Element dDateEle = dom.createElement("DisasterEventDate");
-            dDateEle.setAttribute("effective", sdf.format(today));
-            dDateEle.setAttribute("updated", sdf.format(today));
-            dDateEle.setTextContent(c.getDisasterDate());
-            clientEle.appendChild(dDateEle);
-        }
 
-//        Element cases = dom.createElement("Cases");
-//        Element _case = dom.createElement("Case");
-//        _case.setAttribute("effective", "2009-06-11T00:38:50");
-//        _case.setAttribute("updated", "2009-06-11T00:38:50");
-//        _case.setAttribute("sourceAgencyID", c.getsourceAgencyID());
-//        _case.setAttribute("sourceAgencyName", c.getsourceAgencyName());
-//        cases.appendChild(_case);
-//        clientEle.appendChild(cases);
+        Element phEle = dom.createElement("BestPhone");
+        phEle.setAttribute("effective", sdf.format(today));
+        phEle.setAttribute("updated", sdf.format(today));
+        if (c.getPhone() != null && !c.getPhone().equals("")) {
+            phEle.setTextContent(c.getPhone());
+        }
+        clientEle.appendChild(phEle);
+
+
+        Element dobEle = dom.createElement("DateOfBirth");
+        dobEle.setAttribute("effective", sdf.format(today));
+        dobEle.setAttribute("updated", sdf.format(today));
+        if (c.getDateOfBirth() != null && !c.getDateOfBirth().equals("")) {
+            dobEle.setTextContent(c.getDateOfBirth());
+        }else{
+            dobEle.setTextContent("");
+        }
+        clientEle.appendChild(dobEle);
+
+
+        Element gdrEle = dom.createElement("Gender");
+        gdrEle.setAttribute("effective", sdf.format(today));
+        gdrEle.setAttribute("updated", sdf.format(today));
+        if (c.getGender() != null && !c.getGender().equals("")) {
+            gdrEle.setTextContent(c.getGender());
+        }else{
+            gdrEle.setTextContent("");
+        }
+        clientEle.appendChild(gdrEle);
+
+
+        Element pdlsEle = dom.createElement("PreDisasterLivingSituation");
+        pdlsEle.setAttribute("effective", sdf.format(today));
+        pdlsEle.setAttribute("updated", sdf.format(today));
+        if (c.getPreDisasterLivingSituation() != null && !c.getPreDisasterLivingSituation().equals("")) {
+            pdlsEle.setTextContent(c.getPreDisasterLivingSituation());
+        }else{
+            pdlsEle.setTextContent("");
+        }
+        clientEle.appendChild(pdlsEle);
+
+
+        Element daEle = dom.createElement("DamageAssessment");
+        daEle.setAttribute("effective", sdf.format(today));
+        daEle.setAttribute("updated", sdf.format(today));
+        if (c.getDmgAssmnt() != null && !c.getDmgAssmnt().equals("")) {
+            daEle.setTextContent(c.getDmgAssmnt());
+        }else{
+            daEle.setTextContent("");
+        }
+        clientEle.appendChild(daEle);
+
+
+        Element daOtherEle = dom.createElement("DamageAssessmentOther");
+        daOtherEle.setAttribute("effective", sdf.format(today));
+        daOtherEle.setAttribute("updated", sdf.format(today));
+        if (c.getDmgAsmntOther() != null && !c.getDmgAsmntOther().equals("")) {
+            daOtherEle.setTextContent(c.getDmgAsmntOther());
+        }else{
+            daOtherEle.setTextContent("");
+        }
+        clientEle.appendChild(daOtherEle);
+
+
+        Element splNeedsEle = dom.createElement("SpecialNeeds");
+        splNeedsEle.setAttribute("effective", sdf.format(today));
+        splNeedsEle.setAttribute("updated", sdf.format(today));
+        if (c.getNeeds() != null && !c.getNeeds().equals("")) {
+            splNeedsEle.setTextContent(c.getNeeds());
+        }else{
+            splNeedsEle.setTextContent("");
+        }
+        clientEle.appendChild(splNeedsEle);
+
+
+        Element dNameEle = dom.createElement("DisasterName");
+        dNameEle.setAttribute("effective", sdf.format(today));
+        dNameEle.setAttribute("updated", sdf.format(today));
+        if (c.getDisasterName() != null && !c.getDisasterName().equals("")) {
+            dNameEle.setTextContent(c.getDisasterName());
+        }else{
+            dNameEle.setTextContent("");
+        }
+        clientEle.appendChild(dNameEle);
+
+
+        Element dDateEle = dom.createElement("DisasterEventDate");
+        dDateEle.setAttribute("effective", sdf.format(today));
+        dDateEle.setAttribute("updated", sdf.format(today));
+        if (c.getDisasterDate() != null && !c.getDisasterDate().equals("")) {
+            dDateEle.setTextContent(c.getDisasterDate());
+        }else{
+            dDateEle.setTextContent("");
+        }
+        clientEle.appendChild(dDateEle);
+
+
+        Element cases = dom.createElement("Cases");
+        Element _case = dom.createElement("Case");
+        _case.setAttribute("effective", sdf.format(today));
+        _case.setAttribute("updated", sdf.format(today));
+        _case.setAttribute("sourceAgencyID", "");
+        _case.setAttribute("sourceAgencyName", "");
+        cases.appendChild(_case);
+        clientEle.appendChild(cases);
 //
 //        Element servicesNeeded = dom.createElement("ServicesNeeded");
 //        service = dom.createElement("ServiceNeeded");
