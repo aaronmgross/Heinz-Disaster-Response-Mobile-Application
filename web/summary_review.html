@@ -121,7 +121,7 @@ TODO:
 			if (navigator.onLine)
 			{
 				// We are connected to the Internet. Send this entry to the server.
-				document.getElementById("recordJSON").value = JSON.stringify(this_entry);
+				document.getElementById("recordJSON").value = "[" + JSON.stringify(this_entry); + "]";
  				document.forms["hidden_record_form"].submit();
 			}
 			else
