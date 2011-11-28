@@ -30,6 +30,10 @@
 	</script>
 
 <script type="text/javascript">
+
+// If we haven't generated a response after 15 seconds, just mov eon.
+setTimeout("streetNameIncorrect()",15000);
+
 	var geocoder;
 	var map;
 	var infowindow = new google.maps.InfoWindow();

@@ -32,9 +32,53 @@ TODO:
 
 
 <script>
-function save_curbside_entry()
+function save_disaster_entry_curbside()
 {
-	
+	// We do NOT do a summary/review for this one, we just save it...
+	var keyToUse = parseInt(localStorage.getItem("disasterKey")) + 1;
+
+	var basementOccupiedRadio = "blank";
+
+	for( i = 0; i < document.disaster_form_c.elements["is_basement_c"].length; i++ )
+	{
+		if( document.disaster_form_c.elements["is_basement_c"][i].checked == true )
+			basementOccupiedRadio = document.disaster_form_c.elements["is_basement_c"][i].value;
+	}
+	// Construct the JSON object
+	var this_entry = 
+	{
+		"id" : keyToUse, 	// Same as the key of the <key, value> local storage pair
+		"volunteer_id" : localStorage.getItem("volunteer_id"),
+		"volunteer_name" : localStorage.getItem("volunteer_name"),
+		"start_time" : "", // TODO
+		"end_time" : "", // TODO
+		"street_name" : document.getElementById("street_name_input").value,
+		"tel_house_num" : document.getElementById("houseNum").value,
+		"tel_apt" : document.getElementById("id_apt_input").value,
+		"txt_state" : document.getElementById("txt_state").value,
+		"txt_city" : document.getElementById("edit_address_info_input").value,
+		"tel_zip" : document.getElementById("tel_zip").value,
+		"dwelling_type" : document.getElementById("dwelling_type_c").value,
+		"number_floors" : document.getElementById("number_floors_input_c").value,
+		"is_basement" : basementOccupiedRadio,
+		"water_in_living_area" : document.getElementById("water_in_living_area_c").value,
+		"select_classification" : document.getElementById("select_classification_c").value,
+		"txtArea_classification_reason" : document.getElementById("txtArea_classification_reason_c").value,
+		"txtArea_comment" : document.getElementById("txtArea_comment_c").value,
+		// TODO:
+		// lat
+		// long
+		// waiver_signature_time
+	}
+
+	// Save JSON object to local storage
+	localStorage.setItem(keyToUse, JSON.stringify(this_entry));
+
+	// Reset the disasterKey element so that we don't overwrite this element next time
+	localStorage.setItem("disasterKey", keyToUse);
+
+	// Go to welcome page
+	document.location = "welcome.html";
 }
 // Create and load into local storage a JSON object for this disaster entry
 function save_disaster_entry()
@@ -261,7 +305,7 @@ function checkRenterInfo()
 	var select = document.getElementById("owner_information");
 	var chosenOption = select.options[select.selectedIndex].value;
 
-	if (chosenOption == "RF" || chosenOption == "RU")
+	if (chosenOption == "Client rents (furnished)" || chosenOption == "Client rents (unfurnished)")
 		document.getElementById("renter_information").style.display = 'block';
 	else
 		document.getElementById("renter_information").style.display = 'none';
@@ -284,7 +328,7 @@ function echoStoredStreetName()
 function preparePage()
 {
 	// Begin a new record for this disaster entry
-	document.getElementById("assessment_id").innerHtml = (parseInt(localStorage.getItem("disasterKey")) + 1);
+	document.getElementById("assessment_id").innerHTML = (parseInt(localStorage.getItem("disasterKey")) + 1);
 	
 	if (localStorage.getItem("street_name") != null)
 	{
@@ -293,6 +337,12 @@ function preparePage()
 		document.getElementById("edit_address_info_input").value = localStorage.getItem("city");
 		document.getElementById("tel_zip").value = localStorage.getItem("zip");
 	}
+}
+
+function fillAssessmentAddress()
+{
+	document.getElementById("assessment_address").innerHTML = localStorage.getItem("house_num") + " " + localStorage.getItem("street_name");
+	document.getElementById("assessment_address_c").innerHTML = localStorage.getItem("house_num") + " " + localStorage.getItem("street_name");
 }
 </script>
 
@@ -304,6 +354,7 @@ function preparePage()
 	<div data-role="page" id="one">
 
 		<div data-role="header" data-theme="b">
+			<a href='find_location.html' data-transition='reverse' rel="external">Back</a>
 			<h2>Address Entry</h2>
 			<div class="ui-bar-e" style="padding:4px;text-align:center">
 				This is assessment number <span id="assessment_id"></span>
@@ -316,8 +367,8 @@ function preparePage()
 				<div class="instruction_text">What address are you currently at?</div>
 
 				<table><tr>
-			        <td><input id="houseNum" name="tel_house_num" type="tel" placeholder="House #" style="width:5em" /></td>
-				<td><input type="text" id="street_name_input" placeholder="Street Name" name="street_name_input" style="width:6.5em" /></td>
+			        <td><input id="houseNum" name="tel_house_num" type="tel" placeholder="House #" style="width:5em" onBlur="javascript:localStorage.setItem('house_num', this.value)" /></td>
+				<td><input type="text" id="street_name_input" placeholder="Street Name" name="street_name_input" style="width:6.5em" onBlur="javascript:localStorage.setItem('street_name', this.value)" /></td>
 				<td><span class="js_edit_link">
 					<a href='javascript:;' id='id_apt_link' onClick="doShow('id_apt')">(add apt. #)</a>
 				</span>
@@ -338,12 +389,12 @@ function preparePage()
 
 				<div class='instruction_text'>What type of disaster assessment are you performing at this address?</div>
 
-				<a href="#two" data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">
+				<a href="#two" onClick="fillAssessmentAddress()" data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">
 					<div class='mainlink_big_head'>Detailed</div>
 					<div class='mainlink_subtitle'>disaster interview<br />with client</div>
 				</a>
 
-				<a href='#curbside' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">
+				<a href='#curbside' onClick="fillAssessmentAddress()" data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">
 					<div class='mainlink_big_head'>Curbside</div>
 					<div class='mainlink_subtitle'>quick damage <br />assessment</div>
 				</a>
@@ -357,9 +408,10 @@ function preparePage()
 	<div data-role="page" id="two">	
 
 		<div data-role="header" data-theme="b">
+			<a href="#one" data-rel="back">Back</a>
 			<h2>Detailed Interview</h2>
 			<div class="ui-bar-e" style="padding:4px;text-align:center">
-				This is assessment number <span id="assessment_id"></span>
+				<div id="assessment_address"></div>
 			</div>
 		</div><!-- /header -->
 
@@ -689,14 +741,17 @@ function preparePage()
 
 	<div data-role="page" id="curbside">
 	
-	<div data-role="header" data-theme="b"><a href='#one'>Back</a><h2>Curbside</h2>
+	<div data-role="header" data-theme="b"><a href='#one' data-rel="back">Back</a><h2>Curbside</h2>
 		<div class="ui-bar-e" style="padding:4px;text-align:center">
-			This is assessment number <span id="assessment_id"></span>
+				<div class="ui-bar-e" style="padding:4px;text-align:center">
+					<div id="assessment_address_c"></div>
+				</div>
 		</div>
 	</div><!-- /header -->
 	
 	<div data-role="content">
 		
+		<form name="disaster_form_c">
 		<div class='instruction_text'>This is a curbside damage assessment. Please enter as much detail as possible about the property you are at.</div>
 		
 		<div class='sub_form'>
@@ -769,8 +824,10 @@ function preparePage()
 		</div>
 
 
-	<a href='javascript:;' data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b" onClick='save_disaster_entry_curbside()'><div class='mainlink_big_head'>Continue</div></a>		
+	<a href='javascript:;' data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b" onClick='save_disaster_entry_curbside()'><div class='mainlink_big_head'>Submit</div></a>		
 	</div>
+	
+	</form>
 
 	</div>
 

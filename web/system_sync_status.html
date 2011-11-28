@@ -81,7 +81,7 @@ function writeLocalRecord(obj)
 		currentFormHTML += ", "; // Add a comma separator for the next JSON record
 	else
 		currentFormHTML = "["; 
-		
+	
 	var newFormHTML = JSON.stringify(obj);
 	
 	document.getElementById("records").innerHTML = currentRecordHTML + newHTML;
@@ -106,7 +106,7 @@ function sendLocalRecord()
 <div data-role="page" id="one">
 
 	<div data-role="header" data-theme="b">
-		<a href='welcome.html'>Back</a>
+		<a href='welcome.html' data-direction="reverse">Back</a>
 		<h2>Sync Records</h2>
 		<a href='javascript:;' onClick="sendLocalRecord()">Sync</a>
 	</div><!-- /header -->
