@@ -46,7 +46,8 @@ function initialize_disaster_session()
 	</div>
 	
 	<div data-role="content">
-	Welcome, <strong>Test Volunteer</strong>. Please choose what you would like to do:
+        <%String username = request.getAttribute("email"); %>
+	Welcome, <strong><% username %></strong>. Please choose what you would like to do:
 	 
 	
 	<a href='find_location.html' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">

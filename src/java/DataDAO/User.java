@@ -33,32 +33,42 @@ public class User {
 
     }
 
-    public User(){}
+    public User() {
+    }
 
-    public static User lookup(String email,Connection con) throws SQLException {
+    public static User lookup(String email, Connection con) throws SQLException {
         try {
-        	PreparedStatement pstmt = con.prepareStatement("SELECT * FROM D_User WHERE Email=?");
-        	pstmt.setString(1,email);
-        	ResultSet rs = pstmt.executeQuery();
+            PreparedStatement pstmt = con.prepareStatement("SELECT * FROM D_User WHERE Email=?");
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
 
-        	User user;
-        	if (!rs.next()) {
-        		user = null;
-        	} else {
-        		user = new User();
-        		user.setEmail(rs.getString("Email"));
-        		user.setPassword(rs.getString("Password"));
-        	}
+            User user;
+            if (!rs.next()) {
+                user = null;
+            } else {
+                user = new User();
+                user.setEmail(rs.getString("Email"));
+                user.setPassword(rs.getString("Password"));
+                user.setfName(rs.getString("Fname"));
+                user.setlName(rs.getString("Lname"));
+                user.setAgency(rs.getString("Agency"));
+            }
 
-        	rs.close();
-        	pstmt.close();
-                return user;
+            rs.close();
+            pstmt.close();
+            return user;
 
         } catch (Exception e) {
-            try { if (con != null) con.close(); } catch (SQLException e2) {;}
-        	throw new SQLException(e);
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e2) {
+                ;
+            }
+            throw new SQLException(e);
         }
-	}
+    }
 
     public void Insert(Connection con) throws SQLException {
 

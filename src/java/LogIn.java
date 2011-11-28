@@ -16,6 +16,10 @@ import DataDAO.*;
 import com.mysql.jdbc.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -29,8 +33,12 @@ public class LogIn extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
 
-        String email = request.getParameter("name");
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        String email = request.getParameter("username");
+        System.out.println("username:"+ email);
         String pw = request.getParameter("password");
+        System.out.println("password:"+ pw);
         String disasterType = request.getParameter("Disaster");
          try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -44,12 +52,57 @@ public class LogIn extends HttpServlet {
         try {
             con = (Connection) DriverManager.getConnection(connectionStr,user,pw_con);
             User client = new User();
+            
+            //System.out.println("password from db:"+client.getPassword());
+            List<String> errors = new ArrayList<String>();
+            request.setAttribute("errors",errors);
+
             client= User.lookup(email, con);
-            if(client!=null&&client.getPassword().equals("pw"));
+            if (client == null) {
+	            errors.add("Email not found");
+	            String destination = "/index.jsp";
 
-            response.sendRedirect("welcome.html");
+            RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
+
+            red.forward(request, response);
+	        }
+
+            else if(client.getPassword().equals(pw))
+            {
+              request.setAttribute("email", email);
+
+              HttpSession session = request.getSession();
+              session.setAttribute("userName", client.getfName()+" "+client.getlName());
+
+              response.sendRedirect("welcome.jsp");
+            }
 
 
+            else{
+            errors.add("wrong password!");
+            request.setAttribute("errors", errors);
+
+            if (errors != null) {
+                                for (int i = 0; i < errors.size(); i++) {
+                                    System.out.println(errors.get(i));
+                                }
+
+            String destination = "/index.jsp";
+
+            RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
+
+            red.forward(request, response);
+
+            //response.sendRedirect("login.html");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet LogIn</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet LogIn Failed!</h1>");
+            out.println("</body>");
+            out.println("</html>");
+            }
 //
 //        response.setContentType("text/html;charset=UTF-8");
 //        PrintWriter out = response.getWriter();
@@ -68,8 +121,7 @@ public class LogIn extends HttpServlet {
 //            out.close();
 //        }
 //
-    }   catch (IOException ex) {
-            Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
+    }   
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
