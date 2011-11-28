@@ -1,0 +1,99 @@
+<!-- BEGIN PAGE HEADER -->
+
+<!--
+
+TODO: Integrate this with LogIn servlet (Aaron)
+	Write register page (Vidhya)
+-->
+<html>
+<!--<html manifest="mobileapp.manifest">-->
+
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+        <!-- Stylesheets -->
+        <link rel="stylesheet" media="all" href="style.css" />
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+
+        <!-- JavaScript Includes -->
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+
+        <title>Disaster Response Mobile Assessment</title>
+
+    </head>
+    <!-- END PAGE HEADER -->
+
+    <!-- BEGIN CUSTOM JAVASCRIPT DEFINITIONS -->
+    <script>
+        window.addEventListener('load', function(e) {
+            setTimeout(function() { window.scrollTo(0, 1); }, 1);
+        }, false);
+
+        function forgot_password()
+        {
+            document.location = 'forgot_password.html';
+        }
+
+        function initialize_disaster_session()
+        {
+            // TODO: Check to see if there are any elements in local storage already to deal with.
+            //		 Present the user with a screen to address those.
+
+            alert("im in script");
+            // Check to see if a disaster reporting key incrementor exists - if not, set it at zero.
+            if(localStorage.getItem("disasterKey") == null)
+                localStorage.setItem("disasterKey", "0");
+
+            // Add the volunteer User ID and Name to local storage
+            localStorage.setItem("volunteer_id", "1"); // TODO: Get this from remote
+            localStorage.setItem("volunteer_name", "Aaron"); // TODO: Get this from database
+
+            // We're all set - forward the page.
+            document.location = "find_location.html";
+        }
+    </script>
+    <!-- END CUSTOM JAVASCRIPT DEFINITIONS -->
+
+    <body>
+        <form action="LogIn" method="POST">
+            <div data-role="page">
+
+                <div data-role='header' data-theme='b'>
+                    <h2>Log in</h2>
+                </div>
+
+                <div data-role='content'>
+                    <b>Welcome to DReporter!</b> Please log in below to access the application.
+
+                    <div class='sub_form'>
+<!--                        <form action='../find_location.html' method='post'>-->
+                            <input type='hidden' name='lat' >
+                            <b>Username:</b><br />
+                            <input type='text' name='username'/>
+
+                            <b>Password:</b><br />
+                            <input type='password' name='password'/>
+
+                            <b>Choose Disaster Incident:</b><br />
+
+                            <select name="Disaster">
+                                <option value='none'>choose...</option>
+                                <option value="TEST">User Testing 11/15/11 </option>
+                            </select>
+                    </div>
+                    <input type="submit" value="Login">
+                    <!--						<a href='welcome.html' data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b"><div class='mainlink_big_head'>Log in</div></a>-->
+                    <!--						<a href='javascript:;' type="submit" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b"><div class='mainlink_big_head'>Log in</div></a>-->
+
+                    <a href='javascript:;' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">Forgot password?</a>
+
+                    <a href='javascript:;' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">Register for an account</a>
+
+                </div>
+            </div>
+        </form>
+    </body>
+
+</html>
