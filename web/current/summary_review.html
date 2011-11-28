@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!-- draft page -->
 
 <!--
@@ -529,4 +530,541 @@ I, <b><script> objGet("txt_first_name"); </script> <script> objGet("txt_last_nam
 </div>
 	
 	</body>
+=======
+<!-- draft page -->
+
+<!--
+
+TODO:
+- Make the form such that edit will activate input fields that can be changed and saved (Vidhya)
+- Initials should match on the waiver form (Vidhya)
+- have to handle multiple insurance options being selected
+-->
+
+<html>
+<head>
+
+<!-- mobile tags -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">	<!-- sets document with to device width -->
+<meta name="apple-mobile-web-app-capable" content="yes"> <!-- tags as web app for iOS -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- status bar translucent -->
+
+<!-- Stylesheets -->
+	<link rel="stylesheet" media="all" href="style.css" />
+
+	
+	<script type="text/javascript">
+	alert("hi i'm here");
+	window.addEventListener('load', function(e) {
+	    setTimeout(function() { window.scrollTo(0, 1); }, 1);
+	  }, false);
+
+	function func(){
+	document.location = 'assess_form.html';
+
+	}
+
+
+	function initialsMatch(){
+		var s=document.getElementById("initials").value;
+		var fname=document.getElementById("txt_first_name").value;
+		var lname=document.getElementById("txt_last_name").value;
+		if((s.charAt(0)!=fname.charAt(0))||(s.charAt(1)!=lname.charAt(0)))
+		return false;
+		else
+		return true;
+
+	}
+
+	var jsonObject = "";
+
+	function save_disaster_entry()
+	{
+		if(!initialsMatch())
+		{
+			//document.write("error");
+			document.getElementById("error_container").style.display = "block";
+			document.getElementById("inperror").innerHTML ="The initials did not match with the first and last name provided.";
+			scroll(0,0);
+			return false;
+		}
+		else
+		{
+			var keyToUse = parseInt(localStorage.getItem("disasterKey"));
+
+			var now = new Date();
+			// Construct the JSON object
+			var this_entry = 
+			{
+				"id" : keyToUse, 	// Same as the key of the <key, value> local storage pair
+				"volunteer_id" : localStorage.getItem("volunteer_id"),
+				"volunteer_name" : localStorage.getItem("volunteer_name"),
+				"start_time" : "" + now.getTime();
+				"end_time" : "", // TODO
+				"street_name" : document.getElementById("street_name_input").value,
+				"tel_house_num" : document.getElementById("tel_house_num").value,
+				"tel_apt" : "",
+				"txt_state" : document.getElementById("txt_state").value,
+				"txt_city" : document.getElementById("txt_city").value,
+				"tel_zip" : document.getElementById("tel_zip").value,
+				"txt_first_name" : document.getElementById("txt_first_name").value,
+				"txt_last_name" : document.getElementById("txt_last_name").value,
+				"dwelling_type" : document.getElementById("dwelling_type").value,
+				"owner_information" : document.getElementById("owner_information").value,
+				"landlord_name" : document.getElementById("landlord_name").value,
+				"landlord_tel" : document.getElementById("landlord_tel").value,
+				"insurance_information" : document.getElementById("insurance_information").value,
+				"number_floors" : document.getElementById("number_floors").value,
+				"is_basement" : document.getElementById("is_basement").value,
+				"is_basement_occupied" : document.getElementById("is_basement_occupied").value,
+				"txtarea_basement_comment" : document.getElementById("txtarea_basement_comment").value,
+				"water_in_living_area" : document.getElementById("water_in_living_area").value,
+				"water_in_basement" : document.getElementById("water_in_basement").value,
+				"electric" : document.getElementById("electric").value,
+				"gas" : document.getElementById("gas").value,
+				"d_electrical" : document.getElementById("d_electrical").value,
+				"d_furnace" : document.getElementById("d_furnace").value,
+				"d_water" : document.getElementById("d_water").value,
+				"d_washer" : document.getElementById("d_washer").value,
+				"d_dryer" : document.getElementById("d_dryer").value,
+				"d_stove" : document.getElementById("d_stove").value,
+				"d_fridge" : document.getElementById("d_fridge").value,
+				"select_classification" : document.getElementById("select_classification").value,
+				"txtArea_classification_reason" : document.getElementById("txtArea_classification_reason").value,
+				"txtArea_comment" : document.getElementById("txtArea_comment").value,
+				// TODO:
+				// lat
+				// long
+				// waiver_signature_time
+			}
+
+			// Save JSON object to local storage
+			localStorage.setItem(keyToUse, JSON.stringify(this_entry));
+
+
+			// Reset the disasterKey element so that we don't overwrite this element next time
+			localStorage.setItem("disasterKey", keyToUse);
+
+			// Go to review page
+
+		return true;	
+
+		}
+	}
+
+
+
+	function getSerializedJSON()
+	{
+		var storedJSON = localStorage.getItem(localStorage.getItem("disasterKey"));
+		jsonObject = eval('(' + storedJSON + ')');
+		var jsonString = JSON.stringify(jsonObject);	
+		return jsonString;
+	}
+
+	function objGet(field_name)
+	{
+		document.write(jsonObject[field_name]);
+	}
+
+	function getObj(field_name)
+	{
+		return jsonObject[field_name];
+	}
+
+	function submitCurrentRecord()
+	{
+		// Save record (potentially edited) to local storage
+		// Check if online
+			// If online
+				// Populate a hidden field in a form on the page with the JSON record
+				// do a document.hidden_form.submit();
+			// If offline
+				// you're done
+
+		// Provide feedback to the user about what happened
+			// Servlet should provide response indicating save OK
+
+		// Send the user to a page where they can choose to start another record OR look at sync screen
+
+		// Take the record currently stored at lS.DisasterKey and send it to the database if possible
+		if (save_disaster_entry()){
+		 var str=getSerializedJSON();
+		//document.write("str is "+str);
+		if (navigator.onLine)
+		{
+			document.hidden_record_form.recordJson.value=str;
+			document.hidden_record_form.submit();
+		}
+
+		document.location="final_steps.html";
+	}
+	}
+
+	function enableFields(field){
+		document.getElementById(field).disabled=false;
+		document.getElementById(field).style.border="1px solid black";	
+	}
+
+	function show(a){
+
+	if(a=="address"){
+		//document.write("hello");
+	enableFields("tel_house_num");
+	enableFields("street_name_input");
+	enableFields("txt_city");
+	enableFields("txt_state");
+	enableFields("tel_zip");
+	}
+
+	if(a=="dwelling"){
+
+			enableFields("txt_first_name");
+			enableFields("txt_last_name");
+			enableFields("dwelling_type");
+			enableFields("owner_information");
+			enableFields("landlord_name");
+			enableFields("landlord_tel");
+			enableFields("insurance_information");	
+
+	}
+
+
+	if(a=="general"){
+
+			enableFields("number_floors");
+			enableFields("is_basement");
+			enableFields("is_basement_occupied");
+			enableFields("txtarea_basement_comment");
+			enableFields("water_in_living_area");
+			enableFields("water_in_basement");
+			enableFields("electric");
+			enableFields("gas");
+
+	}
+
+	if(a=="appliance"){
+
+			enableFields("d_electrical");
+			enableFields("d_furnace");
+			enableFields("d_water");
+			enableFields("d_washer");
+			enableFields("d_dryer");
+			enableFields("d_stove");
+			enableFields("d_fridge");
+
+	}
+
+	if(a=="classification"){
+
+				enableFields("select_classification");
+				enableFields("txtArea_classification_reason");
+				enableFields("txtArea_comment");
+
+
+	}
+
+	}
+	function setValues(a){
+	//	document.write(objGet('tel_house_num'));
+		document.getElementById(a).value=getObj(a);
+
+	}
+
+	</script>
+<link rel="stylesheet" media="all" href="style.css" />
+<title>Disaster Response App</title>
+</head>
+
+<!-- script immediately scrolls the page one pixel to hide the address bar -->
+
+
+<body>
+
+
+
+<div class='info_message'>Please show this summary screen to the client and ask them to verify the information entered.</div>
+
+<div id="error_container" class='failure_message' style='display:none'>
+	
+	<div id="inperror"></div>
+</div>
+
+	<script>getSerializedJSON()</script>
+
+	<h1>Disaster Data Summary</h1>
+
+<a href="javascript:show('address');" id='address'><h4 align="right"> Edit </h4></a>
+	<div class='sub_form'>	
+		<center>
+			<div class="instruction_text">Dwelling address:</div>
+<table>
+	<tr><td>	House Number:</td><td><input type="text" name="tel_house_num" id="tel_house_num" disabled style="border: 0px;"> </td></tr>
+	<tr><td>	Street Name: </td><td> <input type="text" name="street_name_input" id="street_name_input" disabled style="border: 0px solid #000000;"> </td></tr>
+	<tr><td>	City:  </td><td><input type="text" name="txt_city" id="txt_city" disabled style="border: 0px solid #000000;"> </td></tr>
+	<tr><td>		State: </td><td> <input type="text" name="txt_state" id="txt_state" disabled style="border: 0px solid #000000;"> </td></tr>
+	<tr><td>			Zipcode: </td><td>  <input type="text" name="tel_zip" id="tel_zip" disabled style="border: 0px solid #000000;"> </td></tr>
+
+</table>		
+<!--
+			&nbsp;<script>objGet("street_name"); </script><br> <script> objGet("txt_city"); </script>, <script> objGet("txt_state"); </script> <script> objGet("tel_zip"); </script>
+-->
+		<script>
+		setValues("tel_house_num");
+		setValues("street_name_input");
+		setValues("txt_city");
+		setValues("txt_state");
+		setValues("tel_zip");
+		
+		</script>
+
+
+	</center>
+
+</div>
+
+<!--
+<a href='javascript:;' id='id_apt_link' onClick="doShow('id_apt')">(add apt. #)</a>
+-->
+<a href="javascript:show('dwelling');" id='dwelling'><h4 align="right"> Edit </h4> </a>
+<div class='sub_form'>
+	<center>
+		<div class="instruction_text">Dwelling information:</div>
+		<table class='form_table' cellpadding=0 cellspacing=0>
+
+			<tr><td class='form_table_label'>First Name:</td><td class='form_table_input'> <input type="text" name="txt_first_name" id="txt_first_name" disabled style="border: 0px;"> 
+				
+				 </td></tr>
+					<tr><td class='form_table_label'>Last Name:</td><td class='form_table_input'> <input type="text" name="txt_last_name" id="txt_last_name" disabled style="border: 0px;"> 
+
+						 </td></tr>
+			<tr><td class='form_table_label'>Dwelling type:</td><td class='form_table_input'> <input type="text" name="dwelling_type" id="dwelling_type" disabled style="border: 0px;"> </td></tr>
+
+			<tr><td class='form_table_label'>Ownership info: </td><td class='form_table_input'> <input type="text" name="owner_information" id="owner_information" disabled style="border: 0px;"> </td></tr>
+
+			<tr><td class='form_table_label'>		Landlord's name:</td>
+				<td class='form_table_input'> <input type="text" name="landlord_name" id="landlord_name" disabled style="border: 0px;">  </td></tr>
+
+				<tr><td class='form_table_label'>Landlord's phone #:</td><td class='form_table_input'><input type="text" name="landlord_tel" id="landlord_tel" disabled style="border: 0px;"> 	</td></tr>	
+
+
+				<tr><td class='form_table_label'>
+					Insurance Info:</td><td class='form_table_input'> <input type="text" name="insurance_information" id="insurance_information" disabled style="border: 0px;"> </td></tr>
+				</table>
+				
+				
+				<script>
+				setValues("txt_first_name");
+				setValues("txt_last_name");
+				setValues("dwelling_type");
+				setValues("owner_information");
+				setValues("landlord_name");
+				setValues("landlord_tel");
+				setValues("insurance_information");
+
+				</script>
+			</center>
+		</div>
+
+		<a href="javascript:show('general');" id='general'><h4 align="right"> Edit </h4> </a>
+		<div class='sub_form'>
+<center>
+<div class='instruction_text'>General damage assessment:</div>
+
+			<table style='form_table' cellpadding=0 cellspacing=0 width=100%>
+
+				<tr>
+					<td class='form_table_label' style='border:0px'>Number of floors:</td>
+					<td class='form_table_input' style='border:0px'> <input type="text" name="number_floors" id="number_floors" disabled style="border: 0px;">		</td>
+				</tr>
+				<tr>
+					<td class='form_table_label'>Is there a basement?</td>
+					<td class='form_table_input'>
+						<input type="text" name="is_basement" id="is_basement" disabled style="border: 0px;">
+					</td>
+				</tr>
+
+				<tr id='basement_tr_1' style='display:none'>
+					<td class='form_table_label'>Is the basement occupied?</td>
+					<td class='form_table_input'>
+						<input type="text" name="is_basement_occupied" id="is_basement_occupied" disabled style="border: 0px;">
+					</td>
+				</tr>
+
+				<tr id='basement_tr_2' style='display:none'>
+					<td colspan=2>
+						Please describe the way in which the basement is being used:
+						<div class="spacer"></div>
+						<input type="text" name="txtarea_basement_comment" id="txtarea_basement_comment" disabled style="border: 0px;">
+							</td>
+					</tr>
+
+					<tr>
+						<td class='form_table_label'>How much water is in the main living area?</td>
+						<td class='form_table_input'>
+						<input type="text" name="water_in_living_area" id="water_in_living_area" disabled style="border: 0px;">	
+							 inches
+						</div>
+					</td>
+				</tr>
+
+				<tr id='basement_tr_3' style='display:none'>
+					<td class='form_table_label'>How much water is in the basement?</td>
+					<td class='form_table_input'>
+						<input type="text" name="water_in_basement" id="water_in_basement" disabled style="border: 0px;">	 inches
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Is the electricity on?</td>
+				<td class='form_table_input'>
+				<input type="text" name="electric" id="electric" disabled style="border: 0px;">	
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Is the gas on?</td>
+				<td class='form_table_input'>
+					<input type="text" name="gas" id="gas" disabled style="border: 0px;">	
+				</td>
+			</tr>
+
+		</table>
+		
+		<script>
+		setValues("number_floors");
+		setValues("is_basement");
+		setValues("is_basement_occupied");
+		setValues("txtarea_basement_comment");
+		setValues("water_in_living_area");
+		setValues("water_in_basement");
+		setValues("electric");
+		setValues("gas");
+
+		</script>
+</center>
+	</div>
+
+	<a href="javascript:show('appliance');" id='appliance'><h4 align="right"> Edit </h4> </a>
+	<div class='sub_form'>
+		<div class='instruction_text'>Is there damage to the following physical plant or appliance items?</div>
+
+		<center>
+
+		<table style='form_table' cellpadding=0 cellspacing=0 width=100%>
+
+			<tr>
+				<td class='form_table_label'>Electrical service box:</td>
+				<td class='form_table_input'>
+					<input type="text" name="d_electrical" id="d_electrical" disabled style="border: 0px;">
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Furnace:</td>
+				<td class='form_table_input'>
+					<input type="text" name="d_furnace" id="d_furnace" disabled style="border: 0px;">
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Hot water heater:</td>
+				<td class='form_table_input'>
+					<input type="text" name="d_water" id="d_water" disabled style="border: 0px;">
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Washer:</td>
+				<td class='form_table_input'>
+					<input type="text" name="d_washer" id="d_washer" disabled style="border: 0px;"></td>
+				</tr>
+
+				<tr>
+					<td class='form_table_label'>Dryer:</td>
+					<td class='form_table_input'>
+						<input type="text" name="d_dryer" id="d_dryer" disabled style="border: 0px;">
+					</td>
+				</tr>
+
+				<tr>
+					<td class='form_table_label'>Stove:</td>
+					<td class='form_table_input'>
+						<input type="text" name="d_stove" id="d_stove" disabled style="border: 0px;">
+					</td>
+				</tr>
+
+				<tr>
+					<td class='form_table_label'>Refrigerator:</td>
+					<td class='form_table_input'>
+						<input type="text" name="d_fridge" id="d_fridge" disabled style="border: 0px;">
+					</td>
+				</tr>
+			</table>
+			
+			
+			<script>
+			setValues("d_electrical");
+			setValues("d_furnace");
+			setValues("d_water");
+			setValues("d_washer");
+			setValues("d_dryer");
+			setValues("d_stove");
+			setValues("d_fridge");
+			
+			</script>	
+			
+		</center>
+		</div>
+
+<a href="javascript:show('classification');" id='classification'><h4 align="right"> Edit </h4> </a>
+		<div class='sub_form'>
+
+			<div class="instruction_text">Based on the Red Cross guidelines for classification, the overall assessment of the damage for this property is:</div>
+			<div class="spacer"></div>
+			<input type="text" name="select_classification" id="select_classification" disabled style="border: 0px;">
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="instruction_text">Classification rationale:</div>
+			<textarea id="txtArea_classification_reason" style="border: 0px;" disabled>  </textarea>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="instruction_text">Additional comments about this disaster entry: </div>
+
+		<textarea id="txtArea_comment" style="border: 0px;" disabled>  </textarea> 
+		
+		</div>
+		
+		<script>
+		setValues("select_classification");
+		setValues("txtArea_classification_reason");
+		setValues("txtArea_comment");
+		
+		</script>
+
+<h1>Waiver Signature</h1>
+
+<div class='info_message'>The CLIENT must read and indicate acceptance of the waiver below.</div>
+
+<div class='sub_form'>	
+I, <b><script> objGet("txt_first_name"); </script> <script> objGet("txt_last_name"); </script></b>, hereby authorize the release of information contained in this form to the American Red Cross, North Hills Community Outreach, Salvation Army, the United Way, the Coordinated Assistance Network, other faith-based, federal and and state emergency assistance agencies for the express and singular purpose of assisting efforts to meet my disaster needs. This information will not be made public or used for anything other than its intended use - disaster relief assistance. I also understand the the information provided here is truthful and accurate and I could face prosecution for fraud if it is discovered that the information is false or intended to defraud the agencies providing assistance.<br /><br />
+
+<div class='instruction_text'>Please initial below to indicate your acceptance of these terms:</div>
+<input type="text" name="initials" style='width:5em' id="initials"/>
+</div>
+
+<div class="bottom_button_row">
+<input type='button' value='Back' style='text-align:center;margin:auto;background-color:#dddddd' onClick="func()"/ >
+
+<form name="hidden_record_form" method="post" action="FillInForm">
+	<input type="hidden" name="recordJson" />
+</form>
+
+<a href='javascript:submitCurrentRecord();'>Continue</a>
+
+</div>
+	
+	</body>
+>>>>>>> bbd75d2ed04cf36b504fbaf8d1a78ff2536b5104
 </html>
