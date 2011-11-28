@@ -550,37 +550,28 @@ TODO:
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- status bar translucent -->
 
 <!-- Stylesheets -->
-	<link rel="stylesheet" media="all" href="style.css" />
+<link rel="stylesheet" media="all" href="style.css" />
+<!--<link rel="stylesheet" href="jquery.mobile-1.0.css" />-->
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+
+<!-- JavaScript Includes -->
+<script type="text/javascript" src="jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="jquery.mobile-1.0.js"></script>
+
 
 	
 	<script type="text/javascript">
-	alert("hi i'm here");
+
 	window.addEventListener('load', function(e) {
 	    setTimeout(function() { window.scrollTo(0, 1); }, 1);
 	  }, false);
 
-	function func(){
-	document.location = 'assess_form.html';
-
-	}
-
-
+	// Check to see whether the user's initials match
 	function initialsMatch(){
 		var s=document.getElementById("initials").value;
 		var fname=document.getElementById("txt_first_name").value;
 		var lname=document.getElementById("txt_last_name").value;
 		if((s.charAt(0)!=fname.charAt(0))||(s.charAt(1)!=lname.charAt(0)))
-		return false;
-		else
-		return true;
-
-	}
-
-	var jsonObject = "";
-
-	function save_disaster_entry()
-	{
-		if(!initialsMatch())
 		{
 			//document.write("error");
 			document.getElementById("error_container").style.display = "block";
@@ -589,7 +580,25 @@ TODO:
 			return false;
 		}
 		else
+			return true;
+	}
+
+	function setValues(a){
+	//	document.write(objGet('tel_house_num'));
+		document.getElementById(a).value=getObj(a);
+
+	}
+
+	// Initialize variables
+	var jsonObject = "";
+
+	function save_disaster_entry()
+	{
+		if(!initialsMatch())
+			return false;
+		else
 		{
+			// We use the same key as we loaded earlier. 
 			var keyToUse = parseInt(localStorage.getItem("disasterKey"));
 
 			var now = new Date();
@@ -599,7 +608,7 @@ TODO:
 				"id" : keyToUse, 	// Same as the key of the <key, value> local storage pair
 				"volunteer_id" : localStorage.getItem("volunteer_id"),
 				"volunteer_name" : localStorage.getItem("volunteer_name"),
-				"start_time" : "" + now.getTime();
+				"start_time" : "" + now.getTime(),
 				"end_time" : "", // TODO
 				"street_name" : document.getElementById("street_name_input").value,
 				"tel_house_num" : document.getElementById("tel_house_num").value,
@@ -638,33 +647,62 @@ TODO:
 				// waiver_signature_time
 			}
 
-			// Save JSON object to local storage
-			localStorage.setItem(keyToUse, JSON.stringify(this_entry));
-
-
 			// Reset the disasterKey element so that we don't overwrite this element next time
 			localStorage.setItem("disasterKey", keyToUse);
 
-			// Go to review page
 
-		return true;	
-
+			if (navigator.onLine)
+			{
+				// We are connected to the Internet. Send this entry to the server.
+				document.getElementById("recordJSON").value = "[" + JSON.stringify(this_entry); + "]";
+ 				document.forms["hidden_record_form"].submit();
+			}
+			else
+			{
+				// We are not connected to the Internet. Save this entry locally.
+				localStorage.setItem(keyToUse, JSON.stringify(this_entry));
+			}
 		}
 	}
 
 
 
-	function getSerializedJSON()
+	function loadJSON()
 	{
 		var storedJSON = localStorage.getItem(localStorage.getItem("disasterKey"));
 		jsonObject = eval('(' + storedJSON + ')');
-		var jsonString = JSON.stringify(jsonObject);	
-		return jsonString;
-	}
 
-	function objGet(field_name)
-	{
-		document.write(jsonObject[field_name]);
+		// Load all values into the hidden form
+		setValues("tel_house_num");
+		setValues("street_name_input");
+		setValues("txt_city");
+		setValues("txt_state");
+		setValues("tel_zip");
+		setValues("txt_first_name");
+		setValues("txt_last_name");
+		setValues("dwelling_type");
+		setValues("owner_information");
+		setValues("landlord_name");
+		setValues("landlord_tel");
+		setValues("insurance_information");
+		setValues("number_floors");
+		setValues("is_basement");
+		setValues("is_basement_occupied");
+		setValues("txtarea_basement_comment");
+		setValues("water_in_living_area");
+		setValues("water_in_basement");
+		setValues("electric");
+		setValues("gas");
+		setValues("d_electrical");
+		setValues("d_furnace");
+		setValues("d_water");
+		setValues("d_washer");
+		setValues("d_dryer");
+		setValues("d_stove");
+		setValues("d_fridge");
+		setValues("select_classification");
+		setValues("txtArea_classification_reason");
+		setValues("txtArea_comment");
 	}
 
 	function getObj(field_name)
@@ -674,31 +712,8 @@ TODO:
 
 	function submitCurrentRecord()
 	{
-		// Save record (potentially edited) to local storage
-		// Check if online
-			// If online
-				// Populate a hidden field in a form on the page with the JSON record
-				// do a document.hidden_form.submit();
-			// If offline
-				// you're done
-
-		// Provide feedback to the user about what happened
-			// Servlet should provide response indicating save OK
-
-		// Send the user to a page where they can choose to start another record OR look at sync screen
-
-		// Take the record currently stored at lS.DisasterKey and send it to the database if possible
-		if (save_disaster_entry()){
-		 var str=getSerializedJSON();
-		//document.write("str is "+str);
-		if (navigator.onLine)
-		{
-			document.hidden_record_form.recordJson.value=str;
-			document.hidden_record_form.submit();
-		}
-
-		document.location="final_steps.html";
-	}
+		if (initialsMatch())
+			save_disaster_entry();
 	}
 
 	function enableFields(field){
@@ -706,18 +721,19 @@ TODO:
 		document.getElementById(field).style.border="1px solid black";	
 	}
 
-	function show(a){
+	function show(a)
+	{
 
-	if(a=="address"){
-		//document.write("hello");
-	enableFields("tel_house_num");
-	enableFields("street_name_input");
-	enableFields("txt_city");
-	enableFields("txt_state");
-	enableFields("tel_zip");
-	}
+		if(a=="address"){
+			//document.write("hello");
+			enableFields("tel_house_num");
+			enableFields("street_name_input");
+			enableFields("txt_city");
+			enableFields("txt_state");
+			enableFields("tel_zip");
+		}
 
-	if(a=="dwelling"){
+		if(a=="dwelling"){
 
 			enableFields("txt_first_name");
 			enableFields("txt_last_name");
@@ -727,10 +743,9 @@ TODO:
 			enableFields("landlord_tel");
 			enableFields("insurance_information");	
 
-	}
+		}
 
-
-	if(a=="general"){
+		if(a=="general"){
 
 			enableFields("number_floors");
 			enableFields("is_basement");
@@ -741,9 +756,9 @@ TODO:
 			enableFields("electric");
 			enableFields("gas");
 
-	}
+		}
 
-	if(a=="appliance"){
+		if(a=="appliance"){
 
 			enableFields("d_electrical");
 			enableFields("d_furnace");
@@ -753,46 +768,34 @@ TODO:
 			enableFields("d_stove");
 			enableFields("d_fridge");
 
-	}
+		}
 
-	if(a=="classification"){
+		if(a=="classification"){
 
-				enableFields("select_classification");
-				enableFields("txtArea_classification_reason");
-				enableFields("txtArea_comment");
-
-
-	}
+			enableFields("select_classification");
+			enableFields("txtArea_classification_reason");
+			enableFields("txtArea_comment");
+		}
 
 	}
-	function setValues(a){
-	//	document.write(objGet('tel_house_num'));
-		document.getElementById(a).value=getObj(a);
-
-	}
-
+	
 	</script>
+
 <link rel="stylesheet" media="all" href="style.css" />
 <title>Disaster Response App</title>
 </head>
 
-<!-- script immediately scrolls the page one pixel to hide the address bar -->
+<body onLoad="loadJSON()">
 
+	<div data-role="page" id="one">
 
-<body>
+		<div data-role="header" data-theme="b">
+			<h2>Review Data</h2>
+		</div><!-- /header -->
 
+		<div data-role="content" >
 
-
-<div class='info_message'>Please show this summary screen to the client and ask them to verify the information entered.</div>
-
-<div id="error_container" class='failure_message' style='display:none'>
-	
-	<div id="inperror"></div>
-</div>
-
-	<script>getSerializedJSON()</script>
-
-	<h1>Disaster Data Summary</h1>
+			<div class='instruction_text'>Please review this information with the client to ensure that it has been entered correctly.</div>
 
 <a href="javascript:show('address');" id='address'><h4 align="right"> Edit </h4></a>
 	<div class='sub_form'>	
@@ -806,18 +809,6 @@ TODO:
 	<tr><td>			Zipcode: </td><td>  <input type="text" name="tel_zip" id="tel_zip" disabled style="border: 0px solid #000000;"> </td></tr>
 
 </table>		
-<!--
-			&nbsp;<script>objGet("street_name"); </script><br> <script> objGet("txt_city"); </script>, <script> objGet("txt_state"); </script> <script> objGet("tel_zip"); </script>
--->
-		<script>
-		setValues("tel_house_num");
-		setValues("street_name_input");
-		setValues("txt_city");
-		setValues("txt_state");
-		setValues("tel_zip");
-		
-		</script>
-
 
 	</center>
 
@@ -852,17 +843,6 @@ TODO:
 					Insurance Info:</td><td class='form_table_input'> <input type="text" name="insurance_information" id="insurance_information" disabled style="border: 0px;"> </td></tr>
 				</table>
 				
-				
-				<script>
-				setValues("txt_first_name");
-				setValues("txt_last_name");
-				setValues("dwelling_type");
-				setValues("owner_information");
-				setValues("landlord_name");
-				setValues("landlord_tel");
-				setValues("insurance_information");
-
-				</script>
 			</center>
 		</div>
 
@@ -931,18 +911,6 @@ TODO:
 			</tr>
 
 		</table>
-		
-		<script>
-		setValues("number_floors");
-		setValues("is_basement");
-		setValues("is_basement_occupied");
-		setValues("txtarea_basement_comment");
-		setValues("water_in_living_area");
-		setValues("water_in_basement");
-		setValues("electric");
-		setValues("gas");
-
-		</script>
 </center>
 	</div>
 
@@ -1002,19 +970,7 @@ TODO:
 					</td>
 				</tr>
 			</table>
-			
-			
-			<script>
-			setValues("d_electrical");
-			setValues("d_furnace");
-			setValues("d_water");
-			setValues("d_washer");
-			setValues("d_dryer");
-			setValues("d_stove");
-			setValues("d_fridge");
-			
-			</script>	
-			
+
 		</center>
 		</div>
 
@@ -1034,35 +990,44 @@ TODO:
 
 		<textarea id="txtArea_comment" style="border: 0px;" disabled>  </textarea> 
 		
+		<a href='#two' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">
+				<div class='mainlink_big_head'>Continue</div>
+		</a>		
+		
 		</div>
-		
-		<script>
-		setValues("select_classification");
-		setValues("txtArea_classification_reason");
-		setValues("txtArea_comment");
-		
-		</script>
-
-<h1>Waiver Signature</h1>
-
-<div class='info_message'>The CLIENT must read and indicate acceptance of the waiver below.</div>
-
-<div class='sub_form'>	
-I, <b><script> objGet("txt_first_name"); </script> <script> objGet("txt_last_name"); </script></b>, hereby authorize the release of information contained in this form to the American Red Cross, North Hills Community Outreach, Salvation Army, the United Way, the Coordinated Assistance Network, other faith-based, federal and and state emergency assistance agencies for the express and singular purpose of assisting efforts to meet my disaster needs. This information will not be made public or used for anything other than its intended use - disaster relief assistance. I also understand the the information provided here is truthful and accurate and I could face prosecution for fraud if it is discovered that the information is false or intended to defraud the agencies providing assistance.<br /><br />
-
-<div class='instruction_text'>Please initial below to indicate your acceptance of these terms:</div>
-<input type="text" name="initials" style='width:5em' id="initials"/>
+	</div>
 </div>
 
-<div class="bottom_button_row">
-<input type='button' value='Back' style='text-align:center;margin:auto;background-color:#dddddd' onClick="func()"/ >
+<div data-role="page" id="two">
 
-<form name="hidden_record_form" method="post" action="FillInForm">
-	<input type="hidden" name="recordJson" />
-</form>
+	<div data-role="header" data-theme="b">
+		<a href='#one'>Back</a>
+		<h2>Sign Waiver</h2>
+	</div><!-- /header -->
 
-<a href='javascript:submitCurrentRecord();'>Continue</a>
+	<div data-role="content" >
 
+		<div id="error_container" class='failure_message' style='display:none'>
+			<div id="inperror"></div>
+		</div>
+			
+		<div class='instruction_text' style='color:red'>The client must read and indicate acceptance of the waiver below.</div>
+
+		<div class='sub_form'>	
+			I, <b></b>, hereby authorize the release of information contained in this form to the American Red Cross, North Hills Community Outreach, Salvation Army, the United Way, the Coordinated Assistance Network, other faith-based, federal and and state emergency assistance agencies for the express and singular purpose of assisting efforts to meet my disaster needs. This information will not be made public or used for anything other than its intended use - disaster relief assistance. I also understand the the information provided here is truthful and accurate and I could face prosecution for fraud if it is discovered that the information is false or intended to defraud the agencies providing assistance.<br /><br />
+
+			<div class='instruction_text'>Please initial below to indicate your acceptance of these terms:</div>
+			<input type="text" name="initials" style='width:5em' id="initials"/>
+		</div>
+
+			<form name="hidden_record_form" method="post" action="FillInForm">
+				<input type="hidden" id="recordJSON" />
+			</form>
+
+			<a href='#two' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external" onClick="submitCurrentRecord()">
+					<div class='mainlink_big_head'>Submit record</div>
+			</a>
+	</div>
 </div>
 	
 	</body>

@@ -180,6 +180,7 @@ function getAllItems() {
 	}
 	
 	document.getElementById("records").style.display = "block";
+	document.getElementById("json_records").value = document.getElementById("json_records").value + "]";
 }
 
 function writeLocalRecord(obj)
@@ -195,6 +196,8 @@ function writeLocalRecord(obj)
 	
 	if (currentFormHTML != "" && currentFormHTML != null)
 		currentFormHTML += ", "; // Add a comma separator for the next JSON record
+	else
+		currentFormHTML = "["; 
 		
 	var newFormHTML = JSON.stringify(obj);
 	
