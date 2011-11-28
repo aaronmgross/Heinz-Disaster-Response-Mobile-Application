@@ -16,230 +16,234 @@ TODO:
 <meta name="apple-mobile-web-app-capable" content="yes"> <!-- tags as web app for iOS -->
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- status bar translucent -->
 
+<!-- Stylesheets -->
+	<link rel="stylesheet" media="all" href="style.css" />
+
+	
+	<script type="text/javascript">
+	alert("hi i'm here");
+	window.addEventListener('load', function(e) {
+	    setTimeout(function() { window.scrollTo(0, 1); }, 1);
+	  }, false);
+
+	function func(){
+	document.location = 'assess_form.html';
+
+	}
+
+
+	function initialsMatch(){
+		var s=document.getElementById("initials").value;
+		var fname=document.getElementById("txt_first_name").value;
+		var lname=document.getElementById("txt_last_name").value;
+		if((s.charAt(0)!=fname.charAt(0))||(s.charAt(1)!=lname.charAt(0)))
+		return false;
+		else
+		return true;
+
+	}
+
+	var jsonObject = "";
+
+	function save_disaster_entry()
+	{
+		if(!initialsMatch())
+		{
+			//document.write("error");
+			document.getElementById("error_container").style.display = "block";
+			document.getElementById("inperror").innerHTML ="The initials did not match with the first and last name provided.";
+			scroll(0,0);
+			return false;
+		}
+		else
+		{
+			var keyToUse = parseInt(localStorage.getItem("disasterKey"));
+
+			var now = new Date();
+			// Construct the JSON object
+			var this_entry = 
+			{
+				"id" : keyToUse, 	// Same as the key of the <key, value> local storage pair
+				"volunteer_id" : localStorage.getItem("volunteer_id"),
+				"volunteer_name" : localStorage.getItem("volunteer_name"),
+				"start_time" : "" + now.getTime();
+				"end_time" : "", // TODO
+				"street_name" : document.getElementById("street_name_input").value,
+				"tel_house_num" : document.getElementById("tel_house_num").value,
+				"tel_apt" : "",
+				"txt_state" : document.getElementById("txt_state").value,
+				"txt_city" : document.getElementById("txt_city").value,
+				"tel_zip" : document.getElementById("tel_zip").value,
+				"txt_first_name" : document.getElementById("txt_first_name").value,
+				"txt_last_name" : document.getElementById("txt_last_name").value,
+				"dwelling_type" : document.getElementById("dwelling_type").value,
+				"owner_information" : document.getElementById("owner_information").value,
+				"landlord_name" : document.getElementById("landlord_name").value,
+				"landlord_tel" : document.getElementById("landlord_tel").value,
+				"insurance_information" : document.getElementById("insurance_information").value,
+				"number_floors" : document.getElementById("number_floors").value,
+				"is_basement" : document.getElementById("is_basement").value,
+				"is_basement_occupied" : document.getElementById("is_basement_occupied").value,
+				"txtarea_basement_comment" : document.getElementById("txtarea_basement_comment").value,
+				"water_in_living_area" : document.getElementById("water_in_living_area").value,
+				"water_in_basement" : document.getElementById("water_in_basement").value,
+				"electric" : document.getElementById("electric").value,
+				"gas" : document.getElementById("gas").value,
+				"d_electrical" : document.getElementById("d_electrical").value,
+				"d_furnace" : document.getElementById("d_furnace").value,
+				"d_water" : document.getElementById("d_water").value,
+				"d_washer" : document.getElementById("d_washer").value,
+				"d_dryer" : document.getElementById("d_dryer").value,
+				"d_stove" : document.getElementById("d_stove").value,
+				"d_fridge" : document.getElementById("d_fridge").value,
+				"select_classification" : document.getElementById("select_classification").value,
+				"txtArea_classification_reason" : document.getElementById("txtArea_classification_reason").value,
+				"txtArea_comment" : document.getElementById("txtArea_comment").value,
+				// TODO:
+				// lat
+				// long
+				// waiver_signature_time
+			}
+
+			// Save JSON object to local storage
+			localStorage.setItem(keyToUse, JSON.stringify(this_entry));
+
+
+			// Reset the disasterKey element so that we don't overwrite this element next time
+			localStorage.setItem("disasterKey", keyToUse);
+
+			// Go to review page
+
+		return true;	
+
+		}
+	}
+
+
+
+	function getSerializedJSON()
+	{
+		var storedJSON = localStorage.getItem(localStorage.getItem("disasterKey"));
+		jsonObject = eval('(' + storedJSON + ')');
+		var jsonString = JSON.stringify(jsonObject);	
+		return jsonString;
+	}
+
+	function objGet(field_name)
+	{
+		document.write(jsonObject[field_name]);
+	}
+
+	function getObj(field_name)
+	{
+		return jsonObject[field_name];
+	}
+
+	function submitCurrentRecord()
+	{
+		// Save record (potentially edited) to local storage
+		// Check if online
+			// If online
+				// Populate a hidden field in a form on the page with the JSON record
+				// do a document.hidden_form.submit();
+			// If offline
+				// you're done
+
+		// Provide feedback to the user about what happened
+			// Servlet should provide response indicating save OK
+
+		// Send the user to a page where they can choose to start another record OR look at sync screen
+
+		// Take the record currently stored at lS.DisasterKey and send it to the database if possible
+		if (save_disaster_entry()){
+		 var str=getSerializedJSON();
+		//document.write("str is "+str);
+		if (navigator.onLine)
+		{
+			document.hidden_record_form.recordJson.value=str;
+			document.hidden_record_form.submit();
+		}
+
+		document.location="final_steps.html";
+	}
+	}
+
+	function enableFields(field){
+		document.getElementById(field).disabled=false;
+		document.getElementById(field).style.border="1px solid black";	
+	}
+
+	function show(a){
+
+	if(a=="address"){
+		//document.write("hello");
+	enableFields("tel_house_num");
+	enableFields("street_name_input");
+	enableFields("txt_city");
+	enableFields("txt_state");
+	enableFields("tel_zip");
+	}
+
+	if(a=="dwelling"){
+
+			enableFields("txt_first_name");
+			enableFields("txt_last_name");
+			enableFields("dwelling_type");
+			enableFields("owner_information");
+			enableFields("landlord_name");
+			enableFields("landlord_tel");
+			enableFields("insurance_information");	
+
+	}
+
+
+	if(a=="general"){
+
+			enableFields("number_floors");
+			enableFields("is_basement");
+			enableFields("is_basement_occupied");
+			enableFields("txtarea_basement_comment");
+			enableFields("water_in_living_area");
+			enableFields("water_in_basement");
+			enableFields("electric");
+			enableFields("gas");
+
+	}
+
+	if(a=="appliance"){
+
+			enableFields("d_electrical");
+			enableFields("d_furnace");
+			enableFields("d_water");
+			enableFields("d_washer");
+			enableFields("d_dryer");
+			enableFields("d_stove");
+			enableFields("d_fridge");
+
+	}
+
+	if(a=="classification"){
+
+				enableFields("select_classification");
+				enableFields("txtArea_classification_reason");
+				enableFields("txtArea_comment");
+
+
+	}
+
+	}
+	function setValues(a){
+	//	document.write(objGet('tel_house_num'));
+		document.getElementById(a).value=getObj(a);
+
+	}
+
+	</script>
 <link rel="stylesheet" media="all" href="style.css" />
 <title>Disaster Response App</title>
 </head>
 
 <!-- script immediately scrolls the page one pixel to hide the address bar -->
-<script type="text/javascript">
-window.addEventListener('load', function(e) {
-    setTimeout(function() { window.scrollTo(0, 1); }, 1);
-  }, false);
-
-function func(){
-document.location = 'assess_form.html';
-
-}
-
-
-function initialsMatch(){
-	var s=document.getElementById("initials").value;
-	var fname=document.getElementById("txt_first_name").value;
-	var lname=document.getElementById("txt_last_name").value;
-	if((s.charAt(0)!=fname.charAt(0))||(s.charAt(1)!=lname.charAt(0)))
-	return false;
-	else
-	return true;
-	
-}
-
-var jsonObject = "";
-
-function save_disaster_entry()
-{
-
-	
-	if(!initialsMatch())
-	{
-		//document.write("error");
-		document.getElementById("error_container").style.display = "block";
-		document.getElementById("inperror").innerHTML ="The initials did not match with the first and last name provided.";
-		scroll(0,0);
-		return false;
-	}
-	else
-	{
-		var keyToUse = parseInt(localStorage.getItem("disasterKey"));
-
-		// Construct the JSON object
-		var this_entry = 
-		{
-			"id" : keyToUse, 	// Same as the key of the <key, value> local storage pair
-			"volunteer_id" : localStorage.getItem("volunteer_id"),
-			"volunteer_name" : localStorage.getItem("volunteer_name"),
-			"start_time" : "", // TODO
-			"end_time" : "", // TODO
-			"street_name" : document.getElementById("street_name_input").value,
-			"tel_house_num" : document.getElementById("tel_house_num").value,
-			"tel_apt" : "",
-			"txt_state" : document.getElementById("txt_state").value,
-			"txt_city" : document.getElementById("txt_city").value,
-			"tel_zip" : document.getElementById("tel_zip").value,
-			"txt_first_name" : document.getElementById("txt_first_name").value,
-			"txt_last_name" : document.getElementById("txt_last_name").value,
-			"dwelling_type" : document.getElementById("dwelling_type").value,
-			"owner_information" : document.getElementById("owner_information").value,
-			"landlord_name" : document.getElementById("landlord_name").value,
-			"landlord_tel" : document.getElementById("landlord_tel").value,
-			"insurance_information" : document.getElementById("insurance_information").value,
-			"number_floors" : document.getElementById("number_floors").value,
-			"is_basement" : document.getElementById("is_basement").value,
-			"is_basement_occupied" : document.getElementById("is_basement_occupied").value,
-			"txtarea_basement_comment" : document.getElementById("txtarea_basement_comment").value,
-			"water_in_living_area" : document.getElementById("water_in_living_area").value,
-			"water_in_basement" : document.getElementById("water_in_basement").value,
-			"electric" : document.getElementById("electric").value,
-			"gas" : document.getElementById("gas").value,
-			"d_electrical" : document.getElementById("d_electrical").value,
-			"d_furnace" : document.getElementById("d_furnace").value,
-			"d_water" : document.getElementById("d_water").value,
-			"d_washer" : document.getElementById("d_washer").value,
-			"d_dryer" : document.getElementById("d_dryer").value,
-			"d_stove" : document.getElementById("d_stove").value,
-			"d_fridge" : document.getElementById("d_fridge").value,
-			"select_classification" : document.getElementById("select_classification").value,
-			"txtArea_classification_reason" : document.getElementById("txtArea_classification_reason").value,
-			"txtArea_comment" : document.getElementById("txtArea_comment").value,
-			// TODO:
-			// lat
-			// long
-			// waiver_signature_time
-		}
-
-		// Save JSON object to local storage
-		localStorage.setItem(keyToUse, JSON.stringify(this_entry));
-		
-
-		// Reset the disasterKey element so that we don't overwrite this element next time
-		localStorage.setItem("disasterKey", keyToUse);
-
-		// Go to review page
-	
-	return true;	
-		
-	}
-}
-
-
-
-function getSerializedJSON()
-{
-	var storedJSON = localStorage.getItem(localStorage.getItem("disasterKey"));
-	jsonObject = eval('(' + storedJSON + ')');
-	var jsonString = JSON.stringify(jsonObject);	
-	return jsonString;
-}
-
-function objGet(field_name)
-{
-	document.write(jsonObject[field_name]);
-}
-
-function getObj(field_name)
-{
-	return jsonObject[field_name];
-}
-
-function submitCurrentRecord()
-{
-	// Save record (potentially edited) to local storage
-	// Check if online
-		// If online
-			// Populate a hidden field in a form on the page with the JSON record
-			// do a document.hidden_form.submit();
-		// If offline
-			// you're done
-
-	// Provide feedback to the user about what happened
-		// Servlet should provide response indicating save OK
-		
-	// Send the user to a page where they can choose to start another record OR look at sync screen
-	
-	// Take the record currently stored at lS.DisasterKey and send it to the database if possible
-	if (save_disaster_entry()){
-	 var str=getSerializedJSON();
-	//document.write("str is "+str);
-	if (navigator.onLine)
-	{
-		document.hidden_record_form.recordJson.value=str;
-		document.hidden_record_form.submit();
-	}
-	
-	document.location="final_steps.html";
-}
-}
-
-function enableFields(field){
-	document.getElementById(field).disabled=false;
-	document.getElementById(field).style.border="1px solid black";	
-}
-
-function show(a){
-	
-if(a=="address"){
-	//document.write("hello");
-enableFields("tel_house_num");
-enableFields("street_name_input");
-enableFields("txt_city");
-enableFields("txt_state");
-enableFields("tel_zip");
-}
-
-if(a=="dwelling"){
-	
-		enableFields("txt_first_name");
-		enableFields("txt_last_name");
-		enableFields("dwelling_type");
-		enableFields("owner_information");
-		enableFields("landlord_name");
-		enableFields("landlord_tel");
-		enableFields("insurance_information");	
-	
-}
-
-
-if(a=="general"){
-	
-		enableFields("number_floors");
-		enableFields("is_basement");
-		enableFields("is_basement_occupied");
-		enableFields("txtarea_basement_comment");
-		enableFields("water_in_living_area");
-		enableFields("water_in_basement");
-		enableFields("electric");
-		enableFields("gas");
-	
-}
-
-if(a=="appliance"){
-	
-		enableFields("d_electrical");
-		enableFields("d_furnace");
-		enableFields("d_water");
-		enableFields("d_washer");
-		enableFields("d_dryer");
-		enableFields("d_stove");
-		enableFields("d_fridge");
-	
-}
-
-if(a=="classification"){
-	
-			enableFields("select_classification");
-			enableFields("txtArea_classification_reason");
-			enableFields("txtArea_comment");
-		
-
-}
-
-}
-function setValues(a){
-//	document.write(objGet('tel_house_num'));
-	document.getElementById(a).value=getObj(a);
-	
-}
-
-</script>
 
 
 <body>

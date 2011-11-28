@@ -1,0 +1,93 @@
+<!-- draft page -->
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" media="all" href="style.css" />
+<!--<link rel="stylesheet" href="jquery.mobile-1.0.css" />-->
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+
+<!-- JavaScript Includes -->
+<script type="text/javascript" src="jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="jquery.mobile-1.0.js"></script>
+
+
+<title>Disaster Response Mobile Assessment</title>
+
+</head>
+<script>
+// Scroll the page one pixel to hide the menu bar
+window.addEventListener('load', function(e) {
+    setTimeout(function() { window.scrollTo(0, 1); }, 1);
+  }, false);
+</script>
+<!-- script immediately scrolls the page one pixel to hide the address bar -->
+<script type="text/javascript">
+
+
+function delete_disaster_entries(){
+var logLength = localStorage.length-1;
+for (i = 0; i <= logLength; i++) {
+        //lets setup some variables for the key and values
+        var itemKey = localStorage.key(i);
+	localStorage.removeItem(itemKey);
+}
+
+document.location="hello.java";
+
+}
+
+/* Function pulls all JSON objects stored in local storage */
+function getAllItems() {
+
+    var i = 0;
+    var logLength = localStorage.length-1; 
+
+	/* Loop through all local storage objects and see if they're a JSON object */
+    for (i = 0; i <= logLength; i++) 
+	{
+		var values = localStorage.getItem(i);
+        var itemKey = localStorage.key(i);
+
+		/* If we have retrieved a JSON string */
+		if (values != null)
+		{
+			/* Create an object from the string */
+			var localJsonObject = eval('(' + values + ')');
+			
+			if (localJsonObject["id"] != null)
+				writeLocalRecord(localJsonObject);
+		}
+	}
+}
+
+function writeLocalRecord(obj)
+{
+	document.write("<div class='sub_form'>");
+	document.write("<div class='mainlink_subtitle'>" + obj["tel_house_num"] + " " + obj["street_name"] + "</div>");
+	document.write("ID: " + obj["id"] + "</div>")
+	document.write("</div>");
+}
+
+
+</script>
+
+<body>
+	<h1>Assessment Details</h1>
+	<div class='instruction_text'><center>Records that are yet to be synced with the central database are displayed below</center></div>
+
+
+
+<script type="text/javascript">getAllItems();</script>
+<form name="disaster" action="process.java" onSubmit="delete_disaster_entries()">
+<div class="bottom_button_row">
+
+<input type='submit' value='Sync' style='text-align:center;margin:auto' "/>
+</div>
+</form>
+
+</body>
+
+</html>

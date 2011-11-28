@@ -1,14 +1,22 @@
 <!-- draft page -->
-
-<html manifest="mobileapp.manifest">
+<html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">	<!-- sets document with to device width -->
-<meta name="apple-mobile-web-app-capable" content="yes"> <!-- tags as web app for iOS -->
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- status bar translucent -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
 
+<!-- Stylesheets -->
+<!-- Stylesheets -->
 <link rel="stylesheet" media="all" href="style.css" />
-<title>Sync Assessment Details</title>
-</head>
+<!--<link rel="stylesheet" href="jquery.mobile-1.0.css" />-->
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+
+<!-- JavaScript Includes -->
+<script type="text/javascript" src="jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="jquery.mobile-1.0.js"></script>
+
+
+<title>Disaster Response Mobile Assessment</title>
+
 <script>
 // Scroll the page one pixel to hide the menu bar
 window.addEventListener('load', function(e) {
@@ -31,85 +39,100 @@ document.location="hello.java";
 
 }
 
+/* Function pulls all JSON objects stored in local storage */
 function getAllItems() {
-    var timeLog = ""; //the variable that will hold our html
+
     var i = 0;
     var logLength = localStorage.length-1; 
 
-    var count=0;
-
-   
-    
-    for (i = 0; i <= logLength; i++) {
-        
+	/* Loop through all local storage objects and see if they're a JSON object */
+    for (i = 0; i <= logLength; i++) 
+	{
+		var values = localStorage.getItem(i);
         var itemKey = localStorage.key(i);
 
-        var values = localStorage.getItem(itemKey);
-		
-		var localJsonObject = eval('(' + values + ')');
-
-		document.write("Last name "+localJsonObject.get("txt_last_name"));
+		/* If we have retrieved a JSON string */
+		if (values != null)
+		{
+			/* Create an object from the string */
+			var localJsonObject = eval('(' + values + ')');
+			
+			if (localJsonObject["id"] != null)
+				writeLocalRecord(localJsonObject);
+		}
 	}
-/*
-	//document.write("itemkey : "+itemKey+" values: "+values);
-	var fname,lname,zip,city,state;
-	values = values.split(","); //create an array of the values
-	for(j=0;j<values.length;j++){
- 	//
-	if (values[j].match(/txt_first_name/)) {  
-	fname=values[j].substring(18,values[j].length-1);
-
-	}
-	//values[j].match(/txt_last_name/)?document.write("Client last Name: "+values[j].substring(18,values[j].length-1)+"\n <br>"):document.write("last name not recorded<br>");
-
-	if (values[j].match(/txt_last_name/)) {  
-	lname=values[j].substring(18,values[j].length-1);
-	}
-
-	if (values[j].match(/tel_zip/)) {  
-	zip=values[j].substring(11,values[j].length-1);
-	}
-
-	if (values[j].match(/txt_city/)) {  
-	city=values[j].substring(12,values[j].length-1);
-	}
-
-	if (values[j].match(/txt_state/)) {  
-	state=values[j].substring(13,values[j].length-1);
-	}
-	//document.write("<h4> <center> <font color=\"green\"> Client First Name: "+fname+" Client Last Name: "+lname+" City: "+city+" State: "+state+" Zipcode: "+zip+" </center> </font> </h4>");
-
-	}
-
-	if(fname!=null && lname!=null) {
-	document.write("<h4> <center> <font color=\"green\"> Client First Name: "+fname+" Client Last Name: "+lname+" City: "+city+" State: "+state+" Zipcode: "+zip+" </center> </font> </h4>");
-	count=count+1;
-	}
-
-  	 }
-
-	if(count==0) {
-		document.write("<h3> All records have been synchronized with the server at this stage </h3>");
-	}*/
-
+	
+	document.getElementById("records").style.display = "block";
 }
 
+function writeLocalRecord(obj)
+{
+	var currentRecordHTML = document.getElementById("records").innerHTML;
+	
+	var newHTML = "<div class='sub_form'>";
+	newHTML += "<div class='mainlink_subtitle'># " + obj["id"] + ": " + obj["tel_house_num"] + " " + obj["street_name"] + "</div>";
+	newHTML += "Client Name: " + obj["txt_first_name"] + " " + obj["txt_last_name"] + "<br />"
+	newHTML += "</div>";
+	
+	var currentFormHTML = document.getElementById("json_records").value;
+	
+	if (currentFormHTML != "" && currentFormHTML != null)
+		currentFormHTML += ", "; // Add a comma separator for the next JSON record
+		
+	var newFormHTML = JSON.stringify(obj);
+	
+	document.getElementById("records").innerHTML = currentRecordHTML + newHTML;
+	document.getElementById("json_records").value = currentFormHTML + newFormHTML;
+}
+
+function sendLocalRecord()
+{
+	// Submit the form, which should be populated with all local records.
+	if (document.getElementById("json_records").value != "")
+		document.forms["local_record_submit"].submit();
+		
+	// Once we recieve an OK from the server, we delete local records...
+	// TODO
+}
 
 </script>
+</head>
 
-<body>
-	<h1>Assessment Details</h1>
-	<div class='instruction_text'><center>Records that are yet to be synced with the central database are displayed below</center></div>
+<body onLoad="getAllItems()">
+
+<div data-role="page" id="one">
+
+	<div data-role="header" data-theme="b">
+		<a href='welcome.html'>Back</a>
+		<h2>Sync Records</h2>
+		<a href='javascript:;' onClick="sendLocalRecord()">Sync</a>
+	</div><!-- /header -->
+
+	<div data-role="content" >	
+
+	<div class='instruction_text' style='color:red'>The following disaster entries are currently only saved on your phone, and haven't been sent to the central database. You should sync them as soon as you have access to the Internet!</div>
+
+	<a href='javascript:;' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external" onClick="sendLocalRecord()">
+			<div class='mainlink_big_head'>Sync all</div>
+			<div class='mainlink_subtitle'>records to database</div>
+	</a>
+
+	<div id="records" style='display:none'></div>
+	
+	<a href='javascript:;' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external" onClick="sendLocalRecord()">
+			<div class='mainlink_big_head'>Sync all</div>
+			<div class='mainlink_subtitle'>records to database</div>
+	</a>
+	
+	<div id="record_form" style='display:none'></div>
+	
+		<form name="local_record_submit" action="FillInForm" method="post">
+		<input type='hidden' id="json_records" name='json_records' value='' />
+		</form>
+	</div>
 
 
-
-<script type="text/javascript">getAllItems();</script>
-<form name="disaster" action="process.java" onSubmit="delete_disaster_entries()">
-<div class="bottom_button_row">
-
-<input type='submit' value='Sync' style='text-align:center;margin:auto' "/>
 </div>
-</form>
 
 </body>
 

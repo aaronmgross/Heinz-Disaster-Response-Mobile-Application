@@ -16,13 +16,15 @@ TODO:
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 
-<!-- Stylesheets -->
-<link rel="stylesheet" media="all" href="style.css" />
-<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+	<!-- Stylesheets -->
+	<link rel="stylesheet" media="all" href="style.css" />
+	<!--<link rel="stylesheet" href="jquery.mobile-1.0.css" />-->
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
 
-<!-- JavaScript Includes -->
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
-<script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+	<!-- JavaScript Includes -->
+	<script type="text/javascript" src="jquery-1.6.4.min.js"></script>
+	<script type="text/javascript" src="jquery.mobile-1.0.js"></script>
+
 
 <title>Disaster Response Mobile Assessment</title>
 
@@ -30,11 +32,14 @@ TODO:
 
 
 <script>
-
+function save_curbside_entry()
+{
+	
+}
 // Create and load into local storage a JSON object for this disaster entry
 function save_disaster_entry()
 {
-	var s=validate();
+	var s = validate();
 	
 	if(s!=null)
 	{
@@ -100,7 +105,7 @@ function save_disaster_entry()
 		localStorage.setItem("disasterKey", keyToUse);
 
 		// Go to review page
-		document.location = "assess_form.html#review";
+		document.location = "summary_review.html";
 
 	}
 }
@@ -152,7 +157,7 @@ function validate(){
 		s=(s==null)?dwellingtype:(s+dwellingtype);
 	}
 
-	if(!(get_radio_value("is_basement") == "yes" || get_radio_value("is_basement").value=="no"))
+	if(!(get_radio_value("is_basement") == "yes" || get_radio_value("is_basement") =="no"))
 	{
 		s=(s==null)?isbasement:(s+isbasement);
 	}
@@ -278,6 +283,7 @@ function echoStoredStreetName()
 
 function preparePage()
 {
+	// Begin a new record for this disaster entry
 	document.getElementById("assessment_id").innerHtml = (parseInt(localStorage.getItem("disasterKey")) + 1);
 	
 	if (localStorage.getItem("street_name") != null)
@@ -332,7 +338,7 @@ function preparePage()
 					<div class='mainlink_subtitle'>disaster interview<br />with client</div>
 				</a>
 
-				<a href='find_location.html' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">
+				<a href='#curbside' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">
 					<div class='mainlink_big_head'>Curbside</div>
 					<div class='mainlink_subtitle'>quick damage <br />assessment</div>
 				</a>
@@ -343,7 +349,7 @@ function preparePage()
 
 
 	<!-- Start of second page: #two -->
-	<div data-role="page" id="two">
+	<div data-role="page" id="two">	
 
 		<div data-role="header" data-theme="b">
 			<h2>Detailed Interview</h2>
@@ -374,18 +380,18 @@ function preparePage()
 			What type of dwelling is this?<br />
 			<select id='dwelling_type'>
 				<option value="NONE">Choose one...</option>
-				<option value='S'>Single-family home</option>
-				<option value='A'>Apartment</option>
-				<option value='M'>Mobile Home</option>
-				<option value='B'>Business</option>
+				<option value='Single-family home'>Single-family home</option>
+				<option value='Apartment'>Apartment</option>
+				<option value='Mobile home'>Mobile home</option>
+				<option value='Business'>Business</option>
 			</select>
 
 			Does the client own the dwelling?<br />
 			<select id='owner_information' id="owner_information" onChange="checkRenterInfo()">
 				<option value='NONE'>Choose one...</option>
-				<option value='OW'>Yes, the client owns</option>
-				<option value='RF'>No, the client rents (furnished)</option>
-				<option value='RU'>No, the client rents (unfurnished)</option>
+				<option value='Client owns'>Yes, the client owns</option>
+				<option value='Client rents (furnished)'>No, the client rents (furnished)</option>
+				<option value='Client rents (unfurnished)'>No, the client rents (unfurnished)</option>
 			</select>
 
 			<div style='display:none' id="renter_information">
@@ -623,11 +629,11 @@ function preparePage()
 			<div class="instruction_text">Based on the <a href='#popup' data-rel="dialog" data-transition="pop">Red Cross guidelines for classification</a>, what is your overall assessment of the damage for this property?</div>
 			<select id='select_classification'>
 				<option name='choose' value="NONE">Choose one...</option>
-				<option name='Destroyed' value="DE">Destroyed</option>
-				<option name='Major' value="MA">Major</option>
-				<option name='Minor' value="MI">Minor</option>
-				<option name='Affected' value="AF">Affected</option>
-				<option name='Inaccessible' value="IN">Inaccessible</option>
+				<option name='Destroyed' value="Destroyed">Destroyed</option>
+				<option name='Major' value="Major">Major</option>
+				<option name='Minor' value="Minor">Minor</option>
+				<option name='Affected' value="Affected">Affected</option>
+				<option name='Inaccessible' value="Inaccessible">Inaccessible</option>
 			</select>
 
 			<div class="spacer"></div>
@@ -650,22 +656,118 @@ function preparePage()
 
 	<!-- Start of third page: #popup -->
 	<div data-role="page" id="popup">
-
-		<div data-role="header" data-theme="e">
-			<h2>Damage Classification Guidelines
-		</div><!-- /header -->
-
+		<div data-role="header" data-theme="e"><h2>Info</h2></div><!-- /header -->
 		<div data-role="content" data-theme="d">	
-			<h2>Popup</h2>
-			<p>I have an id of "popup" on my page container and only look like a dialog because the link to me had a <code>data-rel="dialog"</code> attribute which gives me this inset look and a <code>data-transition="pop"</code> attribute to change the transition to pop. Without this, I'd be styled as a normal page.</p>		
-			<p><a href="#one" data-rel="back" data-role="button" data-inline="true" data-icon="back">Back to page "one"</a></p>	
-		</div><!-- /content -->
+			<h2>Damage Guidelines</h2>
 
-		<div data-role="footer">
-			<h4>Page Footer</h4>
-		</div><!-- /footer -->
+			<h3>Flood Damage</h3>
+			
+			<table style='border:1px solid black'>
+				<tr><td>&nbsp; </td><td>SFD/Apt.</td><td>MH</td></tr>
+				<tr><td>Destroyed</td><td>60" or higher</td><td>48" or higher</td></tr>
+				<tr><td>Major</td><td>36" to 60"</td><td>24" to 48"</td></tr>
+				<tr><td>Minor</td><td>12" to 36"</td><td>6" to 24"</td></tr>
+				<tr><td>Affected</td><td>0" to 12"</td><td>0" to 6"</td></tr>
+			</table>
+			
+			<h3>Non-flood Damage</h3>
+			
+			<table style='border:1px solid black'>
+				<tr><td>&nbsp; </td><td>SFD/Apt.</td><td>MH</td></tr>
+				<tr><td>Destroyed</td><td>Totally gone or major part missing.</td><td>Walls collapsed, off foundation.</td></tr>
+				<tr><td>Major</td><td>Large parts of roof missing, extensive wall damage.</td><td>Twisted or bowed, forceful penetration of walls.</td></tr>
+				<tr><td>Minor</td><td>Minor structural damage, numerous windows broken, roof parts missing.</td><td>Roofing, siding missing, windows broken.</td></tr>
+				<tr><td>Affected</td><td>Damaged but usable without repairs.</td><td>Damaged but usable without repairs.</td></tr>
+			</table>
+		</div><!-- /content -->
 	</div><!-- /page popup -->
 
+	<div data-role="page" id="curbside">
+	
+	<div data-role="header" data-theme="b"><a href='#one'>Back</a><h2>Curbside</h2>
+		<div class="ui-bar-e" style="padding:4px;text-align:center">
+			This is assessment number <span id="assessment_id"></span>
+		</div>
+	</div><!-- /header -->
+	
+	<div data-role="content">
+		
+		<div class='instruction_text'>This is a curbside damage assessment. Please enter as much detail as possible about the property you are at.</div>
+		
+		<div class='sub_form'>
+
+			What type of dwelling is this?<br />
+			<select id='dwelling_type_c'>
+				<option value="NONE">Choose one...</option>
+				<option value='Single-family home'>Single-family home</option>
+				<option value='Apartment'>Apartment</option>
+				<option value='Mobile home'>Mobile home</option>
+				<option value='Business'>Business</option>
+			</select>
+		</div>
+		
+		<div class='sub_form'>
+			
+			<table style='form_table' cellpadding=0 cellspacing=0 width="100%">
+
+			<tr>
+				<td class='form_table_label' style='border:0px'>Number of floors:</td>
+				<td class='form_table_input' style='border:0px'>
+				<table><tr>
+					<td valign="center"><a href="javascript:;" onClick="decrNumFloors()"><img src='../images/minus.png' style='width:35px;vertical-align:middle' border=0></a></td>
+					<td valign="center"><input type='tel' id='number_floors_input_c' value="1" style='width:2em' /></td>
+					<td valign="center"><a href="javascript:;" onClick="incrNumFloors()"><img src='../images/plus.png' style='width:35px;vertical-align:middle' border=0></a></td>
+				</tr></table>
+				</td>
+			</tr>
+			<tr>
+				<td class='form_table_label'>How much water appears to have affected the dwelling?</td>
+				<td class='form_table_input'>
+					<table><tr><td><input type='tel' id='water_in_living_area_c' style='width:2.5em' /></td><td> <label for="water_in_living_area">inches</label></td></tr></table>
+				</td>
+			</tr>
+			<tr>
+				<td class='form_table_label'>Does there appear to be a basement?</td>
+				<td class='form_table_input'>
+					<div data-role="fieldcontain" class="iOS-fc-fix">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="is_basement_c" id="is_basement-1_c" value="yes"/>
+						<label for="is_basement-1_c">Yes</label>
+						<input type="radio" name="is_basement_c" id="is_basement-2_c" value="no"/>
+						 <label for="is_basement-2_c">No</label>
+						</fieldset>
+					</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		
+		<div class='sub_form'>
+
+			<div class="instruction_text">Based on the <a href='#popup' data-rel="dialog" data-transition="pop">Red Cross guidelines for classification</a>, what is your overall assessment of the damage for this property?</div>
+			<select id='select_classification_c'>
+				<option name='choose' value="NONE">Choose one...</option>
+				<option name='Destroyed' value="Destroyed">Destroyed</option>
+				<option name='Major' value="Major">Major</option>
+				<option name='Minor' value="Minor">Minor</option>
+				<option name='Affected' value="Affected">Affected</option>
+				<option name='Inaccessible' value="Inaccessible">Inaccessible</option>
+			</select>
+
+			<div class="spacer"></div>
+			Please provide a detailed reasoning behind your classification:<br />
+			<textarea id="txtArea_classification_reason_c" style='width:100%;height:90px;' placeholder="Enter text..."></textarea>
+
+			<div class="spacer"></div>
+			If you have any additional comments about this overall disaster entry, please add them:<br />
+			<textarea id="txtArea_comment_c" style='width:100%;height:60px;' placeholder="Enter text..."></textarea>
+		</div>
+
+
+	<a href='javascript:;' data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b" onClick='save_disaster_entry_curbside()'><div class='mainlink_big_head'>Continue</div></a>		
+	</div>
+
+	</div>
 
 	</body>
 	</html>
