@@ -179,14 +179,6 @@ public class Client {
         this.zipcode = zipcode;
     }
 
-    public String getsourceAgencyID() {
-        return sourceAgencyID;
-    }
-
-    public String getsourceAgencyName() {
-        return sourceAgencyName;
-    }
-
     public String getID() {
         return ID;
     }

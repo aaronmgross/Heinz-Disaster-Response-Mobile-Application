@@ -6,6 +6,7 @@ package DataDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -33,6 +34,31 @@ public class User {
     }
 
     public User(){}
+
+    public static User lookup(String email,Connection con) throws SQLException {
+        try {
+        	PreparedStatement pstmt = con.prepareStatement("SELECT * FROM D_User WHERE Email=?");
+        	pstmt.setString(1,email);
+        	ResultSet rs = pstmt.executeQuery();
+
+        	User user;
+        	if (!rs.next()) {
+        		user = null;
+        	} else {
+        		user = new User();
+        		user.setEmail(rs.getString("Email"));
+        		user.setPassword(rs.getString("Password"));
+        	}
+
+        	rs.close();
+        	pstmt.close();
+                return user;
+
+        } catch (Exception e) {
+            try { if (con != null) con.close(); } catch (SQLException e2) {;}
+        	throw new SQLException(e);
+        }
+	}
 
     public void Insert(Connection con) throws SQLException {
 

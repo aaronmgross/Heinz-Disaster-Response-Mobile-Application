@@ -85,7 +85,7 @@ public class XMLCreator {
         String user = "root";
         String pw = "";
         try {
-           
+
             con = DriverManager.getConnection(connectionStr, user, pw);
             PreparedStatement stat = con.prepareStatement("SELECT * FROM Cases");
             ResultSet rsAll = stat.executeQuery();
@@ -102,7 +102,7 @@ public class XMLCreator {
                 c.setLastName(client.getlName());
                 c.setAddressLine1(client.getAddress());
                 String aptNo = client.getAptNum();
-                if (aptNo != null) {
+                if (aptNo != null && !aptNo.equals("")) {
                     c.setAddressLine2("Apt " + aptNo);
                 }
                 c.setCity(client.getCity());
@@ -190,15 +190,15 @@ public class XMLCreator {
 
         Element clientEle = dom.createElement("Client");
 
-        if (c.getsourceAgencyID() != null) {
-            clientEle.setAttribute("sourceAgencyID", c.getsourceAgencyID());
+        if (c.getSourceAgencyID() != null && !c.getSourceAgencyID().equals("")) {
+            clientEle.setAttribute("sourceAgencyID", c.getSourceAgencyID());
         }
-        if (c.getsourceAgencyName() != null) {
-            clientEle.setAttribute("sourceAgencyName", c.getsourceAgencyName());
+        if (c.getSourceAgencyName() != null && !c.getSourceAgencyName().equals("")) {
+            clientEle.setAttribute("sourceAgencyName", c.getSourceAgencyName());
         }
         dataSetEle.appendChild(clientEle);
 
-        if (c.getID() != null) {
+        if (c.getID() != null && !c.getID().equals("")) {
             Element idEle = dom.createElement("ID");
             idEle.setAttribute("effective", sdf.format(today));
             idEle.setAttribute("updated", sdf.format(today));
@@ -206,7 +206,7 @@ public class XMLCreator {
             clientEle.appendChild(idEle);
         }
 
-        if (c.getFirstName() != null) {
+        if (c.getFirstName() != null && !c.getFirstName().equals("")) {
             Element fNameEle = dom.createElement("FirstName");
             fNameEle.setAttribute("updated", sdf.format(today));
             fNameEle.setAttribute("effective", sdf.format(today));
@@ -214,7 +214,7 @@ public class XMLCreator {
             clientEle.appendChild(fNameEle);
         }
 
-        if (c.getMiddleName() != null) {
+        if (c.getMiddleName() != null && !c.getMiddleName().equals("")) {
             Element mNameEle = dom.createElement("MiddleName");
             mNameEle.setAttribute("effective", sdf.format(today));
             mNameEle.setAttribute("updated", sdf.format(today));
@@ -222,7 +222,7 @@ public class XMLCreator {
             clientEle.appendChild(mNameEle);
         }
 
-        if (c.getLastName() != null) {
+        if (c.getLastName() != null && !c.getLastName().equals("")) {
             Element lNameEle = dom.createElement("LastName");
             lNameEle.setAttribute("effective", sdf.format(today));
             lNameEle.setAttribute("updated", sdf.format(today));
@@ -235,42 +235,42 @@ public class XMLCreator {
         Element address = dom.createElement("Address");
         address.setAttribute("effective", sdf.format(today));
         address.setAttribute("updated", sdf.format(today));
-        if (c.getAddressId() != null) {
+        if (c.getAddressId() != null && !c.getAddressId().equals("")) {
             Element addressId = dom.createElement("ID");
             addressId.setTextContent("1331-1");
             address.appendChild(addressId);
         }
-        if (c.getDisasterAffected() != null) {
+        if (c.getDisasterAffected() != null && !c.getDisasterAffected().equals("")) {
             Element disasterAffected = dom.createElement("DisasterAffected");
             disasterAffected.setTextContent(c.getDisasterAffected());
             address.appendChild(disasterAffected);
         }
-        if (c.getAddressLine1() != null) {
+        if (c.getAddressLine1() != null && !c.getAddressLine1().equals("")) {
             Element line1 = dom.createElement("Line1");
             line1.setTextContent(c.getAddressLine1());
             address.appendChild(line1);
         }
-        if (c.getAddressLine2() != null) {
+        if (c.getAddressLine2() != null && !c.getAddressLine2().equals("")) {
             Element line2 = dom.createElement("Line2");
             line2.setTextContent(c.getAddressLine2());
             address.appendChild(line2);
         }
-        if (c.getCity() != null) {
+        if (c.getCity() != null && !c.getCity().equals("")) {
             Element city = dom.createElement("City");
             city.setTextContent(c.getCity());
             address.appendChild(city);
         }
-        if (c.getCounty() != null) {
+        if (c.getCounty() != null && !c.getCounty().equals("")) {
             Element county = dom.createElement("County");
             county.setTextContent(c.getCounty());
             address.appendChild(county);
         }
-        if (c.getState() != null) {
+        if (c.getState() != null && !c.getState().equals("")) {
             Element state = dom.createElement("State");
             state.setTextContent(c.getState());
             address.appendChild(state);
         }
-        if (c.getZipcode() != null) {
+        if (c.getZipcode() != null && !c.getZipcode().equals("")) {
             Element zipcode = dom.createElement("ZipCode");
             zipcode.setTextContent(c.getZipcode());
             address.appendChild(zipcode);
@@ -278,63 +278,63 @@ public class XMLCreator {
         addresses.appendChild(address);
         clientEle.appendChild(addresses);
 
-        if (c.getPhone() != null) {
+        if (c.getPhone() != null && !c.getPhone().equals("")) {
             Element phEle = dom.createElement("BestPhone");
             phEle.setAttribute("effective", sdf.format(today));
             phEle.setAttribute("updated", sdf.format(today));
             phEle.setTextContent(c.getPhone());
             clientEle.appendChild(phEle);
         }
-        if (c.getDateOfBirth() != null) {
+        if (c.getDateOfBirth() != null && !c.getDateOfBirth().equals("")){
             Element dobEle = dom.createElement("DateOfBirth");
             dobEle.setAttribute("effective", sdf.format(today));
             dobEle.setAttribute("updated", sdf.format(today));
             dobEle.setTextContent(c.getDateOfBirth());
             clientEle.appendChild(dobEle);
         }
-        if (c.getGender() != null) {
+        if (c.getGender() != null && !c.getGender().equals("")) {
             Element gdrEle = dom.createElement("Gender");
             gdrEle.setAttribute("effective", sdf.format(today));
             gdrEle.setAttribute("updated", sdf.format(today));
             gdrEle.setTextContent(c.getGender());
             clientEle.appendChild(gdrEle);
         }
-        if (c.getPreDisasterLivingSituation() != null) {
+        if (c.getPreDisasterLivingSituation() != null &&!c.getPreDisasterLivingSituation().equals("")) {
             Element pdlsEle = dom.createElement("PreDisasterLivingSituation");
             pdlsEle.setAttribute("effective", sdf.format(today));
             pdlsEle.setAttribute("updated", sdf.format(today));
             pdlsEle.setTextContent(c.getPreDisasterLivingSituation());
             clientEle.appendChild(pdlsEle);
         }
-        if (c.getDmgAssmnt() != null) {
+        if (c.getDmgAssmnt() != null && !c.getDmgAssmnt().equals("")) {
             Element daEle = dom.createElement("DamageAssessment");
             daEle.setAttribute("effective", sdf.format(today));
             daEle.setAttribute("updated", sdf.format(today));
             daEle.setTextContent(c.getDmgAssmnt());
             clientEle.appendChild(daEle);
         }
-        if (c.getDmgAsmntOther() != null) {
+        if (c.getDmgAsmntOther() != null && !c.getDmgAsmntOther().equals("")) {
             Element daOtherEle = dom.createElement("DamageAssessmentOther");
             daOtherEle.setAttribute("effective", sdf.format(today));
             daOtherEle.setAttribute("updated", sdf.format(today));
             daOtherEle.setTextContent(c.getDmgAsmntOther());
             clientEle.appendChild(daOtherEle);
         }
-        if (c.getNeeds() != null) {
+        if (c.getNeeds() != null && !c.getNeeds().equals("")) {
             Element splNeedsEle = dom.createElement("SpecialNeeds");
             splNeedsEle.setAttribute("effective", sdf.format(today));
             splNeedsEle.setAttribute("updated", sdf.format(today));
             splNeedsEle.setTextContent(c.getNeeds());
             clientEle.appendChild(splNeedsEle);
         }
-        if (c.getDisasterName() != null) {
+        if (c.getDisasterName() != null && !c.getDisasterName().equals("")) {
             Element dNameEle = dom.createElement("DisasterName");
             dNameEle.setAttribute("effective", sdf.format(today));
             dNameEle.setAttribute("updated", sdf.format(today));
             dNameEle.setTextContent(c.getDisasterName());
             clientEle.appendChild(dNameEle);
         }
-        if (c.getDisasterName() != null) {
+        if (c.getDisasterName() != null && !c.getDisasterName().equals("")) {
             Element dDateEle = dom.createElement("DisasterEventDate");
             dDateEle.setAttribute("effective", sdf.format(today));
             dDateEle.setAttribute("updated", sdf.format(today));
@@ -419,5 +419,4 @@ public class XMLCreator {
             ie.printStackTrace();
         }
     }
-
 }

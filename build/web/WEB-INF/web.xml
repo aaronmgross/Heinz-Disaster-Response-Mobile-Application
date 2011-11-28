@@ -8,6 +8,10 @@
         <servlet-name>ExportXML</servlet-name>
         <servlet-class>ExportXML</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LogIn</servlet-name>
+        <servlet-class>LogIn</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>FillInForm</servlet-name>
         <url-pattern>/FillInForm</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>ExportXML</servlet-name>
         <url-pattern>/ExportXML</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogIn</servlet-name>
+        <url-pattern>/LogIn</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
