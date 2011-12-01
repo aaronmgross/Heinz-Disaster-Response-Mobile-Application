@@ -44,26 +44,34 @@ public class Register extends HttpServlet {
         String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
         //String connectionStr = "jdbc:mysql:///DisasterAssessment";
         String user = "root";
-        String pw_con = "hello";
+        String pw_con = "";
         try {
            con = (Connection) DriverManager.getConnection(connectionStr,user,pw_con);
            String firstName = request.getParameter("volunteer_firstname");
            String lastName = request.getParameter("volunteer_lastname");
-           String email = request.getParameter("volunteer_email");
+           String email_input = request.getParameter("volunteer_email");
+           String email = email_input.toLowerCase();
            String password = request.getParameter("volunteer_password");
            String passwordConfirm= request.getParameter("volunteer_password1");
            User Client=null;
            if(password.equals(passwordConfirm)&&email!=null)
            {
-              Client = new User(password,lastName,firstName,"", "",email);
-              Client.Insert(con);
-
-              String registerMessage = "Congradulations! You've been registered successfully!";
+              Client = new User(password,lastName,firstName,"","",email);
+              int flag = Client.Insert(con);
+              String registerMessage=null;
+              String destination=null;
+              if(flag==1)
+              {
+                   registerMessage = "Congradulations! You've been registered successfully!";
+                   destination = "/index.jsp";
+               }
+              else
+              {
+                  registerMessage = "We're sorry! You failed to register. Please try again!";
+                  destination = "/register.jsp";
+               }
               request.setAttribute("RegisterMessage", registerMessage);
-              String destination = "/index.jsp";
-
               RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
-
               red.forward(request, response);
 
             }

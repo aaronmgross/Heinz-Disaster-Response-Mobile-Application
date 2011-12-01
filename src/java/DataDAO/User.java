@@ -22,6 +22,8 @@ public class User {
     private String telephone;
     private String agency;
     private String email;
+    private String role;
+    private String IsApproved;
 
     public User(String password, String lName, String fName, String telephone, String agency, String email) {
         this.password = password;
@@ -30,6 +32,7 @@ public class User {
         this.telephone = telephone;
         this.agency = agency;
         this.email = email;
+        //this.role = role;
 
     }
 
@@ -52,6 +55,8 @@ public class User {
                 user.setfName(rs.getString("Fname"));
                 user.setlName(rs.getString("Lname"));
                 user.setAgency(rs.getString("Agency"));
+                user.setRole(rs.getString("User_Role"));
+                user.setIsApproved(rs.getString("IsApproved"));
             }
 
             rs.close();
@@ -70,9 +75,9 @@ public class User {
         }
     }
 
-    public void Insert(Connection con) throws SQLException {
+    public int Insert(Connection con) throws SQLException {
 
-
+        int flag = 0;
         PreparedStatement statement = null;
         try {
             statement = con.prepareStatement("Insert into D_User(Password,lName,fName,Telephone,Agency,Email) values(?,?,?,?,?,?)");
@@ -85,15 +90,18 @@ public class User {
             statement.setString(6, email);
 
             statement.executeUpdate();
+            flag=1;
 
         } catch (SQLException e) {
 
             e.printStackTrace();
+            flag=-1;
 
         } finally {
             if (statement != null) {
-                statement.close();
+                statement.close();                
             }
+            return flag;
         }
 
     }
@@ -153,4 +161,22 @@ public class User {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getIsApproved() {
+        return IsApproved;
+    }
+
+    public void setIsApproved(String IsApproved) {
+        this.IsApproved = IsApproved;
+    }
+
+
 }

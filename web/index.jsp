@@ -85,7 +85,7 @@
 
                 <a href='forgot_password.html' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">Forgot password?</a>
 
-                <a href='register.html' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">Register for an account
+                <a href='register.jsp' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">Register for an account
                 </a>
 
             </div>

@@ -32,9 +32,9 @@ public class FillInFormMain {
         String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
         //String connectionStr = "jdbc:mysql:///DisasterAssessment";
         String user = "root";
-        String pw = "hello";
+        String pw = "";
         try {
-            //database °∞URL°±, For MySQL it would be "jdbc:mysql:///<dbname>",Optionally you can pass in a user id, & password
+            //database,For MySQL it would be "jdbc:mysql:///<dbname>",Optionally you can pass in a user id, & password
             con = DriverManager.getConnection(connectionStr,user,pw);
             Client client = new Client(address,aptNum,city,state,zipCode,municipality,county,lName,fName);
             client.Insert(con);

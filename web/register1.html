@@ -1,7 +1,7 @@
 
 
 <!-- BEGIN PAGE HEADER -->
-
+<%@page import="java.lang.String" %>
 <html manifest="mobileapp.manifest">
 
 <head>
@@ -70,6 +70,10 @@ function submitForm(form_name) {
 					<div class='sub_form'>
 
 					<div class='instruction_text'>Please enter your information below in order to sign up for a user account.</div>
+                                        <% String getMessage = (String)request.getAttribute("RegisterMessage");
+                                           if(getMessage!=null)
+                                           out.println("<strong>" + getMessage + "</strong>");
+                                         %>
 			 <form name="registerForm" method="post" action="Register">
 
    <b>First Name:</b><br />
