@@ -81,7 +81,7 @@ public class User {
         List<User> l = new ArrayList<User>();
         PreparedStatement statement = null;
         try {
-            statement = con.prepareStatement("SELECT User_Id,Fname,Lname,Telephone,Agency,Email FROM D_User WHERE IsApproved = 'N'");
+            statement = con.prepareStatement("SELECT User_Id,Fname,Lname,Telephone,Agency,Email,IsApproved,User_Role FROM D_User WHERE IsApproved = 'N'");
 
             ResultSet rs = statement.executeQuery();
             User temp;
@@ -89,7 +89,7 @@ public class User {
                 temp = new User();
                 temp.setUserId(rs.getInt("User_Id"));
                 temp.setfName(rs.getString("Fname"));
-                temp.setfName(rs.getString("Lname"));
+                temp.setlName(rs.getString("Lname"));
                 temp.setTelephone(rs.getString("Telephone"));
                 temp.setAgency(rs.getString("Agency"));
                 temp.setEmail(rs.getString("Email"));

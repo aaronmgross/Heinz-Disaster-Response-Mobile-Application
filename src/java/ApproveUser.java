@@ -43,7 +43,7 @@ String message;
         }
         String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
         String user = "root";
-        String pw = "hello";
+        String pw = "";
         try {
             //database,For MySQL it would be "jdbc:mysql:///<dbname>",Optionally you can pass in a user id, & password
             con = DriverManager.getConnection(connectionStr, user, pw);

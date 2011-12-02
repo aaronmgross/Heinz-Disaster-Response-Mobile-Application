@@ -42,7 +42,7 @@
         </script>
     </head>
     <body>        
-        <form name="admin" method="post" action="ApproveUser" onClick="return validation()">
+        <form name="admin" method="post" action="../ApproveUser">
             <p align="center"><b>Please Select Users To Be Approved</b><br>&nbsp;</p>            
             <div align="center" width="85%">
                 <center>
@@ -71,7 +71,7 @@
                                     }
                                     String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
                                     String user = "root";
-                                    String pw = "hello";
+                                    String pw = "";
                                     try {
                                         //database,For MySQL it would be "jdbc:mysql:///<dbname>",Optionally you can pass in a user id, & password
                                         con = DriverManager.getConnection(connectionStr, user, pw);
