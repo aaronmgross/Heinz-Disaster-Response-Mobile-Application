@@ -16,6 +16,10 @@
         <servlet-name>Register</servlet-name>
         <servlet-class>Register</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ApproveUser</servlet-name>
+        <servlet-class>ApproveUser</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>FillInForm</servlet-name>
         <url-pattern>/FillInForm</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
         <url-pattern>/Register</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ApproveUser</servlet-name>
+        <url-pattern>/ApproveUser</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
