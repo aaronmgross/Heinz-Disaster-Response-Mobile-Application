@@ -118,7 +118,7 @@ public class User {
                 setUserId(rs.getInt("User_Id"));
                 setPassword(rs.getString("Password"));
                 setfName(rs.getString("Fname"));
-                setfName(rs.getString("Lname"));
+                setlName(rs.getString("Lname"));
                 setTelephone(rs.getString("Telephone"));
                 setAgency(rs.getString("Agency"));
                 setEmail(rs.getString("Email"));
@@ -146,8 +146,9 @@ public class User {
             statement.setString(6, email);
             statement.setString(7, role);
             statement.setString(8, IsApproved);
-            statement.setInt(9, id);
+            statement.setInt(9, userId);
             statement.executeUpdate();
+            con.commit();
 
         } catch (SQLException e) {
             e.printStackTrace();

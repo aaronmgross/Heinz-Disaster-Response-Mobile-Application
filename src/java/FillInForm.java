@@ -57,7 +57,9 @@ public class FillInForm extends HttpServlet {
         String ownerInfo = null;
         String landlordName = null;
         String landlordPhone = null;
-        String insuranceInfo = null;
+        String insuranceInfo_f = null;
+        String insuranceInfo_s = null;
+        String insuranceInfo_c = null;
         String floorNum = null;
         String isBasement = null;
         String isBasementOccupied = null;
@@ -107,7 +109,9 @@ public class FillInForm extends HttpServlet {
                 landlordName = (String) j.get("landlord_name");
                 landlordPhone = (String) j.get("landlord_tel");
                 dwellingType = (String) j.get("dwelling_type");
-                insuranceInfo = (String) j.get("insurance_information");
+                insuranceInfo_f = (String) j.get("insurance_information");
+                insuranceInfo_s = (String) j.get("insurance_information");
+                insuranceInfo_c = (String) j.get("insurance_information");
                 ownerInfo = (String) j.get("owner_information");
                 floorNum = (String) j.get("number_floors");
                 if (floorNum != null && !floorNum.equals("")) {
@@ -138,7 +142,7 @@ public class FillInForm extends HttpServlet {
                 comments = (String) j.get("txtArea_comment");
 
                 FillInFormMain fim = new FillInFormMain(streetName, apt, city, state, zip, "", "", lastName, firstName,
-                        landlordName, landlordPhone, dwellingType, insuranceInfo, ownerInfo,
+                        landlordName, landlordPhone, dwellingType, insuranceInfo_f,insuranceInfo_s,insuranceInfo_c, ownerInfo,
                         Electrical_service_box, Furnace, Heat_Water_Heater, Washer, Dryer, Stove, Regfrigerator,
                         classification, num_of_floor, isBasement, waterLivingInt, waterBasementInt, isElectricOn, isGasOn, isBasementOccupied, basementComment, reason, sqlDate, sqlDate,
                         comments);

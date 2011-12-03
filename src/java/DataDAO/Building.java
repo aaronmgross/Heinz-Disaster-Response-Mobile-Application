@@ -20,15 +20,19 @@ public class Building {
     private String landlordName="";
     private String contactInfo="";
     private String dwellingType="";
-    private String insurance="";
+    private String insuranceFloor="";
+    private String insuranceStructure="";
+    private String insuranceContents="";
     private String ownership="";
 
     public Building(String landlordName, String contactInfo, String dwellingType,
-            String insurance, String ownership){ 
+            String insurance_f, String insurance_s, String insurance_c,String ownership){
         this.landlordName = landlordName==null?"":landlordName;
         this.contactInfo = contactInfo==null?"":contactInfo;
         this.dwellingType = dwellingType==null?"":dwellingType;
-        this.insurance = insurance==null?"":insurance;
+        this.insuranceFloor = insurance_f==null?"":insurance_f;
+        this.insuranceStructure = insurance_s==null?"":insurance_s;
+        this.insuranceContents = insurance_c==null?"":insurance_c;
         this.ownership = ownership==null?"":ownership;
     }
 
@@ -40,12 +44,14 @@ public class Building {
         PreparedStatement statement = null;
         try {
             
-            statement = con.prepareStatement("Insert into Building(Landlord_Name,Contact_information,Dwelling_Type,Insurance,Ownership) values(?,?,?,?,?)");
+            statement = con.prepareStatement("Insert into Building(Landlord_Name,Contact_information,Dwelling_Type,Insurance_Flood,Insurance_Structure,Insurance_Contents,Ownership) values(?,?,?,?,?,?,?)");
             statement.setString(1, landlordName);           
             statement.setString(2, contactInfo);            
             statement.setString(3, dwellingType);
-            statement.setString(4, insurance);
-            statement.setString(5, ownership);
+            statement.setString(4, insuranceFloor);
+            statement.setString(5, insuranceStructure);
+            statement.setString(6, insuranceContents);
+            statement.setString(7, ownership);
             statement.executeUpdate();
         } catch (SQLException e) {
 
@@ -63,13 +69,15 @@ public class Building {
 
         PreparedStatement statement = null;
          try {
-             String sql ="select Build_Id from Building where Landlord_Name =? and Contact_information=? and Dwelling_Type =? and Insurance=? and Ownership=?";
+             String sql ="select Build_Id from Building where Landlord_Name =? and Contact_information=? and Dwelling_Type =? and Insurance_Flood=? and Insurance_Structure=?and Insurance_Contents=? and Ownership=?";
             statement = con.prepareStatement(sql);            
             statement.setString(1, landlordName);        
             statement.setString(2, contactInfo);            
             statement.setString(3, dwellingType);
-            statement.setString(4, insurance);
-            statement.setString(5, ownership);
+            statement.setString(4, insuranceFloor);
+            statement.setString(5, insuranceStructure);
+            statement.setString(6, insuranceContents);
+            statement.setString(7, ownership);
             
             ResultSet rs = statement.executeQuery();
             //buildId=100;
@@ -116,14 +124,6 @@ public class Building {
         this.dwellingType = dwellingType;
     }
 
-    public String getInsurance() {
-        return insurance;
-    }
-
-    public void setInsurance(String insurance) {
-        this.insurance = insurance;
-    }
-
     public String getLandlordName() {
         return landlordName;
     }
@@ -138,6 +138,30 @@ public class Building {
 
     public void setOwnership(String ownership) {
         this.ownership = ownership;
+    }
+
+    public String getInsuranceContents() {
+        return insuranceContents;
+    }
+
+    public void setInsuranceContents(String insuranceContents) {
+        this.insuranceContents = insuranceContents;
+    }
+
+    public String getInsuranceFloor() {
+        return insuranceFloor;
+    }
+
+    public void setInsuranceFloor(String insuranceFloor) {
+        this.insuranceFloor = insuranceFloor;
+    }
+
+    public String getInsuranceStructure() {
+        return insuranceStructure;
+    }
+
+    public void setInsuranceStructure(String insuranceStructure) {
+        this.insuranceStructure = insuranceStructure;
     }
 
     

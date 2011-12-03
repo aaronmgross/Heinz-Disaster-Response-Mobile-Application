@@ -20,7 +20,7 @@ public class FillInFormMain {
    private static Connection con;
 
     public FillInFormMain(String address, String aptNum, String city, String state, String zipCode,String municipality, String county, String lName, String fName,
-            String landlordName, String contactInfo, String dwellingType,String insurance, String ownership,
+            String landlordName, String contactInfo, String dwellingType,String insurance_f,String insurance_s,String insurance_c, String ownership,
             String Electrical_service_box,String Furnace,String Heat_Water_Heater,String Washer,String Dryer,String Stove,String Regfrigerator,
             String classification,int floorNum,String isBasement,int waterLiving,int waterBasement,String isElectricOn,String isGasOn,String isBasementOccupied,String basementComment,String reason,Date StartTime,Date EndTime,
             String comments) throws SQLException {
@@ -31,7 +31,7 @@ public class FillInFormMain {
         }
         String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
         String user = "root";
-        String pw = "hello";
+        String pw = "";
         try {
             //database,For MySQL it would be "jdbc:mysql:///<dbname>",Optionally you can pass in a user id, & password
             con = DriverManager.getConnection(connectionStr,user,pw);
@@ -40,7 +40,7 @@ public class FillInFormMain {
             int clientId = client.getId(con);
             System.out.println("clientId:"+clientId);
 
-            Building building = new Building(landlordName,contactInfo,dwellingType,insurance,ownership);
+            Building building = new Building(landlordName,contactInfo,dwellingType,insurance_f,insurance_s, insurance_c, ownership);
             building.Insert(con);
 
             int buildId = building.getId(con);
