@@ -3,7 +3,6 @@
  * and open the template in the editor.
  */
 
-
 import com.mysql.jdbc.Connection;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,7 +24,8 @@ import javax.servlet.RequestDispatcher;
 public class Register extends HttpServlet {
 
     private static Connection con;
-    /** 
+
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -33,7 +33,7 @@ public class Register extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
@@ -46,29 +46,41 @@ public class Register extends HttpServlet {
         String user = "root";
         String pw_con = "";
         try {
-           con = (Connection) DriverManager.getConnection(connectionStr,user,pw_con);
-           String firstName = request.getParameter("volunteer_firstname");
-           String lastName = request.getParameter("volunteer_lastname");
-           String email = request.getParameter("volunteer_email");
-           String password = request.getParameter("volunteer_password");
-           String passwordConfirm= request.getParameter("volunteer_password1");
-           User Client=null;
-           if(password.equals(passwordConfirm)&&email!=null)
-           {
-              Client = new User(password,lastName,firstName,"", "",email);
-              Client.Insert(con);
+            con = (Connection) DriverManager.getConnection(connectionStr, user, pw_con);
+            String firstName = request.getParameter("volunteer_firstname");
+            String lastName = request.getParameter("volunteer_lastname");
+            String email_input = request.getParameter("volunteer_email");
+            String email = email_input.toLowerCase();
+            String password = request.getParameter("volunteer_password");
+            String passwordConfirm = request.getParameter("volunteer_password1");
+            User Client = null;
+            if (password.equals(passwordConfirm) && email != null) {
+                String registerMessage = null;
+                String destination = null;
+                if (User.lookup(email, con) != null) {
+                    registerMessage = "Sorry! The email address has already been registered. Please try another one.";
+                    destination = "/index.jsp";
+                } else {
 
-              String registerMessage = "Congradulations! You've been registered successfully!";
-              request.setAttribute("RegisterMessage", registerMessage);
-              String destination = "/index.jsp";
+                    Client = new User(password, lastName, firstName, "", "", email);
 
-              RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
+                    int flag = Client.Insert(con);
 
-              red.forward(request, response);
+                    if (flag == 1) {
+                        registerMessage = "Congradulations! You've been registered successfully!";
+                        destination = "/index.jsp";
+                    } else {
+                        registerMessage = "We're sorry! You failed to register. Please try again!";
+                        destination = "/register.jsp";
+                    }
+                }
+                request.setAttribute("RegisterMessage", registerMessage);
+                RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
+                red.forward(request, response);
 
             }
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
@@ -91,9 +103,9 @@ public class Register extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -104,7 +116,7 @@ public class Register extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -116,5 +128,4 @@ public class Register extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

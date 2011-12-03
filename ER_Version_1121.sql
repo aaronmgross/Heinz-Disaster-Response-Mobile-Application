@@ -1,7 +1,9 @@
+DROP TABLE Cases CASCADE
+;
 DROP TABLE Damage_Assessment CASCADE
 ;
 DROP TABLE Building CASCADE
-;
+;	
 DROP TABLE Client CASCADE 
 ;
 DROP TABLE Damage_Classification CASCADE
@@ -18,8 +20,10 @@ CREATE TABLE D_User
      Fname VARCHAR (20)  NOT NULL , 
      Telephone VARCHAR (20) NOT NULL, 
      Agency VARCHAR (20) , 
-     Email VARCHAR (20) NOT NULL,	 
-	 PRIMARY KEY (User_Id)
+     Email VARCHAR (100) NOT NULL,	 
+     User_Role 	VARCHAR(15) NOT NULL DEFAULT 'VOLUNTEER',
+     IsApproved CHAR(1) NOT NULL DEFAULT 'N',
+	 PRIMARY KEY (User_Id)	 
     ) 
 ;
 
@@ -46,7 +50,9 @@ CREATE TABLE Building
      Landlord_Name VARCHAR (40) , 
      Contact_information VARCHAR (200) , 
      Dwelling_Type VARCHAR (50)  , 
-     Insurance VARCHAR (50)  , 
+     Insurance_Flood VARCHAR (50)  , 
+     Insurance_Structure VARCHAR (50)  , 
+     Insurance_Contents VARCHAR (50)  , 
      Ownership VARCHAR (50)  ,
 	 PRIMARY KEY (Build_Id)
     ) 

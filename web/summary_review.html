@@ -121,14 +121,13 @@ TODO:
 			if (navigator.onLine)
 			{
 				// We are connected to the Internet. Send this entry to the server.
-				document.getElementById("recordJSON").value = "[" + JSON.stringify(this_entry); + "]";
+				document.getElementById("recordJSON").value = "[" + JSON.stringify(this_entry) + "]";
  				document.forms["hidden_record_form"].submit();
 			}
 			else
 			{
 				// We are not connected to the Internet. Save this entry locally.
 				localStorage.setItem(keyToUse, JSON.stringify(this_entry));
-				window.location("welcome.html");
 			}
 		}
 	}
@@ -484,7 +483,7 @@ TODO:
 		<div class='instruction_text' style='color:red'>The client must read and indicate acceptance of the waiver below.</div>
 
 		<div class='sub_form'>	
-			I, <b><span id="client_name"></span></b>, hereby authorize the release of information contained in this form to the American Red Cross, North Hills Community Outreach, Salvation Army, the United Way, the Coordinated Assistance Network, other faith-based, federal and and state emergency assistance agencies for the express and singular purpose of assisting efforts to meet my disaster needs. This information will not be made public or used for anything other than its intended use - disaster relief assistance. I also understand the the information provided here is truthful and accurate and I could face prosecution for fraud if it is discovered that the information is false or intended to defraud the agencies providing assistance.<br /><br />
+			I, <b><div id="client_name"></div>, hereby authorize the release of information contained in this form to the American Red Cross, North Hills Community Outreach, Salvation Army, the United Way, the Coordinated Assistance Network, other faith-based, federal and and state emergency assistance agencies for the express and singular purpose of assisting efforts to meet my disaster needs. This information will not be made public or used for anything other than its intended use - disaster relief assistance. I also understand the the information provided here is truthful and accurate and I could face prosecution for fraud if it is discovered that the information is false or intended to defraud the agencies providing assistance.<br /><br />
 
 			<div class='instruction_text'>Please initial below to indicate your acceptance of these terms:</div>
 			<input type="text" name="initials" style='width:5em' id="initials"/>
