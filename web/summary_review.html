@@ -38,7 +38,7 @@ TODO:
 		var s=document.getElementById("initials").value;
 		var fname=document.getElementById("txt_first_name").value;
 		var lname=document.getElementById("txt_last_name").value;
-		if((s.charAt(0)!=fname.charAt(0))||(s.charAt(1)!=lname.charAt(0)))
+		if((s.substr(0, 1).toUpperCase()!=fname.substr(0, 1).toUpperCase())||(s.substr(1, 1).toUpperCase()!=lname.substr(0, 1).toUpperCase()))
 		{
 			//document.write("error");
 			document.getElementById("error_container").style.display = "block";
