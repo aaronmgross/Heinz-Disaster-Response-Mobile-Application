@@ -93,6 +93,7 @@ CREATE TABLE Cases
      Building_Id INT (20)  NOT NULL , 
      User_Id INT (20) , 
 	 PRIMARY KEY (Case_Id),
+	 FOREIGN KEY (User_Id) references D_User(User_Id) ,
 	 FOREIGN KEY (Client_Id) references Client(Client_Id) ,
 	 FOREIGN KEY (Building_Id) references Building(Build_Id),
 	 FOREIGN KEY (Damage_Assessment_Id) references Damage_Assessment(Assessment_Id)
