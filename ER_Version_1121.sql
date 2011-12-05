@@ -50,7 +50,9 @@ CREATE TABLE Building
      Landlord_Name VARCHAR (40) , 
      Contact_information VARCHAR (200) , 
      Dwelling_Type VARCHAR (50)  , 
-     Insurance VARCHAR (50)  , 
+     Insurance_Flood VARCHAR (50)  , 
+     Insurance_Structure VARCHAR (50)  , 
+     Insurance_Contents VARCHAR (50)  , 
      Ownership VARCHAR (50)  ,
 	 PRIMARY KEY (Build_Id)
     ) 

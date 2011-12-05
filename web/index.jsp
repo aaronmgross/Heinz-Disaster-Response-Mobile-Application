@@ -66,7 +66,7 @@
                 <div class='sub_form'>
                     <form name='login_form' action='LogIn' method='post'>
                         <input type='hidden' name='lat' >
-                        <b>Username:</b><br />
+                        <b>E-mail Address:</b><br />
                         <input type='text' name='username'/>
 
                         <b>Password:</b><br />

@@ -1,4 +1,3 @@
-
 <!-- draft page -->
 
 <!--
@@ -39,7 +38,7 @@ TODO:
 		var s=document.getElementById("initials").value;
 		var fname=document.getElementById("txt_first_name").value;
 		var lname=document.getElementById("txt_last_name").value;
-		if((s.charAt(0)!=fname.charAt(0))||(s.charAt(1)!=lname.charAt(0)))
+		if((s.substr(0, 1).toUpperCase()!=fname.substr(0, 1).toUpperCase())||(s.substr(1, 1).toUpperCase()!=lname.substr(0, 1).toUpperCase()))
 		{
 			//document.write("error");
 			document.getElementById("error_container").style.display = "block";
@@ -272,11 +271,11 @@ TODO:
 		<center>
 			<div class="instruction_text">Dwelling address:</div>
 <table>
-	<tr><td>	House Number:</td><td><input type="text" name="tel_house_num" id="tel_house_num" disabled style="border: 0px;"> </td></tr>
-	<tr><td>	Street Name: </td><td> <input type="text" name="street_name_input" id="street_name_input" disabled style="border: 0px solid #000000;"> </td></tr>
-	<tr><td>	City:  </td><td><input type="text" name="txt_city" id="txt_city" disabled style="border: 0px solid #000000;"> </td></tr>
-	<tr><td>		State: </td><td> <input type="text" name="txt_state" id="txt_state" disabled style="border: 0px solid #000000;"> </td></tr>
-	<tr><td>			Zipcode: </td><td>  <input type="text" name="tel_zip" id="tel_zip" disabled style="border: 0px solid #000000;"> </td></tr>
+	<tr><td>	House Number:</td><td><input type="text" name="tel_house_num" id="tel_house_num" disabled style="border: 0px;color: #000000;"> </td></tr>
+	<tr><td>	Street Name: </td><td> <input type="text" name="street_name_input" id="street_name_input" disabled style="border: 0px solid #000000;color: #000000;"> </td></tr>
+	<tr><td>	City:  </td><td><input type="text" name="txt_city" id="txt_city" disabled style="border: 0px solid #000000;color: #000000;"> </td></tr>
+	<tr><td>		State: </td><td> <input type="text" name="txt_state" id="txt_state" disabled style="border: 0px solid #000000;color: #000000;"> </td></tr>
+	<tr><td>			Zipcode: </td><td>  <input type="text" name="tel_zip" id="tel_zip" disabled style="border: 0px solid #000000;color: #000000;"> </td></tr>
 
 </table>		
 
@@ -293,24 +292,24 @@ TODO:
 		<div class="instruction_text">Dwelling information:</div>
 		<table class='form_table' cellpadding=0 cellspacing=0>
 
-			<tr><td class='form_table_label'>First Name:</td><td class='form_table_input'> <input type="text" name="txt_first_name" id="txt_first_name" disabled style="border: 0px;"> 
+			<tr><td class='form_table_label'>First Name:</td><td class='form_table_input'> <input type="text" name="txt_first_name" id="txt_first_name" disabled style="border: 0px;color: #000000;"> 
 				
 				 </td></tr>
-					<tr><td class='form_table_label'>Last Name:</td><td class='form_table_input'> <input type="text" name="txt_last_name" id="txt_last_name" disabled style="border: 0px;"> 
+					<tr><td class='form_table_label'>Last Name:</td><td class='form_table_input'> <input type="text" name="txt_last_name" id="txt_last_name" disabled style="border: 0px;color: #000000;"> 
 
 						 </td></tr>
-			<tr><td class='form_table_label'>Dwelling type:</td><td class='form_table_input'> <input type="text" name="dwelling_type" id="dwelling_type" disabled style="border: 0px;"> </td></tr>
+			<tr><td class='form_table_label'>Dwelling type:</td><td class='form_table_input'> <input type="text" name="dwelling_type" id="dwelling_type" disabled style="border: 0px;color: #000000;"> </td></tr>
 
-			<tr><td class='form_table_label'>Ownership info: </td><td class='form_table_input'> <input type="text" name="owner_information" id="owner_information" disabled style="border: 0px;"> </td></tr>
+			<tr><td class='form_table_label'>Ownership info: </td><td class='form_table_input'> <input type="text" name="owner_information" id="owner_information" disabled style="border: 0px;color: #000000;"> </td></tr>
 
 			<tr><td class='form_table_label'>		Landlord's name:</td>
-				<td class='form_table_input'> <input type="text" name="landlord_name" id="landlord_name" disabled style="border: 0px;">  </td></tr>
+				<td class='form_table_input'> <input type="text" name="landlord_name" id="landlord_name" disabled style="border: 0px;color: #000000;">  </td></tr>
 
-				<tr><td class='form_table_label'>Landlord's phone #:</td><td class='form_table_input'><input type="text" name="landlord_tel" id="landlord_tel" disabled style="border: 0px;"> 	</td></tr>	
+				<tr><td class='form_table_label'>Landlord's phone #:</td><td class='form_table_input'><input type="text" name="landlord_tel" id="landlord_tel" disabled style="border: 0px;color: #000000;"> 	</td></tr>	
 
 
 				<tr><td class='form_table_label'>
-					Insurance Info:</td><td class='form_table_input'> <input type="text" name="insurance_information" id="insurance_information" disabled style="border: 0px;"> </td></tr>
+					Insurance Info:</td><td class='form_table_input'> <input type="text" name="insurance_information" id="insurance_information" disabled style="border: 0px;color: #000000;"> </td></tr>
 				</table>
 				
 			</center>
@@ -325,19 +324,19 @@ TODO:
 
 				<tr>
 					<td class='form_table_label' style='border:0px'>Number of floors:</td>
-					<td class='form_table_input' style='border:0px'> <input type="text" name="number_floors" id="number_floors" disabled style="border: 0px;">		</td>
+					<td class='form_table_input' style='border:0px'> <input type="text" name="number_floors" id="number_floors" disabled style="border: 0px;color: #000000;">		</td>
 				</tr>
 				<tr>
 					<td class='form_table_label'>Is there a basement?</td>
 					<td class='form_table_input'>
-						<input type="text" name="is_basement" id="is_basement" disabled style="border: 0px;">
+						<input type="text" name="is_basement" id="is_basement" disabled style="border: 0px;color: #000000;">
 					</td>
 				</tr>
 
 				<tr id='basement_tr_1' style='display:none'>
 					<td class='form_table_label'>Is the basement occupied?</td>
 					<td class='form_table_input'>
-						<input type="text" name="is_basement_occupied" id="is_basement_occupied" disabled style="border: 0px;">
+						<input type="text" name="is_basement_occupied" id="is_basement_occupied" disabled style="border: 0px;color: #000000;">
 					</td>
 				</tr>
 
@@ -345,23 +344,23 @@ TODO:
 					<td colspan=2>
 						Please describe the way in which the basement is being used:
 						<div class="spacer"></div>
-						<input type="text" name="txtarea_basement_comment" id="txtarea_basement_comment" disabled style="border: 0px;">
+						<input type="text" name="txtarea_basement_comment" id="txtarea_basement_comment" disabled style="border: 0px;color: #000000;">
 							</td>
 					</tr>
 
 					<tr>
 						<td class='form_table_label'>How much water is in the main living area?</td>
 						<td class='form_table_input'>
-						<input type="text" name="water_in_living_area" id="water_in_living_area" disabled style="border: 0px;">	
+						<input type="text" name="water_in_living_area" id="water_in_living_area" disabled style="border: 0px;color: #000000;">	
 							 inches
 						</div>
 					</td>
 				</tr>
 
-				<tr id='basement_tr_3' style='display:none'>
+				<tr>
 					<td class='form_table_label'>How much water is in the basement?</td>
 					<td class='form_table_input'>
-						<input type="text" name="water_in_basement" id="water_in_basement" disabled style="border: 0px;">	 inches
+						<input type="text" name="water_in_basement" id="water_in_basement" disabled style="border: 0px;color: #000000;">	 inches
 					</div>
 				</td>
 			</tr>
@@ -369,14 +368,14 @@ TODO:
 			<tr>
 				<td class='form_table_label'>Is the electricity on?</td>
 				<td class='form_table_input'>
-				<input type="text" name="electric" id="electric" disabled style="border: 0px;">	
+				<input type="text" name="electric" id="electric" disabled style="border: 0px;color: #000000;">	
 				</td>
 			</tr>
 
 			<tr>
 				<td class='form_table_label'>Is the gas on?</td>
 				<td class='form_table_input'>
-					<input type="text" name="gas" id="gas" disabled style="border: 0px;">	
+					<input type="text" name="gas" id="gas" disabled style="border: 0px;color: #000000;">	
 				</td>
 			</tr>
 
@@ -395,48 +394,48 @@ TODO:
 			<tr>
 				<td class='form_table_label'>Electrical service box:</td>
 				<td class='form_table_input'>
-					<input type="text" name="d_electrical" id="d_electrical" disabled style="border: 0px;">
+					<input type="text" name="d_electrical" id="d_electrical" disabled style="border: 0px;color: #000000;">
 				</td>
 			</tr>
 
 			<tr>
 				<td class='form_table_label'>Furnace:</td>
 				<td class='form_table_input'>
-					<input type="text" name="d_furnace" id="d_furnace" disabled style="border: 0px;">
+					<input type="text" name="d_furnace" id="d_furnace" disabled style="border: 0px;color: #000000;">
 				</td>
 			</tr>
 
 			<tr>
 				<td class='form_table_label'>Hot water heater:</td>
 				<td class='form_table_input'>
-					<input type="text" name="d_water" id="d_water" disabled style="border: 0px;">
+					<input type="text" name="d_water" id="d_water" disabled style="border: 0px;color: #000000;">
 				</td>
 			</tr>
 
 			<tr>
 				<td class='form_table_label'>Washer:</td>
 				<td class='form_table_input'>
-					<input type="text" name="d_washer" id="d_washer" disabled style="border: 0px;"></td>
+					<input type="text" name="d_washer" id="d_washer" disabled style="border: 0px;color: #000000;"></td>
 				</tr>
 
 				<tr>
 					<td class='form_table_label'>Dryer:</td>
 					<td class='form_table_input'>
-						<input type="text" name="d_dryer" id="d_dryer" disabled style="border: 0px;">
+						<input type="text" name="d_dryer" id="d_dryer" disabled style="border: 0px;color: #000000;">
 					</td>
 				</tr>
 
 				<tr>
 					<td class='form_table_label'>Stove:</td>
 					<td class='form_table_input'>
-						<input type="text" name="d_stove" id="d_stove" disabled style="border: 0px;">
+						<input type="text" name="d_stove" id="d_stove" disabled style="border: 0px;color: #000000;">
 					</td>
 				</tr>
 
 				<tr>
 					<td class='form_table_label'>Refrigerator:</td>
 					<td class='form_table_input'>
-						<input type="text" name="d_fridge" id="d_fridge" disabled style="border: 0px;">
+						<input type="text" name="d_fridge" id="d_fridge" disabled style="border: 0px;color: #000000;">
 					</td>
 				</tr>
 			</table>
@@ -449,16 +448,16 @@ TODO:
 
 			<div class="instruction_text">Based on the Red Cross guidelines for classification, the overall assessment of the damage for this property is:</div>
 			<div class="spacer"></div>
-			<input type="text" name="select_classification" id="select_classification" disabled style="border: 0px;">
+			<input type="text" name="select_classification" id="select_classification" disabled style="border: 0px;color: #000000;">
 			<div class="spacer"></div>
 			<div class="spacer"></div>
 			<div class="instruction_text">Classification rationale:</div>
-			<textarea id="txtArea_classification_reason" style="border: 0px;" disabled>  </textarea>
+			<textarea id="txtArea_classification_reason" style="border: 0px;color: #000000;" disabled>  </textarea>
 			<div class="spacer"></div>
 			<div class="spacer"></div>
 			<div class="instruction_text">Additional comments about this disaster entry: </div>
 
-		<textarea id="txtArea_comment" style="border: 0px;" disabled>  </textarea> 
+		<textarea id="txtArea_comment" style="border: 0px;color: #000000;" disabled>  </textarea> 
 		
 		<a href='#two' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">
 				<div class='mainlink_big_head'>Continue</div>
