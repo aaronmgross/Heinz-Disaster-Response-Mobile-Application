@@ -27,6 +27,14 @@ import javax.servlet.http.HttpSession;
 public class LogIn extends HttpServlet {
 
     private static Connection con;
+    private String user = null;
+    private String pw_con = null;
+
+    public void init() throws ServletException {
+
+		user = getInitParameter("dbUser");
+		pw_con = getInitParameter("dbPassword");
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -44,9 +52,10 @@ public class LogIn extends HttpServlet {
         } catch (ClassNotFoundException e) {
             throw new AssertionError(e);
         }
-        String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";       
-        String user = "root";
-        String pw_con = "";
+        String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
+
+        //String user = "root";
+        //String pw_con = "";
         try {
             con = (Connection) DriverManager.getConnection(connectionStr, user, pw_con);
             User UserInstance = new User();
@@ -57,18 +66,10 @@ public class LogIn extends HttpServlet {
             UserInstance = User.lookup(email, con);
             if (UserInstance == null) {
                 errors.add("Email not found");
-//                String destination = "/index.jsp";
-//                RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
-//                red.forward(request, response);
-            } else if (UserInstance.getIsApproved().equals("N")) {
-                //System.out.println(((String)UserInstance.getIsApproved()).equals("N"));
+            } else if (UserInstance.getIsApproved().equals("N")) {              
                 errors.add("You have not been approved by Admin. Please contact Admin for approval.");
-//                String destination = "/index.jsp";
-//                RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
-//                red.forward(request, response);
             } else if (!UserInstance.getPassword().equals(pw)) {
-                errors.add("Email address or Password does not match! Please try again!");
-                //request.setAttribute("errors", errors);
+                errors.add("Email address or Password does not match! Please try again!");               
             }
 
                 if (errors.size()>0) {
@@ -78,16 +79,13 @@ public class LogIn extends HttpServlet {
                     String destination = "/index.jsp";
                     RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
                     red.forward(request, response);
-
-                }
-            
-                else {
-                    //request.setAttribute("email", email);
+                }          
+                else {                    
                     HttpSession session = request.getSession();
                     session.setAttribute("userName", UserInstance.getfName() + " " + UserInstance.getlName());
+                    session.setAttribute("userId", UserInstance.getUserId());
                     response.sendRedirect("welcome.jsp");
                 }
-
             
         } catch (SQLException e) {
             e.printStackTrace();
