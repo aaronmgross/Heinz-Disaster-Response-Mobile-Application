@@ -14,9 +14,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
+
 //import java.sql.Date;
 //import java.sql.Timestamp;
 
@@ -25,6 +27,15 @@ import org.json.JSONException;
  * @author Michelle
  */
 public class FillInForm extends HttpServlet {
+
+    private String dbuser = null;
+    private String dbpw = null;
+
+    public void init() throws ServletException {
+
+		dbuser = getInitParameter("dbUser");
+		dbpw = getInitParameter("dbPassword");
+    }
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -81,6 +92,10 @@ public class FillInForm extends HttpServlet {
         int num_of_floor = -1;
         int waterLivingInt = -1;
         int waterBasementInt = -1;
+
+        //String tr = (String)request.getAttribute("userId");
+        //System.out.println("userId"+tr);
+        //int userId = Integer.parseInt((String)request.getAttribute("userId"));
 
         String jsonArray = (String) request.getParameter("recordJSON");
 
@@ -141,11 +156,11 @@ public class FillInForm extends HttpServlet {
                 reason = (String) j.get("txtArea_classification_reason");
                 comments = (String) j.get("txtArea_comment");
 
-                FillInFormMain fim = new FillInFormMain(streetName, apt, city, state, zip, "", "", lastName, firstName,
+                FillInFormMain fim = new FillInFormMain(dbuser, dbpw,streetName, apt, city, state, zip, "", "", lastName, firstName,
                         landlordName, landlordPhone, dwellingType, insuranceInfo_f,insuranceInfo_s,insuranceInfo_c, ownerInfo,
                         Electrical_service_box, Furnace, Heat_Water_Heater, Washer, Dryer, Stove, Regfrigerator,
                         classification, num_of_floor, isBasement, waterLivingInt, waterBasementInt, isElectricOn, isGasOn, isBasementOccupied, basementComment, reason, sqlDate, sqlDate,
-                        comments);
+                        comments,-1);
             }
 
             String destination = "/welcome.jsp";

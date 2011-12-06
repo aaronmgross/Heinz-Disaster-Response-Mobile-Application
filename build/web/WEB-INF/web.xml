@@ -3,22 +3,62 @@
     <servlet>
         <servlet-name>FillInForm</servlet-name>
         <servlet-class>FillInForm</servlet-class>
+         <init-param>
+            <param-name>dbUser</param-name>
+            <param-value>root</param-value>
+        </init-param>
+        <init-param>
+            <param-name>dbPassword</param-name>
+            <param-value></param-value>
+        </init-param>
     </servlet>
     <servlet>
         <servlet-name>ExportXML</servlet-name>
         <servlet-class>ExportXML</servlet-class>
+         <init-param>
+            <param-name>dbUser</param-name>
+            <param-value>root</param-value>
+        </init-param>
+        <init-param>
+            <param-name>dbPassword</param-name>
+            <param-value></param-value>
+        </init-param>
     </servlet>
     <servlet>
         <servlet-name>LogIn</servlet-name>
         <servlet-class>LogIn</servlet-class>
+        <init-param>
+            <param-name>dbUser</param-name>
+            <param-value>root</param-value>
+        </init-param>
+        <init-param>
+            <param-name>dbPassword</param-name>
+            <param-value></param-value>
+        </init-param>
     </servlet>
     <servlet>
         <servlet-name>Register</servlet-name>
         <servlet-class>Register</servlet-class>
+         <init-param>
+            <param-name>dbUser</param-name>
+            <param-value>root</param-value>
+        </init-param>
+        <init-param>
+            <param-name>dbPassword</param-name>
+            <param-value></param-value>
+        </init-param>
     </servlet>
     <servlet>
         <servlet-name>ApproveUser</servlet-name>
         <servlet-class>ApproveUser</servlet-class>
+         <init-param>
+            <param-name>dbUser</param-name>
+            <param-value>root</param-value>
+        </init-param>
+        <init-param>
+            <param-name>dbPassword</param-name>
+            <param-value></param-value>
+        </init-param>
     </servlet>
     <servlet-mapping>
         <servlet-name>FillInForm</servlet-name>

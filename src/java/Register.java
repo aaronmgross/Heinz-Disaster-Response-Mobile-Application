@@ -24,6 +24,14 @@ import javax.servlet.RequestDispatcher;
 public class Register extends HttpServlet {
 
     private static Connection con;
+    private String user = null;
+    private String pw_con = null;
+
+    public void init() throws ServletException {
+
+		user = getInitParameter("dbUser");
+		pw_con = getInitParameter("dbPassword");
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -41,10 +49,9 @@ public class Register extends HttpServlet {
         } catch (ClassNotFoundException e) {
             throw new AssertionError(e);
         }
-        String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
-        //String connectionStr = "jdbc:mysql:///DisasterAssessment";
-        String user = "root";
-        String pw_con = "";
+        String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";       
+        //String user = "root";
+        //String pw_con = "";
         try {
             con = (Connection) DriverManager.getConnection(connectionStr, user, pw_con);
             String firstName = request.getParameter("volunteer_firstname");

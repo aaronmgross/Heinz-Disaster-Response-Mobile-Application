@@ -52,6 +52,7 @@ public class User {
                 user = null;
             } else {
                 user = new User();
+                user.setUserId(rs.getInt("User_Id"));
                 user.setEmail(rs.getString("Email"));
                 user.setPassword(rs.getString("Password"));
                 user.setfName(rs.getString("Fname"));
@@ -260,4 +261,5 @@ public class User {
     public void setIsApproved(String IsApproved) {
         this.IsApproved = IsApproved;
     }
+
 }

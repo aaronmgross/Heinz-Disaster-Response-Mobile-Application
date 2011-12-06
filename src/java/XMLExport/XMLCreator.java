@@ -47,8 +47,10 @@ public class XMLCreator {
     //No generics
     List myData;
     Document dom;
+    private String user = null;
+    private String pw = null;
 
-    public XMLCreator() {
+    public XMLCreator(String user, String pw) {
 
         //create a list to hold the data
         myData = new ArrayList();
@@ -82,8 +84,8 @@ public class XMLCreator {
             throw new AssertionError(e);
         }
         String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
-        String user = "root";
-        String pw = "hello";
+        //String user = "root";
+        //String pw = "";
         try {
 
             con = DriverManager.getConnection(connectionStr, user, pw);
@@ -477,7 +479,7 @@ public class XMLCreator {
 
     public static void main(String[] args){
                //create an instance
-        XMLCreator xce = new XMLCreator();
+        XMLCreator xce = new XMLCreator("","");
 
         //run the example
         xce.export();

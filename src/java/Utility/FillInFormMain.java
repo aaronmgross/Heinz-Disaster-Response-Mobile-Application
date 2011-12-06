@@ -18,23 +18,33 @@ import java.sql.Date;
 public class FillInFormMain {
 
    private static Connection con;
+   private String dbuser = null;
+    private String dbpw = null;
 
-    public FillInFormMain(String address, String aptNum, String city, String state, String zipCode,String municipality, String county, String lName, String fName,
+ public FillInFormMain(String dbUser, String dbPassword){
+
+       this.dbuser = dbUser;
+       this.dbpw = dbPassword;
+   }
+
+    public FillInFormMain(String dbUser, String dbPassword, String address, String aptNum, String city, String state, String zipCode,String municipality, String county, String lName, String fName,
             String landlordName, String contactInfo, String dwellingType,String insurance_f,String insurance_s,String insurance_c, String ownership,
             String Electrical_service_box,String Furnace,String Heat_Water_Heater,String Washer,String Dryer,String Stove,String Regfrigerator,
             String classification,int floorNum,String isBasement,int waterLiving,int waterBasement,String isElectricOn,String isGasOn,String isBasementOccupied,String basementComment,String reason,Date StartTime,Date EndTime,
-            String comments) throws SQLException {
+            String comments, int UserId) throws SQLException {
+        this(dbUser,dbPassword);
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             throw new AssertionError(e);
         }
+        
         String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
-        String user = "root";
-        String pw = "";
+        //String user = "root";
+        //String pw = "";
         try {
             //database,For MySQL it would be "jdbc:mysql:///<dbname>",Optionally you can pass in a user id, & password
-            con = DriverManager.getConnection(connectionStr,user,pw);
+            con = DriverManager.getConnection(connectionStr,dbuser,dbpw);
             Client client = new Client(address,aptNum,city,state,zipCode,municipality,county,lName,fName);
             client.Insert(con);
             int clientId = client.getId(con);
@@ -51,7 +61,7 @@ public class FillInFormMain {
             ds.insert(con);
             int damageAssessmentId = ds.getId(con);
 
-            int UserId =-1;
+            //int UserId =-1;
 
             Cases caseInstance = new Cases(comments,clientId,damageAssessmentId,buildId,UserId);
             caseInstance.Insert(con);
@@ -96,13 +106,7 @@ public class FillInFormMain {
          
     }
     
-//    public void create(Connection con,String address, String aptNum, String city, String state, String zipCode,
-//            String municipality, String county, String lName, String fName) throws SQLException{
-//
-//        Client client = new Client(address,aptNum,city,state,zipCode,municipality,county,lName,fName);
-//        client.Insert(con);
-//
-//    }
+   
 
 
 }
