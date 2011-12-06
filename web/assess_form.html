@@ -33,6 +33,11 @@ TODO:
 
 
 <script>
+
+// Code to protect page from non-logged in users
+if (sessionStorage.getItem("loginStatus") != "OK")
+    window.location = "index.jsp";
+
 function save_disaster_entry_curbside()
 {
 	// We do NOT do a summary/review for this one, we just save it...
@@ -75,6 +80,8 @@ function save_disaster_entry_curbside()
 	// Save JSON object to local storage
 	localStorage.setItem(keyToUse, JSON.stringify(this_entry));
 
+        // Post the JSON object to FillInForm
+        
 	// Reset the disasterKey element so that we don't overwrite this element next time
 	localStorage.setItem("disasterKey", keyToUse);
 
@@ -301,6 +308,21 @@ function decrNumFloors()
 	return false;
 }
 
+function incrNumFloors_c()
+{
+	document.getElementById("number_floors_input_c").value = parseInt(document.getElementById("number_floors_input_c").value) + 1;
+	return false;
+}
+
+
+function decrNumFloors_c()
+{
+	document.getElementById("number_floors_input_c").value = parseInt(document.getElementById("number_floors_input_c").value) - 1;
+	if (parseInt(document.getElementById("number_floors_input_c").value) < 0)
+		document.getElementById("number_floors_input_c").value = 0;
+	return false;
+}
+
 function checkRenterInfo()
 {
 	var select = document.getElementById("owner_information");
@@ -375,7 +397,7 @@ function fillAssessmentAddress()
 				</span>
 
 				<span id='id_apt' style='display:none'>
-						<input type="tel" id="id_apt_input" name="tel_apt" placeholder="Apt #" style="width:3.5em;" id="id_apt_input" />
+						<input type="text" id="id_apt_input" name="tel_apt" placeholder="Apt #" style="width:3.5em;" id="id_apt_input" />
 				</span>
 				</td></tr></table>
 
@@ -743,13 +765,10 @@ function fillAssessmentAddress()
 	<div data-role="page" id="curbside">
 	
 	<div data-role="header" data-theme="b"><a href='#one' data-rel="back">Back</a><h2>Curbside</h2>
-		<div class="ui-bar-e" style="padding:4px;text-align:center">
-				<div class="ui-bar-e" style="padding:4px;text-align:center">
-					<div id="assessment_address_c"></div>
-				</div>
-		</div>
 	</div><!-- /header -->
-	
+			<div class="ui-bar-e" style="padding:4px;text-align:center">
+					<div id="assessment_address_c"></div>
+		</div>
 	<div data-role="content">
 		
 		<form name="disaster_form_c">
@@ -775,9 +794,9 @@ function fillAssessmentAddress()
 				<td class='form_table_label' style='border:0px'>Number of floors:</td>
 				<td class='form_table_input' style='border:0px'>
 				<table><tr>
-					<td valign="center"><a href="javascript:;" onClick="decrNumFloors()"><img src='images/minus.png' style='width:35px;vertical-align:middle' border=0></a></td>
+					<td valign="center"><a href="javascript:;" onClick="decrNumFloors_c()"><img src='images/minus.png' style='width:35px;vertical-align:middle' border=0></a></td>
 					<td valign="center"><input type='tel' id='number_floors_input_c' value="1" style='width:2em' /></td>
-					<td valign="center"><a href="javascript:;" onClick="incrNumFloors()"><img src='images/plus.png' style='width:35px;vertical-align:middle' border=0></a></td>
+					<td valign="center"><a href="javascript:;" onClick="incrNumFloors_c()"><img src='images/plus.png' style='width:35px;vertical-align:middle' border=0></a></td>
 				</tr></table>
 				</td>
 			</tr>
@@ -825,10 +844,10 @@ function fillAssessmentAddress()
 		</div>
 
 
-	<a href='javascript:;' data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b" onClick='save_disaster_entry_curbside()'><div class='mainlink_big_head'>Submit</div></a>		
-	</div>
+	<a href='javascript:;' data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b" onClick='save_disaster_entry_curbside()'><div class='mainlink_big_head'>Submit</div></a>
+       	</form>s
+        </div>
 	
-	</form>
 
 	</div>
 

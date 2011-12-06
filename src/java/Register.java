@@ -58,8 +58,8 @@ public class Register extends HttpServlet {
                 String registerMessage = null;
                 String destination = null;
                 if (User.lookup(email, con) != null) {
-                    registerMessage = "Sorry! The email address has already been registered. Please try another one.";
-                    destination = "/index.jsp";
+                    registerMessage = "Sorry! The e-mail address " + email_input + " has already been registered. Please try another one.";
+                    destination = "/register.jsp";
                 } else {
 
                     Client = new User(password, lastName, firstName, "", "", email);
@@ -67,10 +67,10 @@ public class Register extends HttpServlet {
                     int flag = Client.Insert(con);
 
                     if (flag == 1) {
-                        registerMessage = "Congradulations! You've been registered successfully!";
+                        registerMessage = "Congratulations! You have been registered successfully! Your account is currently pending approval. Please ask your supervisor to activate your account, then log in below.";
                         destination = "/index.jsp";
                     } else {
-                        registerMessage = "We're sorry! You failed to register. Please try again!";
+                        registerMessage = "Sorry, we were unable to register you. Please make sure that you've completed all fields below.";
                         destination = "/register.jsp";
                     }
                 }

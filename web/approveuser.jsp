@@ -11,10 +11,27 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
+
 <html>
-    <head>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">	<!-- sets document with to device width -->
+<meta name="apple-mobile-web-app-capable" content="yes"> <!-- tags as web app for iOS -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- status bar translucent -->
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+<link rel="stylesheet" media="all" href="style.css" />
+<title>Disaster Response App</title>
+</head>
+
+<!-- script immediately scrolls the page one pixel to hide the address bar -->
+<script>
+window.addEventListener('load', function(e) {
+    setTimeout(function() { window.scrollTo(0, 1); }, 1);
+  }, false);
+</script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Approve User</title>
         <script language="javascript">
 
             function validation()
@@ -40,21 +57,23 @@
 
             }
         </script>
-    </head>
-    <body>        
-        <form name="admin" method="post" action="ApproveUser">
-            <p align="center"><b>Please Select Users To Be Approved</b><br>&nbsp;</p>            
-            <div align="center" width="85%">
-                <center>
-                    <table border="1" borderColor="#ffe9bf" cellPadding="0" cellSpacing="0" width="658" height="63">
-                        <tbody>
-                        <td bgColor="#008080" width="50" align="center" height="19"></td>
-                        <td bgColor="#008080" width="120" align="center" height="19"><font color="#ffffff"><b>First Name</b></font></td>
-                        <td bgColor="#008080" width="120" align="center" height="19"><font color="#ffffff"><b>Last Name</b></font></td>
-                        <td bgColor="#008080" width="270" align="center" height="19"><font color="#ffffff"><b>Email</b></font></td>
-                        <td bgColor="#008080" width="224" align="center" height="19"><font color="#ffffff"><b>Telephone</b></font></td>
-                        <td bgColor="#008080" width="270" align="center" height="19"><font color="#ffffff"><b>Agency</b></font></td>
-                        </tbody>
+    <body>
+
+        <div data-role="page" id="approve_form">
+
+            <div data-role="header" data-theme="b   ">
+                <a href="welcome.jsp" data-rel="back">Back</a>
+		<h2>Approve Users</h2>
+            </div>
+
+            <div data-role="content">
+                <form name="admin" method="post" action="ApproveUser">
+
+                    <div class="sub_form">
+                        <div class="instruction_text">Please select the users you wish to approve. Upon approval, users will be able to access the disaster application and submit disaster assessments.</div>
+
+                 <div data-role="fieldcontain" class="iOS-fc-fix" style='margin:auto;text-align:center'>
+                        <fieldset data-role="controlgroup">
 
                         <%
                                     String msg = (String) request.getAttribute("message");
@@ -82,14 +101,11 @@
                                         for (int i = 0; i < l.size(); i++) {
                                             temp = l.get(i);
                         %>
-                        <tr>                           
-                            <td width="50"><input type="checkbox" name="chbox" value="<%=temp.getUserId()%>"/></td>
-                            <td width="120"><%=temp.getfName()%></td>
-                            <td width="120"><%=temp.getlName()%></td>
-                            <td width="270"><%=temp.getEmail()%></td>
-                            <td width="224"><%=temp.getTelephone()%></td>
-                            <td width="270"><%=temp.getAgency()%></td>
-                        </tr>
+                        
+				<input type='checkbox' id="<%=temp.getUserId()%>" name="chbox" value ="<%=temp.getUserId()%>" />
+				<label for='<%=temp.getUserId()%>'><%=temp.getfName()%> <%=temp.getlName()%>, <%=temp.getEmail()%></label>
+				
+			
 
                         <%
                                         }
@@ -97,11 +113,18 @@
                                         e.printStackTrace();
                                     }
                         %>
-                    </table>
-                    <p><font color="#FF0000"><b><%=msg%></b></font></p>
-                </center>
+                    </fieldset>
+                 </div>
+
             </div>
-            <input type="submit" value="Approve"/>
-        </form>
+	<a href='javascript:;' onClick="document.forms['admin'].submit()" data-role="button" data-icon="arrow-r" data-iconpos="right">
+			<div class='mainlink_big_head'>Approve</div>
+			<div class='mainlink_subtitle'>selected users</div>
+	</a>
+               </form>
+
+            </div>
+        </div>
+        
     </body>
 </html>

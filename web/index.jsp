@@ -38,6 +38,31 @@
             document.forms[form_name].submit();
         }
 
+        function setErrorMessages()
+        {
+            if (sessionStorage.getItem("errorValue") != "")
+            {
+                document.getElementById("error_container").innerHTML = sessionStorage.getItem("errorValue");
+                document.getElementById("error_container").style.display = "block";
+
+                // Reset sessionStorage value
+                sessionStorage.setItem("errorValue", "");
+            }
+            
+        }
+
+        function setSuccessMessages()
+        {
+            if (sessionStorage.getItem("successValue") != "")
+            {
+                document.getElementById("success_container").innerHTML = sessionStorage.getItem("successValue");
+                document.getElementById("success_container").style.display = "block";
+
+                // Reset sessionStorage value
+                sessionStorage.setItem("successValue", "");
+            }
+
+        }
     </script>
     <!-- END CUSTOM JAVASCRIPT DEFINITIONS -->
 
@@ -52,18 +77,39 @@
                 <b>Welcome to DReporter!</b> Please log in below to access the application.<br>
                 <%ArrayList errors = (ArrayList<String>) request.getAttribute("errors");
                             if (errors != null) {
+                                String errorString = "";
                                 for (int i = 0; i < errors.size(); i++) {
-                                    out.println("<strong>" + errors.get(i) + "</strong>");
+
+                                    errorString = errorString + errors.get(i) + "<br />";
                                    }
+                                out.println("<script> sessionStorage.setItem('errorValue', '" + errorString + "') </script>");
+
                                 }   
-                 String getMessage = (String)request.getAttribute("RegisterMessage");
+
+                String getMessage = (String)request.getAttribute("RegisterMessage");
+
                  if(getMessage!=null)
-                    out.println("<strong>" + getMessage + "</strong>");
+                    out.println("<script> sessionStorage.setItem('successValue', '" + getMessage + "') </script>");
 
 
                 %>
 
                 <div class='sub_form'>
+
+                    
+                    <div id="error_container" class='failure_message' style='display:none'>
+				<div class='instruction_text'></div>
+				<div id="inperror"></div>
+		</div>
+
+                <div id="success_container" class='success_message' style='display:none'>
+				<div class='instruction_text'></div>
+		</div>
+
+                 <script>setErrorMessages();</script>
+                 <script>setSuccessMessages();</script>
+
+
                     <form name='login_form' action='LogIn' method='post'>
                         <input type='hidden' name='lat' >
                         <b>E-mail Address:</b><br />

@@ -56,18 +56,18 @@ public class LogIn extends HttpServlet {
 
             UserInstance = User.lookup(email, con);
             if (UserInstance == null) {
-                errors.add("Email not found");
+                errors.add("The e-mail address you entered is not registered. Please enter a valid e-mail address, or use the Register button to create an account.");
 //                String destination = "/index.jsp";
 //                RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
 //                red.forward(request, response);
             } else if (UserInstance.getIsApproved().equals("N")) {
                 //System.out.println(((String)UserInstance.getIsApproved()).equals("N"));
-                errors.add("You have not been approved by Admin. Please contact Admin for approval.");
+                errors.add("Your account has not been approved yet by an administrator. Please contact your supervisor for more details.");
 //                String destination = "/index.jsp";
 //                RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
 //                red.forward(request, response);
             } else if (!UserInstance.getPassword().equals(pw)) {
-                errors.add("Email address or Password does not match! Please try again!");
+                errors.add("The password you entered was incorrect. Please try again.");
                 //request.setAttribute("errors", errors);
             }
 
@@ -80,11 +80,14 @@ public class LogIn extends HttpServlet {
                     red.forward(request, response);
 
                 }
-            
-                else {
+                else
+                {
                     //request.setAttribute("email", email);
                     HttpSession session = request.getSession();
                     session.setAttribute("userName", UserInstance.getfName() + " " + UserInstance.getlName());
+                    session.setAttribute("volunteerId", Integer.toString(UserInstance.getUserId()));
+                    session.setAttribute("loginStatus", "OK");
+                    session.setAttribute("adminStatus", UserInstance.getRole());
                     response.sendRedirect("welcome.jsp");
                 }
 

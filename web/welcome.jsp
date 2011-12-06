@@ -38,10 +38,6 @@ function initialize_disaster_session()
 	// Check to see if a disaster reporting key incrementor exists - if not, set it at zero.
 	if(localStorage.getItem("disasterKey") == null)
 	localStorage.setItem("disasterKey", "0");
-
-	// Add the volunteer User ID and Name to local storage
-	localStorage.setItem("volunteer_id", "1"); // TODO: Get this from LogIn
-	localStorage.setItem("volunteer_name", "Test Volunteer"); // TODO: Get this from LogIn
 }
 </script>
 
@@ -57,7 +53,12 @@ function initialize_disaster_session()
 
 	<div data-role="content">
         <%HttpSession sessionUser = request.getSession();
-        String username = (String)sessionUser.getAttribute("userName");%>
+        String username = (String)sessionUser.getAttribute("userName");
+        String loginStatus = (String)sessionUser.getAttribute("loginStatus");
+        String volunteerId = (String)sessionUser.getAttribute("volunteerId");
+        String adminStatus = (String)sessionUser.getAttribute("adminStatus");
+        out.println("<script>sessionStorage.setItem('userRole', '" + adminStatus + "'); sessionStorage.setItem('loginStatus', '" + loginStatus + "'); localStorage.setItem('volunteer_id', '" + volunteerId +"'); localStorage.setItem('volunteer_name', '" + username + "'); </script>");
+        %>
 	Welcome, <strong><%=username%></strong>. Please choose what you would like to do:<br>
         <% String message = (String)request.getAttribute("FormSubmitMessage");
         if(message!=null)
@@ -79,6 +80,19 @@ function initialize_disaster_session()
 			<div class='mainlink_big_head'>Get help</div>
 			<div class='mainlink_subtitle'>on how to use this app</div>
 	</a>
+
+        <div id="admin_link" style="display:none">
+             <a href='approveuser.jsp' data-role="button" data-icon="arrow-r" data-iconpos="right">
+			<div class='mainlink_big_head'>Approve</div>
+			<div class='mainlink_subtitle'>new users</div>
+            </a>
+        </div>
+
+        <script>
+            if (sessionStorage.getItem("userRole") == "ADMIN")
+                document.getElementById("admin_link").style.display = "block";
+        </script>
+
 	</div>
 </div>
 </body>

@@ -49,17 +49,14 @@ div.info_message
 
 div.success_message
 {
-	font-size:12pt;
-	-webkit-shadow: 1px 1px 1px #fff;
-	color:white;
-	background-color:green;
-	font-weight:bold;
-	padding:3px;
-	margin-left:-4px;
-	margin-right:-4px;
-	margin-top:-4px;
-	margin-bottom:4px;
-	text-align:center;
+	border:3px solid green;
+	background-color:#81F097;
+	padding:8px;
+	margin:4px;
+	margin-bottom:10px;
+	-webkit-border-radius: 0.5em;
+	-webkit-box-shadow: 1px 1px 1px #ddd;
+
 }
 
 div.failure_message
