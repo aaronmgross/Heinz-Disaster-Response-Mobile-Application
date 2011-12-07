@@ -91,7 +91,7 @@ TODO:
 				"volunteer_name" : localStorage.getItem("volunteer_name"),
 				"start_time" : "" + now.getTime(),
 				"end_time" : "", // TODO
-				"street_name" : document.getElementById("street_name_input").value,
+				"street_name" : document.getElementById("street_name").value,
 				"tel_house_num" : document.getElementById("tel_house_num").value,
 				"tel_apt" : "",
 				"txt_state" : document.getElementById("txt_state").value,
@@ -107,13 +107,13 @@ TODO:
 				"insurance_information_s" : document.getElementById("insurance_information_s").value,
 				"insurance_information_c" : document.getElementById("insurance_information_c").value,
 				"number_floors" : document.getElementById("number_floors").value,
-				"is_basement" : document.getElementById("is_basement").value,
-				"is_basement_occupied" : document.getElementById("is_basement_occupied").value,
+				"is_basement" : get_radio_value("is_basement"),
+                                "is_basement_occupied" : get_radio_value("is_basement_occupied"),
 				"txtarea_basement_comment" : document.getElementById("txtarea_basement_comment").value,
 				"water_in_living_area" : document.getElementById("water_in_living_area").value,
 				"water_in_basement" : document.getElementById("water_in_basement").value,
-				"electric" : document.getElementById("electric").value,
-				"gas" : document.getElementById("gas").value,
+				"electric" : get_radio_value("electric"),
+                                "gas" : get_radio_value("gas"),
 				"d_electrical" : get_radio_value("d_electrical"),
 				"d_furnace" : get_radio_value("d_furnace"),
 				"d_water" : get_radio_value("d_water"),
@@ -159,7 +159,7 @@ TODO:
 
 		// Load all values into the hidden form
 		setValues("tel_house_num");
-		setValues("street_name_input");
+		setValues("street_name");
 		setValues("txt_city");
 		setValues("txt_state");
 		setValues("tel_zip");
@@ -263,7 +263,7 @@ TODO:
 		if(a=="address"){
 			//document.write("hello");
 			enableFields("tel_house_num");
-			enableFields("street_name_input");
+			enableFields("street_name");
 			enableFields("txt_city");
 			enableFields("txt_state");
 			enableFields("tel_zip");
@@ -349,6 +349,7 @@ TODO:
 
 		<div data-role="content" >
 
+                    <form name="disaster_form">
 			<div class='instruction_text'>Please review this information with the client to ensure that it has been entered correctly.</div>
 
 <a href="javascript:show('address');" id='address'><h4 align="right"> Edit </h4></a>
@@ -356,8 +357,8 @@ TODO:
 		<center>
 			<div class="instruction_text">Dwelling address:</div>
 <table>
-	<tr><td>	House Number:</td><td><input type="text" name="tel_house_num" id="tel_house_num" disabled style="border: 0px;color: #000000;"> </td></tr>
-	<tr><td>	Street Name: </td><td> <input type="text" name="street_name_input" id="street_name_input" disabled style="border: 0px solid #000000;color: #000000;"> </td></tr>
+	<tr><td>	House Number:</td><td><input type="text" name="tel_house_num" id="tel_house_num" disabled="disabled" style="border: 0px;color: #000000;"> </td></tr>
+	<tr><td>	Street Name: </td><td> <input type="text" name="street_name" id="street_name" disabled="disabled" style="border: 0px solid #000000;color: #000000;"> </td></tr>
 	<tr><td>	City:  </td><td><input type="text" name="txt_city" id="txt_city" disabled style="border: 0px solid #000000;color: #000000;"> </td></tr>
 	<tr><td>		State: </td><td> <input type="text" name="txt_state" id="txt_state" disabled style="border: 0px solid #000000;color: #000000;"> </td></tr>
 	<tr><td>			Zipcode: </td><td>  <input type="text" name="tel_zip" id="tel_zip" disabled style="border: 0px solid #000000;color: #000000;"> </td></tr>
@@ -672,6 +673,8 @@ TODO:
 		</a>
 
 		</div>
+                      </form>
+
 	</div>
 </div>
 
@@ -708,9 +711,16 @@ TODO:
 </div>
 
 <script>
-                    $("input[type='radio']").attr("checked",true).checkboxradio("refresh");
 
-                    var myselect = $("select#foo");
+// Refreshes and sets radio buttons
+$("input[type='radio']").attr("checked",true).checkboxradio("refresh"); // works with ALL radios
+$("#d_electrical-2").checkboxradio("refresh"); // works with a specific id
+
+// For checkboxes
+$("#insurance_information_f").checkboxradio("refresh");
+
+// For selects
+var myselect = $("select#id");
 myselect[0].selectedIndex = 3;
 myselect.selectmenu("refresh");
 

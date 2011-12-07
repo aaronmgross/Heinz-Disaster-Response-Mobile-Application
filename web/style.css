@@ -241,6 +241,11 @@ input[type=button] {
 	width:7em;
 }
 
+input[disabled='disabled'] {
+    background-color:white;
+    color:black;
+}
+
 input:focus, textarea:focus, select:focus {
 	outline: none;
 	border: 2px solid #058cf5;
