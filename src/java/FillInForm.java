@@ -165,13 +165,14 @@ public class FillInForm extends HttpServlet {
                 ds.insert(con);
                 int damageAssessmentId = ds.getId(con);
 
-                Cases caseInstance = new Cases(comments, clientId, damageAssessmentId, buildId, -1);
+                Cases caseInstance = new Cases(comments, clientId, damageAssessmentId, buildId, volunteerId);
                 caseInstance.Insert(con);
             }
-            request.setAttribute("FormSubmitMessage", "Your Assessment Form has been submitted successfully!");
+            request.setAttribute("formSuccessMessage", "Your Assessment Form has been submitted successfully!");
 
         } catch (Exception e) {
-            request.setAttribute("FormSubmitMessage", "You failed to submit the form!");
+            System.out.println(e.getMessage());
+            request.setAttribute("formFailureMessage", "You failed to submit the form!");
         } finally {
             String destination = "/welcome.jsp";
             //request.setAttribute("FormSubmitMessage", "Your Assessment Form has been submitted successfully!");
