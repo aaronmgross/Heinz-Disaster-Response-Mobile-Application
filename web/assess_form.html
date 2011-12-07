@@ -81,7 +81,8 @@ function save_disaster_entry_curbside()
 	localStorage.setItem(keyToUse, JSON.stringify(this_entry));
 
         // Post the JSON object to FillInForm
-        
+
+
 	// Reset the disasterKey element so that we don't overwrite this element next time
 	localStorage.setItem("disasterKey", keyToUse);
 
@@ -123,9 +124,9 @@ function save_disaster_entry()
 			"owner_information" : document.getElementById("owner_information").value,
 			"landlord_name" : document.getElementById("landlord_name").value,
 			"landlord_tel" : document.getElementById("landlord_tel").value,
-			"insurance_information_f" : document.getElementById("insurance_information_f").value,
-			"insurance_information_s" : document.getElementById("insurance_information_s").value,
-			"insurance_information_c" : document.getElementById("insurance_information_c").value,
+			"insurance_information_f" : document.getElementById("insurance_information_f").checked.value,
+			"insurance_information_s" : document.getElementById("insurance_information_s").checked.value,
+			"insurance_information_c" : document.getElementById("insurance_information_c").checked.value,
 			"number_floors" : document.getElementById("number_floors_input").value,
 			"is_basement" : get_radio_value("is_basement"),
 			"is_basement_occupied" : get_radio_value("is_basement_occupied"),
