@@ -139,34 +139,35 @@ public class FillInForm extends HttpServlet {
                 reason = (String) j.get("txtArea_classification_reason");
                 comments = (String) j.get("txtArea_comment");
 
+//            }
+//        } catch (JSONException e) {
+//            request.setAttribute("FormSubmitMessage", "You failed to submit the form!");
+//            //System.out.println(e);
+//        }
+//
+//        try {
+                Class.forName("com.mysql.jdbc.Driver");
+                String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
+                con = DriverManager.getConnection(connectionStr, dbuser, dbpw);
+                Client client = new Client(address, apt, city, state, zip, "", "", lastName, firstName);
+                client.Insert(con);
+                int clientId = client.getId(con);
+                System.out.println("clientId:" + clientId);
+
+                Building building = new Building(landlordName, landlordPhone, dwellingType, insuranceInfo_f, insuranceInfo_s, insuranceInfo_c, ownerInfo);
+                building.Insert(con);
+
+                int buildId = building.getId(con);
+                System.out.println("BuildingId:" + buildId);
+
+                DamageAssessment ds = new DamageAssessment(classification, "", "", num_of_floor, isBasement, waterLivingInt, waterBasementInt, isGasOn, isElectricOn, isBasementOccupied, basementComment, reason,
+                        Electrical_service_box, Furnace, Heat_Water_Heater, Washer, Dryer, Stove, Regfrigerator, sqlDate, sqlDate);
+                ds.insert(con);
+                int damageAssessmentId = ds.getId(con);
+
+                Cases caseInstance = new Cases(comments, clientId, damageAssessmentId, buildId, -1);
+                caseInstance.Insert(con);
             }
-        } catch (JSONException e) {
-            request.setAttribute("FormSubmitMessage", "You failed to submit the form!");
-            //System.out.println(e);
-        }
-
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
-            con = DriverManager.getConnection(connectionStr, dbuser, dbpw);
-            Client client = new Client(address, apt, city, state, zip, "", "", lastName, firstName);
-            client.Insert(con);
-            int clientId = client.getId(con);
-            System.out.println("clientId:" + clientId);
-
-            Building building = new Building(landlordName, landlordPhone, dwellingType, insuranceInfo_f, insuranceInfo_s, insuranceInfo_c, ownerInfo);
-            building.Insert(con);
-
-            int buildId = building.getId(con);
-            System.out.println("BuildingId:" + buildId);
-
-            DamageAssessment ds = new DamageAssessment(classification, "", "", num_of_floor, isBasement, waterLivingInt, waterBasementInt, isGasOn, isElectricOn, isBasementOccupied, basementComment, reason,
-                    Electrical_service_box, Furnace, Heat_Water_Heater, Washer, Dryer, Stove, Regfrigerator, sqlDate, sqlDate);
-            ds.insert(con);
-            int damageAssessmentId = ds.getId(con);
-
-            Cases caseInstance = new Cases(comments, clientId, damageAssessmentId, buildId, -1);
-            caseInstance.Insert(con);
             request.setAttribute("FormSubmitMessage", "Your Assessment Form has been submitted successfully!");
 
         } catch (Exception e) {
@@ -178,7 +179,7 @@ public class FillInForm extends HttpServlet {
             red.forward(request, response);
             try {
                 if (con != null) {
-                con.close();
+                    con.close();
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(FillInForm.class.getName()).log(Level.SEVERE, null, ex);
