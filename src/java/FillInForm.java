@@ -98,6 +98,7 @@ public class FillInForm extends HttpServlet {
                 //Date endTime= (Date)j.get("end_time");
                 streetName = (String) j.get("street_name");
                 houseNum = (String) j.get("tel_house_num");
+                address = houseNum+" "+streetName;
                 apt = (String) j.get("tel_apt");
                 city = (String) j.get("txt_city");
                 state = (String) j.get("txt_state");
@@ -122,10 +123,11 @@ public class FillInForm extends HttpServlet {
                 if (waterLiving != null && !waterLiving.equals("")) {
                     waterLivingInt = Integer.parseInt(waterLiving);
                 }
+
+                waterBasement = (String) j.get("water_in_basement");
                 if (waterBasement != null && !waterBasement.equals("")) {
                     waterBasementInt = Integer.parseInt(waterBasement);
                 }
-                waterBasement = (String) j.get("water_in_basement");
                 isElectricOn = (String) j.get("electric");
                 isGasOn = (String) j.get("gas");
                 Electrical_service_box = (String) j.get("d_electrical");
