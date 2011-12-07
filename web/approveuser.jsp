@@ -90,7 +90,7 @@ window.addEventListener('load', function(e) {
                                     }
                                     String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
                                     String user = "root";
-                                    String pw = "";
+                                    String pw = "hello";
                                     try {
                                         //database,For MySQL it would be "jdbc:mysql:///<dbname>",Optionally you can pass in a user id, & password
                                         con = DriverManager.getConnection(connectionStr, user, pw);
