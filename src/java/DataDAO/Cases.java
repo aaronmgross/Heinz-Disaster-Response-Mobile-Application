@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package DataDAO;
 
 import java.sql.Connection;
@@ -24,13 +19,15 @@ public class Cases {
     private int userId;
 
     public Cases(String comment, int clientId, int damageAssessmentId, int buildingId, int userId) {
-        this.comment = comment==null?"":comment;
+        this.comment = comment == null ? "" : comment;
         this.clientId = clientId;
         this.damageAssessmentId = damageAssessmentId;
         this.buildingId = buildingId;
         this.userId = userId;
     }
-    public Cases(){}
+
+    public Cases() {
+    }
 
     public void Insert(Connection con) throws SQLException {
 
@@ -59,11 +56,11 @@ public class Cases {
 
     }
 
-      public int getId(Connection con) throws SQLException{
+    public int getId(Connection con) throws SQLException {
 
         PreparedStatement statement = null;
-         try {
-             String sql ="select Case_Id from Cases where Comment =? and Client_Id=? and Damage_Assessment_Id =? and Building_Id=? and User_Id=?";
+        try {
+            String sql = "select Case_Id from Cases where Comment =? and Client_Id=? and Damage_Assessment_Id =? and Building_Id=? and User_Id=?";
             statement = con.prepareStatement(sql);
             statement.setString(1, comment);
             statement.setInt(2, clientId);
@@ -74,12 +71,12 @@ public class Cases {
             ResultSet rs = statement.executeQuery();
             //buildId=100;
             while (rs.next()) {
-            	caseId = rs.getInt("Case_Id");
+                caseId = rs.getInt("Case_Id");
 
             }
             System.out.println("Successfully selected from Building");
             return caseId;
-         }catch (SQLException e) {
+        } catch (SQLException e) {
 
             e.printStackTrace();
             return -1;
@@ -139,8 +136,4 @@ public class Cases {
     public void setUserId(int userId) {
         this.userId = userId;
     }
-
-    
-
-
 }

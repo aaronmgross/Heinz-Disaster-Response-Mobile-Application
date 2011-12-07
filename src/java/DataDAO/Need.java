@@ -34,10 +34,10 @@ public class Need {
         }
     }
 
-    public int getId(String needName,Connection con) throws SQLException {
+    public int getId(String needName, Connection con) throws SQLException {
 
         PreparedStatement statement = null;
-        int needId=0;
+        int needId = 0;
 
         try {
             String sql = "select Need_Id from Needs where Need_name =?";

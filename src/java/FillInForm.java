@@ -1,26 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
+import DataDAO.*;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import Utility.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
-
-//import java.sql.Date;
-//import java.sql.Timestamp;
 
 /**
  *
@@ -28,22 +21,17 @@ import org.json.JSONException;
  */
 public class FillInForm extends HttpServlet {
 
+    private Connection con;
     private String dbuser = null;
     private String dbpw = null;
 
+    @Override
     public void init() throws ServletException {
 
-		dbuser = getInitParameter("dbUser");
-		dbpw = getInitParameter("dbPassword");
+        dbuser = getInitParameter("dbUser");
+        dbpw = getInitParameter("dbPassword");
     }
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -51,7 +39,7 @@ public class FillInForm extends HttpServlet {
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
         int id = -1;
-        String volunteerId = null;
+        String volunteerIdStr = null;
         String volunteerName = null;
         //Date startTime;
         //Date endTime;
@@ -93,23 +81,18 @@ public class FillInForm extends HttpServlet {
         int waterLivingInt = -1;
         int waterBasementInt = -1;
 
-        //String tr = (String)request.getAttribute("userId");
-        //System.out.println("userId"+tr);
-        //int userId = Integer.parseInt((String)request.getAttribute("userId"));
 
         String jsonArray = (String) request.getParameter("recordJSON");
 
         try {
             JSONArray x = new JSONArray(jsonArray);
-
-
             for (int i = 0; i < x.length(); i++) {
                 JSONObject j = x.getJSONObject(0);
 
-                //JSONObject j = new JSONObject(json);
                 id = (Integer) j.get("id");
                 System.out.println("id = " + id);
-                volunteerId = (String) j.get("volunteer_id");
+                volunteerIdStr = (String) j.get("volunteer_id");
+                int volunteerId = Integer.parseInt(volunteerIdStr);
                 volunteerName = (String) j.get("volunteer_name");
                 //Date startTime= (Date)j.get("start_time");
                 //Date endTime= (Date)j.get("end_time");
@@ -124,9 +107,9 @@ public class FillInForm extends HttpServlet {
                 landlordName = (String) j.get("landlord_name");
                 landlordPhone = (String) j.get("landlord_tel");
                 dwellingType = (String) j.get("dwelling_type");
-                insuranceInfo_f = (String) j.get("insurance_information");
-                insuranceInfo_s = (String) j.get("insurance_information");
-                insuranceInfo_c = (String) j.get("insurance_information");
+                insuranceInfo_f = (String) j.get("insurance_information_f");
+                insuranceInfo_s = (String) j.get("insurance_information_s");
+                insuranceInfo_c = (String) j.get("insurance_information_c");
                 ownerInfo = (String) j.get("owner_information");
                 floorNum = (String) j.get("number_floors");
                 if (floorNum != null && !floorNum.equals("")) {
@@ -156,23 +139,54 @@ public class FillInForm extends HttpServlet {
                 reason = (String) j.get("txtArea_classification_reason");
                 comments = (String) j.get("txtArea_comment");
 
-                FillInFormMain fim = new FillInFormMain(dbuser, dbpw,streetName, apt, city, state, zip, "", "", lastName, firstName,
-                        landlordName, landlordPhone, dwellingType, insuranceInfo_f,insuranceInfo_s,insuranceInfo_c, ownerInfo,
-                        Electrical_service_box, Furnace, Heat_Water_Heater, Washer, Dryer, Stove, Regfrigerator,
-                        classification, num_of_floor, isBasement, waterLivingInt, waterBasementInt, isElectricOn, isGasOn, isBasementOccupied, basementComment, reason, sqlDate, sqlDate,
-                        comments,-1);
             }
+        } catch (JSONException e) {
+            request.setAttribute("FormSubmitMessage", "You failed to submit the form!");
+            //System.out.println(e);
+        }
 
-            String destination = "/welcome.jsp";
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
+            con = DriverManager.getConnection(connectionStr, dbuser, dbpw);
+            Client client = new Client(address, apt, city, state, zip, "", "", lastName, firstName);
+            client.Insert(con);
+            int clientId = client.getId(con);
+            System.out.println("clientId:" + clientId);
+
+            Building building = new Building(landlordName, landlordPhone, dwellingType, insuranceInfo_f, insuranceInfo_s, insuranceInfo_c, ownerInfo);
+            building.Insert(con);
+
+            int buildId = building.getId(con);
+            System.out.println("BuildingId:" + buildId);
+
+            DamageAssessment ds = new DamageAssessment(classification, "", "", num_of_floor, isBasement, waterLivingInt, waterBasementInt, isGasOn, isElectricOn, isBasementOccupied, basementComment, reason,
+                    Electrical_service_box, Furnace, Heat_Water_Heater, Washer, Dryer, Stove, Regfrigerator, sqlDate, sqlDate);
+            ds.insert(con);
+            int damageAssessmentId = ds.getId(con);
+
+            Cases caseInstance = new Cases(comments, clientId, damageAssessmentId, buildId, -1);
+            caseInstance.Insert(con);
             request.setAttribute("FormSubmitMessage", "Your Assessment Form has been submitted successfully!");
+
+        } catch (Exception e) {
+            request.setAttribute("FormSubmitMessage", "You failed to submit the form!");
+        } finally {
+            String destination = "/welcome.jsp";
+            //request.setAttribute("FormSubmitMessage", "Your Assessment Form has been submitted successfully!");
             RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
             red.forward(request, response);
-            
-        } catch (JSONException e) {
-            System.out.println(e);
-        } catch (SQLException ex) {
-            System.out.println(ex);
+            try {
+                if (con != null) {
+                con.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(FillInForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+
+
+
 
 
     }

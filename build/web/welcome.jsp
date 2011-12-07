@@ -54,6 +54,7 @@ function initialize_disaster_session()
 	<div data-role="content">
         <%HttpSession sessionUser = request.getSession();
         String username = (String)sessionUser.getAttribute("userName");
+        if(username==null) username="Guest";
         String loginStatus = (String)sessionUser.getAttribute("loginStatus");
         String volunteerId = (String)sessionUser.getAttribute("volunteerId");
         String adminStatus = (String)sessionUser.getAttribute("adminStatus");
