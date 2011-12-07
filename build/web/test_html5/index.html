@@ -1,0 +1,97 @@
+<!-- testing html5 local storage -->
+
+<html>
+<head>
+	
+	<script>
+	function saveStatusLocally() {
+	  window.localStorage.setItem("status", document.getElementById("blah").value);
+	}
+
+	// read the string
+	function readStatus() {
+	   return window.localStorage.getItem("status");
+	}
+	
+	</script>
+</head>
+
+<body>
+	<b>Hello world. Testing HTML5.</b>
+	<Br /><br />
+	<input type='text' id='blah' /><input type='button' onClick='saveStatusLocally()' value='blah' />
+	
+	<Br /><br />
+	Here's what's stored in "status":<br />
+	<script>document.write(readStatus());</script>
+	
+	<Br /><br />
+	
+	<script>
+	function test_json()
+	{
+		var test_j = 
+		{
+			"id" : 1,
+			"volunteer_id" : 6,
+			"street_name" : "Some Ave",
+			"undefined_whatever" : ""
+		}
+		
+		var my_json_text = JSON.stringify(test_j);
+		document.write(my_json_text);
+		
+		localStorage.setItem("jsonTest", my_json_text);
+		var retrieved = localStorage.getItem("jsonTest");
+		
+		var json_obj_r = eval('(' + retrieved + ')');
+		
+		json_obj_r.undefined_whatever = "i'm defining it!";
+		
+		var my_json_text2 = JSON.stringify(json_obj_r);
+		
+		document.write(my_json_text2);
+	}
+	</script>
+	<script>
+	function c() {
+		var DB_NAME    = "html5_test";
+		var DB_VERSION = "1.0";
+		var DB_TITLE   = "Testing an HTML5 Database";
+		var DB_BYTES   = 500000;
+		var db = window.openDatabase(DB_NAME, DB_VERSION, DB_TITLE, DB_BYTES);
+		
+		db.transaction(function(tx)
+		{
+			tx.executeSql("CREATE TABLE IF NOT EXISTS animals (id INT, name VARCHAR(20))");
+		})
+		
+		db.transaction(function(tx)
+		{
+			tx.executeSql("INSERT INTO animals (id, name) VALUES(1, 'cheetah')");
+		})
+	}
+
+	function sqlFail(err) { alert("SQL failed: " + err.message); }
+	function txFail(err) { alert("TX failed: " + err.message); }
+	
+	function sqlWin(tx, response) { console.log("SQL succeeded: " + response.rows.length + " rows."); }
+	function txWin(tx) { console.log("TX succeeded."); }
+	
+	function create_tables()
+	{
+		db.transaction( function(tx) {
+		    var queryParams = [];
+		    tx.executeSql(
+		        "CREATE TABLE IF NOT EXISTS animals (id INT NOT NULL PRIMARY KEY AUTOINCREMENT, name VARCHAR(20) NOT NULL UNIQUE);",
+		        queryParams,
+		        sqlWin,
+		        sqlFail
+		    );
+		}, txFail, txWin);
+	}
+	</script>
+	<a href="javascript:;" onClick="test_json()">blah</a>
+	<script>//connect_to_db(); create_tables(); insert_into_table(); read_from_table();</script>
+</body>
+</html>

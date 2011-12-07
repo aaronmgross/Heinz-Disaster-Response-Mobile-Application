@@ -1,0 +1,55 @@
+<!-- draft page -->
+
+<html>
+<head>
+
+<!-- mobile tags -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">	<!-- sets document with to device width -->
+<meta name="apple-mobile-web-app-capable" content="yes"> <!-- tags as web app for iOS -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- status bar translucent -->
+
+<link rel="stylesheet" media="all" href="style.css" />
+<title>Disaster Response App</title>
+</head>
+
+<!-- script immediately scrolls the page one pixel to hide the address bar -->
+<script type="text/javascript">
+window.addEventListener('load', function(e) {
+    setTimeout(function() { window.scrollTo(0, 1); }, 1);
+  }, false);
+
+function func(){
+
+document.location = 'index.html';
+}
+
+</script>
+
+
+<body>
+
+<form method="post" action="find_location.html">
+
+<div class='success_message'>Your entry was saved to the database.</div>
+<h1>Success!</h1>
+
+<div class='sub_form'>
+
+<div class='instruction_text'>Your record was successfully saved. What would you like to do now?</div>
+
+<div class='bottom_button_row'>
+	
+	<input type='button' value='Next Assessment on This Street' style='text-align:center;margin:auto;width:100%' onClick="javascript:window.location='assess_form.html'" / ><br /><br />
+
+	<input type='button' value='Change Street Name' style='text-align:center;margin:auto;width:100%;background-color:#cccccc' onClick="javascript:window.location='find_location.html'" / ><br /><br />
+	
+		<input type='button' value='Check System Sync Statu' style='text-align:center;margin:auto;width:100%;background-color:#cccccc' onClick="javascript:window.location='find_location.html'" / ><br />
+</div>
+</div>
+
+
+	</form>
+	</body>
+
+
+</html>
