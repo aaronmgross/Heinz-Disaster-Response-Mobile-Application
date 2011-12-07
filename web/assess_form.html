@@ -53,24 +53,48 @@ function save_disaster_entry_curbside()
 	// Construct the JSON object
 	var this_entry = 
 	{
-		"id" : keyToUse, 	// Same as the key of the <key, value> local storage pair
-		"volunteer_id" : localStorage.getItem("volunteer_id"),
-		"volunteer_name" : localStorage.getItem("volunteer_name"),
-		"start_time" : "", // TODO
-		"end_time" : "", // TODO
-		"street_name" : document.getElementById("street_name_input").value,
-		"tel_house_num" : document.getElementById("houseNum").value,
-		"tel_apt" : document.getElementById("id_apt_input").value,
-		"txt_state" : document.getElementById("txt_state").value,
-		"txt_city" : document.getElementById("edit_address_info_input").value,
-		"tel_zip" : document.getElementById("tel_zip").value,
-		"dwelling_type" : document.getElementById("dwelling_type_c").value,
-		"number_floors" : document.getElementById("number_floors_input_c").value,
-		"is_basement" : basementOccupiedRadio,
-		"water_in_living_area" : document.getElementById("water_in_living_area_c").value,
-		"select_classification" : document.getElementById("select_classification_c").value,
-		"txtArea_classification_reason" : document.getElementById("txtArea_classification_reason_c").value,
-		"txtArea_comment" : document.getElementById("txtArea_comment_c").value,
+
+                        "id" : keyToUse, 	// Same as the key of the <key, value> local storage pair
+			"volunteer_id" : localStorage.getItem("volunteer_id"),
+			"volunteer_name" : localStorage.getItem("volunteer_name"),
+			"start_time" : "", // TODO
+			"end_time" : "", // TODO
+			"street_name" : document.getElementById("street_name_input").value,
+			"tel_house_num" : document.getElementById("houseNum").value,
+			"tel_apt" : document.getElementById("id_apt_input").value,
+			"txt_state" : document.getElementById("txt_state").value,
+			"txt_city" : document.getElementById("edit_address_info_input").value,
+			"tel_zip" : document.getElementById("tel_zip").value,
+			"txt_first_name" : "",
+			"txt_last_name" : "",
+                        "dwelling_type" : document.getElementById("dwelling_type_c").value,
+			"owner_information" : "",
+			"landlord_name" : "",
+			"landlord_tel" : "",
+			"insurance_information_f" : "",
+			"insurance_information_s" : "",
+			"insurance_information_c" : "",
+                        "number_floors" : document.getElementById("number_floors_input_c").value,
+                        "is_basement" : basementOccupiedRadio,
+			"is_basement_occupied" : "",
+			"txtarea_basement_comment" : "",
+                        "water_in_living_area" : document.getElementById("water_in_living_area_c").value,
+			"water_in_basement" : "",
+			"electric" : "",
+			"gas" : "",
+			"d_electrical" : "",
+			"d_furnace" : "",
+			"d_water" : "",
+			"d_washer" : "",
+			"d_dryer" : "",
+			"d_stove" : "",
+			"d_fridge" : "",
+                        "select_classification" : document.getElementById("select_classification_c").value,
+                        "txtArea_classification_reason" : document.getElementById("txtArea_classification_reason_c").value,
+                        "txtArea_comment" : document.getElementById("txtArea_comment_c").value
+
+
+
 		// TODO:
 		// lat
 		// long
@@ -80,14 +104,21 @@ function save_disaster_entry_curbside()
 	// Save JSON object to local storage
 	localStorage.setItem(keyToUse, JSON.stringify(this_entry));
 
-        // Post the JSON object to FillInForm
-
-
 	// Reset the disasterKey element so that we don't overwrite this element next time
 	localStorage.setItem("disasterKey", keyToUse);
 
-	// Go to welcome page
-	document.location = "welcome.html";
+            if (navigator.onLine)
+            {
+                // Attempt to send this directly to the FillInForm servlet
+		document.getElementById("curbsideJSON").value = "[" + JSON.stringify(this_entry) + "]";
+                document.forms["curbside_hidden"].submit();
+            }
+            else
+            {
+
+                // Go to welcome page
+                document.location = "welcome.jsp";
+            }
 }
 // Create and load into local storage a JSON object for this disaster entry
 function save_disaster_entry()
@@ -124,9 +155,9 @@ function save_disaster_entry()
 			"owner_information" : document.getElementById("owner_information").value,
 			"landlord_name" : document.getElementById("landlord_name").value,
 			"landlord_tel" : document.getElementById("landlord_tel").value,
-			"insurance_information_f" : document.getElementById("insurance_information_f").checked.value,
-			"insurance_information_s" : document.getElementById("insurance_information_s").checked.value,
-			"insurance_information_c" : document.getElementById("insurance_information_c").checked.value,
+			"insurance_information_f" : get_checked("insurance_information_f"),
+			"insurance_information_s" : get_checked("insurance_information_s"),
+			"insurance_information_c" : get_checked("insurance_information_c"),
 			"number_floors" : document.getElementById("number_floors_input").value,
 			"is_basement" : get_radio_value("is_basement"),
 			"is_basement_occupied" : get_radio_value("is_basement_occupied"),
@@ -144,7 +175,7 @@ function save_disaster_entry()
 			"d_fridge" : get_radio_value("d_fridge"),
 			"select_classification" : document.getElementById("select_classification").value,
 			"txtArea_classification_reason" : document.getElementById("txtArea_classification_reason").value,
-			"txtArea_comment" : document.getElementById("txtArea_comment").value,
+			"txtArea_comment" : document.getElementById("txtArea_comment").value
 			// TODO:
 			// lat
 			// long
@@ -163,6 +194,14 @@ function save_disaster_entry()
 	}
 }
 
+
+function get_checked(id)
+{
+    var isChecked = document.getElementById(id).checked;
+
+    if(isChecked) return "true";
+    else return "false";
+}
 var jsonObject = "";
 
 function getSerializedJSON()
@@ -378,7 +417,7 @@ function fillAssessmentAddress()
 	<div data-role="page" id="one">
 
 		<div data-role="header" data-theme="b">
-			<a href='find_location.html' data-transition='reverse' rel="external">Back</a>
+            <a href="find_location.html" data-rel="back">Back</a>
 			<h2>Address Entry</h2>
 			<div class="ui-bar-e" style="padding:4px;text-align:center">
 				This is assessment number <span id="assessment_id"></span>
@@ -846,7 +885,12 @@ function fillAssessmentAddress()
 
 
 	<a href='javascript:;' data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b" onClick='save_disaster_entry_curbside()'><div class='mainlink_big_head'>Submit</div></a>
-       	</form>s
+       	</form>
+
+            <form id="curbside_hidden" action="FillInForm" method="POST">
+                <input type="hidden" name="recordJSON" id="curbsideJSON" />
+            </form>
+
         </div>
 	
 

@@ -74,7 +74,7 @@
             </div>
 
             <div data-role='content'>
-                <b>Welcome to DReporter!</b> Please log in below to access the application.<br>
+                <b>Welcome to the Disaster Response Mobile Application!</b> <Br /><br />Please log in below to access the application.<br>
                 <%ArrayList errors = (ArrayList<String>) request.getAttribute("errors");
                             if (errors != null) {
                                 String errorString = "";
@@ -102,6 +102,7 @@
 				<div id="inperror"></div>
 		</div>
 
+
                 <div id="success_container" class='success_message' style='display:none'>
 				<div class='instruction_text'></div>
 		</div>
@@ -113,27 +114,29 @@
                     <form name='login_form' action='LogIn' method='post'>
                         <input type='hidden' name='lat' >
                         <b>E-mail Address:</b><br />
-                        <input type='text' name='username'/>
-
+                        <input type='text' name='username' autocorrect="off" autocapitalization="on"/>
+<div class="spacer"></div>
                         <b>Password:</b><br />
                         <input type='password' name='password'/>
 
+                        <!--
                         <b>Choose Disaster Incident:</b><br />
 
                         <select name="Disaster">
                             <option value='none'>choose...</option>
                             <option value="TEST">User Testing 11/27/11 </option>
                         </select>
+                        -->
                     </form>
                 </div>
 
                 <a href='javascript:;' onClick="submitForm('login_form')" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b"><div class='mainlink_big_head'>Log in</div></a>
 
-                <a href='forgot_password.html' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">Forgot password?</a>
-
                 <a href='register.jsp' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">Register for an account
                 </a>
 
+                <div class="sub_form">
+                    <div style="font-size:9pt">This application was developed by students at <a href="http://cmu.edu" rel="external">Carnegie Mellon University</a> and is licensed to the United Way of Allegheny County and VisionLink, Inc. For more information, please contact <a href="mailto:joemertz@cmu.edu">Dr. Joe Mertz</a>.</div></div>
             </div>
         </div>
     </body>

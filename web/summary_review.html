@@ -166,50 +166,76 @@ TODO:
 		setValues("txt_first_name");
 		setValues("txt_last_name");
 		setValues("dwelling_type");
+		var myselect = $('select#dwelling_type');
+		myselect.selectmenu();
+		myselect.selectmenu("refresh");
 		setValues("owner_information");
+			var myselect1 = $('select#owner_information');
+			myselect1.selectmenu();
+			myselect1.selectmenu("refresh");
+			setValues("select_classification");
+			var myselect2 = $('select#select_classification');
+
+			myselect2.selectmenu();
+			myselect2.selectmenu("refresh");
+
 		setValues("landlord_name");
 		setValues("landlord_tel");
 
 		setInsurance("insurance_information_f");
+		$("#insurance_information_f").checkboxradio("refresh");
 		setInsurance("insurance_information_s");
+		$("#insurance_information_s").checkboxradio("refresh");
 		setInsurance("insurance_information_c");
+		$("#insurance_information_c").checkboxradio("refresh");
 		setValues("number_floors");
 		setRadioValues("is_basement");
+	setValues("txtarea_basement_comment");
 		setRadioValues("is_basement_occupied");
-		setValues("txtarea_basement_comment");
+
 		setValues("water_in_living_area");
 		setValues("water_in_basement");
 		setRadioValues("electric");
+			setValues("txtarea_basement_comment");
 		setRadioValues("gas");
+			setValues("txtarea_basement_comment");
 		setRadioValues("d_electrical");
+			setValues("txtarea_basement_comment");
 		setRadioValues("d_furnace");
+			setValues("txtarea_basement_comment");
 		setRadioValues("d_water");
+			setValues("txtarea_basement_comment");
 		setRadioValues("d_washer");
+			setValues("txtarea_basement_comment");
 		setRadioValues("d_dryer");
-
+	setValues("txtarea_basement_comment");
 		setRadioValues("d_stove");
+			setValues("txtarea_basement_comment");
 		setRadioValues("d_fridge");
-		setValues("select_classification");
-	//document.getElementById("select_classification").value="Minor";
+
 
 		setValues("txtArea_classification_reason");
 		setValues("txtArea_comment");
+
+
+
+
 	}
 	function setInsurance(insurance){
 
-	//	document.write(getObj('insurance_information_f'));
-	//getObj returns value instead of checked value?
+	//document.write(insurance+" "+getObj(insurance));
 
-//	document.write()
-			if(getObj(insurance)=="F")
+			if(getObj(insurance)=="true")
 			{
+				vv="#"+insurance;
+				$(vv).attr("checked", true);
+				$(vv).checkboxradio("refresh");
+				//document.getElementById(insurance).checked=true;
 
-			//document.write(document.getElementById('insurance_information_f').checked);
-				document.getElementById('insurance_information_f').checked=true;
-				//document.write(document.getElementById('insurance_information_f').checked);
+
 			}
 
-				if(getObj(insurance)=="S")
+		/*		if(getObj(insurance)=="S")
 				{
 
 					document.getElementById('insurance_information_s').checked=true;
@@ -218,23 +244,33 @@ TODO:
 					{
 
 						document.getElementById('insurance_information_c').checked=true;
-					}
+					}*/
 	}
 
 	function setRadioValues(b){
-		//document.write(getObj(b));
+		//document.write(b+" "+getObj(b));
+		var s1,s2;
 		if(getObj(b)=="yes")
 		{
 
-			s=b+"-1";
-			document.getElementById(s).checked=true;
+			s1="#"+b+"-1";
+
+			$(s1).attr("checked", true);
+			$(s1).checkboxradio("refresh");
+
 		}
 
 			if(getObj(b)=="no")
 			{
-				s=b+"-2";
-				document.getElementById(s).checked=false;
+
+				s2="#"+b+"-2";
+
+				$(s2).attr("checked", true);
+				$(s2).checkboxradio("refresh");
+
+
 			}
+
 
 	}
 
@@ -261,7 +297,7 @@ TODO:
 	{
 
 		if(a=="address"){
-			//document.write("hello");
+
 			enableFields("tel_house_num");
 			enableFields("street_name");
 			enableFields("txt_city");
@@ -284,37 +320,33 @@ TODO:
 		if(a=="general"){
 
 			enableFields("number_floors");
-			enablef("is_basement-1");
-			enablef("is_basement-2");
-			enablef("is_basement_occupied-1");
-			enablef("is_basement_occupied-2");
+
+			checkattr("is_basement");
+			checkattr("is_basement_occupied");
+
+
 			enableFields("txtarea_basement_comment");
 			enableFields("water_in_living_area");
 			enableFields("water_in_basement");
-			enablef("electric-1");
-			enablef("electric-2");
-			enablef("gas-1");
-			enablef("gas-2");
+			checkattr("electric");
+			checkattr("gas");
+
+
+
 
 		}
 
 		if(a=="appliance"){
 
 
-				enablef("d_electrical-1");
-				enablef("d_electrical-2");
-				enablef("d_dryer-1");
-				enablef("d_dryer-2");
-				enablef("d_washer-1");
-				enablef("d_washer-2");
-				enablef("d_water-1");
-				enablef("d_water-2");
-				enablef("d_fridge-1");
-				enablef("d_fridge-2");
-				enablef("d_furnace-1");
-				enablef("d_furnace-2");
-				enablef("d_stove-1");
-				enablef("d_stove-2");
+				checkattr("d_electrical");
+				checkattr("d_dryer");
+				checkattr("d_washer");
+				checkattr("d_water");
+				checkattr("d_fridge");
+				checkattr("d_furnace");
+				checkattr("d_stove");
+
 
 
 		}
@@ -328,6 +360,16 @@ TODO:
 
 	}
 
+
+function checkattr(att){
+	g1="#"+att+"-1";
+	g2="#"+att+"-2";
+	$(g1).removeAttr('disabled');
+	$(g2).removeAttr('disabled');
+	$(g1).checkboxradio("refresh");
+	$(g2).checkboxradio("refresh");
+
+}
 	function enablef(f){
 
 		document.getElementById(f).disabled=false;
@@ -350,10 +392,10 @@ TODO:
 		<div data-role="content" >
 
                     <form name="disaster_form">
-			<div class='instruction_text'>Please review this information with the client to ensure that it has been entered correctly.</div>
+			<div class='instruction_text'>Please review the information entered with the client to ensure that all information has been entered properly. You can make changes on this page as necessary.</div>
 
-<a href="javascript:show('address');" id='address'><h4 align="right"> Edit </h4></a>
 	<div class='sub_form'>
+            <a href="javascript:show('address');" id='address' data-role="button" style="float:right">Edit</a>
 		<center>
 			<div class="instruction_text">Dwelling address:</div>
 <table>
@@ -372,11 +414,13 @@ TODO:
 <!--
 <a href='javascript:;' id='id_apt_link' onClick="doShow('id_apt')">(add apt. #)</a>
 -->
-<a href="javascript:show('dwelling');" id='dwelling'><h4 align="right"> Edit </h4> </a>
+
 <div class='sub_form'>
-	<center>
+            <a href="javascript:show('dwelling');" id='dwelling' data-role="button" style="float:right">Edit</a>
+
+    <center>
 		<div class="instruction_text">Dwelling information:</div>
-		<table class='form_table' cellpadding=0 cellspacing=0>
+		<table cellpadding=0 cellspacing=0>
 
 			<tr><td class='form_table_label'>First Name:</td><td class='form_table_input'> <input type="text" name="txt_first_name" id="txt_first_name" disabled style="border: 0px;color: #000000;">
 
@@ -413,7 +457,7 @@ TODO:
 				<tr><td class='form_table_label'>Landlord's phone #:</td><td class='form_table_input'><input type="text" name="landlord_tel" id="landlord_tel" disabled style="border: 0px;color: #000000;"> 	</td></tr>
 <tr><td class='form_table_label'>
 					What type of insurance, if any, does the client have?<br /></td>
-			<td>		<div data-role="fieldcontain" class="iOS-fc-fix" style='margin:auto;text-align:center'>
+			<td class='form_table_input'>		<div data-role="fieldcontain" class="iOS-fc-fix" style='margin:auto;text-align:center'>
 						<fieldset data-role="controlgroup" id="insurance" disabled>
 						<input type='checkbox' id='insurance_information_f' value ='F' />
 						<label for='insurance_information_f'>Flood</label>
@@ -431,8 +475,9 @@ TODO:
 			</center>
 		</div>
 
-		<a href="javascript:show('general');" id='general'><h4 align="right"> Edit </h4> </a>
 		<div class='sub_form'>
+                                <a href="javascript:show('general');" id='general' data-role="button" style="float:right">Edit</a>
+
 <center>
 <div class='instruction_text'>General damage assessment:</div>
 
@@ -528,8 +573,9 @@ TODO:
 </center>
 	</div>
 
-	<a href="javascript:show('appliance');" id='appliance'><h4 align="right"> Edit </h4> </a>
 	<div class='sub_form'>
+       <a href="javascript:show('appliance');" id='appliance' data-role="button" style="float:right">Edit</a>
+
 		<div class='instruction_text'>Is there damage to the following physical plant or appliance items?</div>
 
 
@@ -577,9 +623,7 @@ TODO:
 						</td>
 					</tr>
 				</table>
-				</div>
-
-				<div class='sub_form'>
+				
 					<div class='instruction_text'>Is there damage to the following appliance items?</div>
 
 				<table style='form_table' cellpadding=0 cellspacing=0 width="100%">
@@ -644,13 +688,14 @@ TODO:
 
 		</div>
 
-<a href="javascript:show('classification');" id='classification'><h4 align="right"> Edit </h4> </a>
 		<div class='sub_form'>
+                           <a href="javascript:show('classification');" id='classification' data-role="button" style="float:right">Edit</a>
+
 
 
 			<div class="instruction_text">Based on the <a href='#popup' data-rel="dialog" data-transition="pop">Red Cross guidelines for classification</a>, what is your overall assessment of the damage for this property?</div>
-			<select id="select_classification" name="select_classification" style="color: #111111;" disabled="false">
-				<option name='choose' value="NONE">Choose one...</option>
+			<select id="select_classification" name="select_classification" style="color: #111111;">
+				<option name='choose' value="NONE" selected>Choose one...</option>
 				<option name='Destroyed' value="Destroyed">Destroyed</option>
 				<option name='Major' value="Major">Major</option>
 				<option name='Minor' value="Minor">Minor</option>
@@ -694,7 +739,7 @@ TODO:
 		<div class='instruction_text' style='color:red'>The client must read and indicate acceptance of the waiver below.</div>
 
 		<div class='sub_form'>
-			I, <b><div id="client_name"></div>, hereby authorize the release of information contained in this form to the American Red Cross, North Hills Community Outreach, Salvation Army, the United Way, the Coordinated Assistance Network, other faith-based, federal and and state emergency assistance agencies for the express and singular purpose of assisting efforts to meet my disaster needs. This information will not be made public or used for anything other than its intended use - disaster relief assistance. I also understand the the information provided here is truthful and accurate and I could face prosecution for fraud if it is discovered that the information is false or intended to defraud the agencies providing assistance.<br /><br />
+			I, <b><span id="client_name"></span></b>, hereby authorize the release of information contained in this form to the American Red Cross, North Hills Community Outreach, Salvation Army, the United Way, the Coordinated Assistance Network, other faith-based, federal and and state emergency assistance agencies for the express and singular purpose of assisting efforts to meet my disaster needs. This information will not be made public or used for anything other than its intended use - disaster relief assistance. I also understand the the information provided here is truthful and accurate and I could face prosecution for fraud if it is discovered that the information is false or intended to defraud the agencies providing assistance.<br /><br />
 
 			<div class='instruction_text'>Please initial below to indicate your acceptance of these terms:</div>
 			<input type="text" name="initials" style='width:5em' id="initials"/>
@@ -710,20 +755,6 @@ TODO:
 	</div>
 </div>
 
-<script>
 
-// Refreshes and sets radio buttons
-$("input[type='radio']").attr("checked",true).checkboxradio("refresh"); // works with ALL radios
-$("#d_electrical-2").checkboxradio("refresh"); // works with a specific id
-
-// For checkboxes
-$("#insurance_information_f").checkboxradio("refresh");
-
-// For selects
-var myselect = $("select#id");
-myselect[0].selectedIndex = 3;
-myselect.selectmenu("refresh");
-
-</script>
 	</body>
 </html>

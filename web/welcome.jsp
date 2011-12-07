@@ -48,7 +48,7 @@ function initialize_disaster_session()
 
 	<div data-role="header" data-theme="b">
 		<h2>Welcome!</h2>
-		<a href='javascript:;'>Log out</a>
+            <a href="index.jsp" data-rel="back">Back</a>
 	</div>
 
 	<div data-role="content">
@@ -60,11 +60,37 @@ function initialize_disaster_session()
         String adminStatus = (String)sessionUser.getAttribute("adminStatus");
         out.println("<script>sessionStorage.setItem('userRole', '" + adminStatus + "'); sessionStorage.setItem('loginStatus', '" + loginStatus + "'); localStorage.setItem('volunteer_id', '" + volunteerId +"'); localStorage.setItem('volunteer_name', '" + username + "'); </script>");
         %>
-	Welcome, <strong><%=username%></strong>. Please choose what you would like to do:<br>
-        <% String message = (String)request.getAttribute("FormSubmitMessage");
-        if(message!=null)
-            out.println("<strong>" + message + "</strong>");
+
+       <%
+
+       // Check to see if we've been directed here from a successful form fill.
+       String status = (String)request.getAttribute("submitStatus");
+
+       if (status == "OK")
+           {
+                // All records returned OK, we can delete them from local storage
+                String idsInserted = (String)request.getAttribute("idsInserted");
+                String delims = "[,]";
+                String[] tokens = idsInserted.split(delims);
+
+                for(int i = 0; i < tokens.length; i++)
+                    {
+                        // Iterate over the token array to get all IDs we should delete from local storage
+                        out.println("<script>localStorage.removeItem('" + tokens[i] + "');</script>");
+                    }
+           }
+
+        String successMessage = (String)request.getAttribute("formSuccessMessage");
+        String failureMessage = (String)request.getAttribute("formfailureMessage");
+
+        if(successMessage != null)
+            out.println("<div class='success_message'><div class='instruction_text'>" + successMessage + "</div></div>");
+
+        if(failureMessage != null)
+            out.println("<div class='failure_message'><div class='instruction_text'>" + failureMessage + "</div></div>");
         %>
+
+	Welcome, <strong><%=username%></strong>. Please choose what you would like to do:<br>
 
 
 	<a href='find_location.html' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">
@@ -72,9 +98,9 @@ function initialize_disaster_session()
 			<div class='mainlink_subtitle'>a disaster assessment</div>
 	</a>
 
-	<a href='system_sync_status.html' data-role="button" data-icon="arrow-r" data-iconpos="right">
-			<div class='mainlink_big_head'>Review</div>
-			<div class='mainlink_subtitle'>assessments you've<br />already completed</div>
+	<a href='system_sync_status.html' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">
+			<div class='mainlink_big_head'>Sync</div>
+			<div class='mainlink_subtitle'>assessments saved<br />on local device</div>
 	</a>
 
 	<a href='sync.html' data-role="button" data-icon="arrow-r" data-iconpos="right">
@@ -83,7 +109,7 @@ function initialize_disaster_session()
 	</a>
 
         <div id="admin_link" style="display:none">
-             <a href='approveuser.jsp' data-role="button" data-icon="arrow-r" data-iconpos="right">
+             <a href='approveuser.jsp' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">
 			<div class='mainlink_big_head'>Approve</div>
 			<div class='mainlink_subtitle'>new users</div>
             </a>

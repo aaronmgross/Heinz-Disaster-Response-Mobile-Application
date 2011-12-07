@@ -64,7 +64,7 @@
 
         <div data-role="page">
             <div data-role='header' data-theme='b'>
-                <a href='index1.html' data-transition="reverse">Back</a>
+                <a href='index.jsp' data-rel="back">Back</a>
                 <h2>Register</h2>
             </div>
 
@@ -84,13 +84,13 @@
                     <form name="registerForm" method="post" action="Register">
 
                         <b>First Name:</b><br />
-                        <input type="text" name="volunteer_firstname"/>
+                        <input type="text" name="volunteer_firstname" autocorrect="off"/>
 
                         <b>Last Name:</b><br />
-                        <input type='text' name='volunteer_lastname'/>
+                        <input type='text' name='volunteer_lastname' autocorrect="off"/>
 
                         <b>E-mail Address:</b><br />
-                        <input type='text' name='volunteer_email'/>
+                        <input type='text' name='volunteer_email' autocorrect="off" autocapitalization="on"/>
 
                         <b>Password:</b><br />
                         <input type="password" name="volunteer_password"/>

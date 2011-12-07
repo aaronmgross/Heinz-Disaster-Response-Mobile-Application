@@ -84,6 +84,8 @@ public class FillInForm extends HttpServlet {
 
         String jsonArray = (String) request.getParameter("recordJSON");
 
+        String idsInserted = "";
+
         try {
             JSONArray x = new JSONArray(jsonArray);
             for (int i = 0; i < x.length(); i++) {
@@ -169,12 +171,18 @@ public class FillInForm extends HttpServlet {
 
                 Cases caseInstance = new Cases(comments, clientId, damageAssessmentId, buildId, volunteerId);
                 caseInstance.Insert(con);
+
+                idsInserted = idsInserted + id + ",";
             }
-            request.setAttribute("formSuccessMessage", "Your Assessment Form has been submitted successfully!");
+            request.setAttribute("submitStatus", "OK");
+            request.setAttribute("idsInserted", idsInserted);
+            request.setAttribute("formSuccessMessage", "The disaster assessment record has been sent to the server successfully.");
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            request.setAttribute("formFailureMessage", "You failed to submit the form!");
+            request.setAttribute("submitStatus", "ERROR");
+            request.setAttribute("idsInserted", idsInserted);
+            request.setAttribute("formFailureMessage", "The disaster assessment could not be saved to the server at this time. The assessment was stored locally on your device. Please visit the Sync page to try again!");
         } finally {
             String destination = "/welcome.jsp";
             //request.setAttribute("FormSubmitMessage", "Your Assessment Form has been submitted successfully!");

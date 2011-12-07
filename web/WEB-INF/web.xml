@@ -9,7 +9,7 @@
         </init-param>
         <init-param>
             <param-name>dbPassword</param-name>
-            <param-value></param-value>
+            <param-value>hello</param-value>
         </init-param>
     </servlet>
     <servlet>
@@ -21,7 +21,7 @@
         </init-param>
         <init-param>
             <param-name>dbPassword</param-name>
-            <param-value></param-value>
+            <param-value>hello</param-value>
         </init-param>
     </servlet>
     <servlet>
@@ -33,7 +33,7 @@
         </init-param>
         <init-param>
             <param-name>dbPassword</param-name>
-            <param-value></param-value>
+            <param-value>hello</param-value>
         </init-param>
     </servlet>
     <servlet>
@@ -45,7 +45,7 @@
         </init-param>
         <init-param>
             <param-name>dbPassword</param-name>
-            <param-value></param-value>
+            <param-value>hello</param-value>
         </init-param>
     </servlet>
     <servlet>
@@ -57,7 +57,7 @@
         </init-param>
         <init-param>
             <param-name>dbPassword</param-name>
-            <param-value></param-value>
+            <param-value>hello</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

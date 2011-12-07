@@ -63,7 +63,6 @@ function getAllItems() {
 		}
 	}
 	
-	document.getElementById("records").style.display = "block";
 	document.getElementById("json_records").value = document.getElementById("json_records").value + "]";
 }
 
@@ -94,20 +93,18 @@ function sendLocalRecord()
 	// Submit the form, which should be populated with all local records.
 	if (document.getElementById("json_records").value != "")
 		document.forms["local_record_submit"].submit();
-		
-	// Once we recieve an OK from the server, we delete local records...
-	// TODO
 }
 
 </script>
+
 </head>
 
-<body onLoad="getAllItems()">
+<body>
 
 <div data-role="page" id="one">
 
 	<div data-role="header" data-theme="b">
-		<a href='welcome.html' data-direction="reverse">Back</a>
+            <a href="welcome.jsp" data-rel="back">Back</a>
 		<h2>Sync Records</h2>
 		<a href='javascript:;' onClick="sendLocalRecord()">Sync</a>
 	</div><!-- /header -->
@@ -116,12 +113,7 @@ function sendLocalRecord()
 
 	<div class='instruction_text' style='color:red'>The following disaster entries are currently only saved on your phone, and haven't been sent to the central database. You should sync them as soon as you have access to the Internet!</div>
 
-	<a href='javascript:;' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external" onClick="sendLocalRecord()">
-			<div class='mainlink_big_head'>Sync all</div>
-			<div class='mainlink_subtitle'>records to database</div>
-	</a>
-
-	<div id="records" style='display:none'></div>
+	<div id="records"></div>
 	
 	<a href='javascript:;' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external" onClick="sendLocalRecord()">
 			<div class='mainlink_big_head'>Sync all</div>
@@ -137,6 +129,7 @@ function sendLocalRecord()
 
 
 </div>
+<script>getAllItems()</script>
 
 </body>
 </html>
