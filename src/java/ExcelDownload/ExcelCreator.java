@@ -158,9 +158,9 @@ Workbook wb = new HSSFWorkbook();
 
         row = sheet.createRow(14);
         cell = row.createCell(0);
-        cell.setCellValue("Insurance");
+        cell.setCellValue("Insurance Contents");
         cell = row.createCell(1);
-        cell.setCellValue(bInfo.getinsurance());
+        cell.setCellValue(bInfo.getInsuranceContents());
 
 
         row = sheet.createRow(15);
@@ -393,7 +393,9 @@ Workbook wb = new HSSFWorkbook();
                 building.getById(con, bldgId);
                 bInfo.setDwellingType(building.getDwellingType());
                 bInfo.setOwnership(building.getOwnership());
-                bInfo.setInsurance(building.getInsurance());
+                bInfo.setInsuranceContents(building.getInsuranceContents());
+                bInfo.setInsuranceFlood(building.getInsuranceFlood());
+                bInfo.setInsuranceStructure(building.getInsuranceStructure());
                 bInfo.setLandlordName(building.getLandlordName());
                 bInfo.setContactInfo(building.getContactInfo());
 

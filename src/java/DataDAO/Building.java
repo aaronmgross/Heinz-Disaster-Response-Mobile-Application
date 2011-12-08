@@ -15,7 +15,7 @@ public class Building {
     private String landlordName = "";
     private String contactInfo = "";
     private String dwellingType = "";
-    private String insuranceFloor = "";
+    private String insuranceFlood = "";
     private String insuranceStructure = "";
     private String insuranceContents = "";
     private String ownership = "";
@@ -25,7 +25,7 @@ public class Building {
         this.landlordName = landlordName == null ? "" : landlordName;
         this.contactInfo = contactInfo == null ? "" : contactInfo;
         this.dwellingType = dwellingType == null ? "" : dwellingType;
-        this.insuranceFloor = insurance_f == null ? "" : insurance_f;
+        this.insuranceFlood = insurance_f == null ? "" : insurance_f;
         this.insuranceStructure = insurance_s == null ? "" : insurance_s;
         this.insuranceContents = insurance_c == null ? "" : insurance_c;
         this.ownership = ownership == null ? "" : ownership;
@@ -44,7 +44,7 @@ public class Building {
             statement.setString(1, landlordName);
             statement.setString(2, contactInfo);
             statement.setString(3, dwellingType);
-            statement.setString(4, insuranceFloor);
+            statement.setString(4, insuranceFlood);
             statement.setString(5, insuranceStructure);
             statement.setString(6, insuranceContents);
             statement.setString(7, ownership);
@@ -71,7 +71,9 @@ public class Building {
             this.landlordName = rs.getString("Landlord_Name");
             this.contactInfo = rs.getString("Contact_information");
             this.dwellingType = rs.getString("Dwelling_Type");
-            this.insurance = rs.getString("Insurance");
+            this.insuranceContents = rs.getString("Insurance_Contents");
+            this.insuranceFlood = rs.getString("Insurance_Flood");
+            this.insuranceStructure=rs.getString("Insurance_Structure");
             this.ownership = rs.getString("Ownership");
 
         }
@@ -87,7 +89,7 @@ public class Building {
             statement.setString(1, landlordName);
             statement.setString(2, contactInfo);
             statement.setString(3, dwellingType);
-            statement.setString(4, insuranceFloor);
+            statement.setString(4, insuranceFlood);
             statement.setString(5, insuranceStructure);
             statement.setString(6, insuranceContents);
             statement.setString(7, ownership);
@@ -161,12 +163,12 @@ public class Building {
         this.insuranceContents = insuranceContents;
     }
 
-    public String getInsuranceFloor() {
-        return insuranceFloor;
+    public String getInsuranceFlood() {
+        return insuranceFlood;
     }
 
-    public void setInsuranceFloor(String insuranceFloor) {
-        this.insuranceFloor = insuranceFloor;
+    public void setInsuranceFlood(String insuranceFlood) {
+        this.insuranceFlood = insuranceFlood;
     }
 
     public String getInsuranceStructure() {
