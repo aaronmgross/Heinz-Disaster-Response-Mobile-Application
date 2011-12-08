@@ -26,7 +26,7 @@ public class ClientDataSet {
 
     public ClientDataSet() {
         Date today = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd'T'hh-mm-ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
         
         namespace = "http://www.clientdatastandard.org/dcds/schema/1.1";
         namespaceXSI = "http://www.w3.org/2001/XMLSchema-instance";

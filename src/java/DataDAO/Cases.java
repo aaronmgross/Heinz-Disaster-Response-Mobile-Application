@@ -56,6 +56,23 @@ public class Cases {
 
     }
 
+        public void getById(Connection con,int caseID) throws SQLException{
+          PreparedStatement stat = con.prepareStatement("SELECT * FROM Cases WHERE Case_Id = ? ");
+        stat.setInt(1, caseID);
+        ResultSet rs = stat.executeQuery();
+
+        if (rs.next()) {
+           this.caseId = caseID;
+            this.comment = rs.getString("Comment");
+            this.damageAssessmentId = rs.getInt("Damage_Assessment_Id");
+            this.buildingId = rs.getInt("Building_Id");
+            this.userId = rs.getInt("User_Id");
+
+
+        }
+
+    }
+
     public int getId(Connection con) throws SQLException {
 
         PreparedStatement statement = null;

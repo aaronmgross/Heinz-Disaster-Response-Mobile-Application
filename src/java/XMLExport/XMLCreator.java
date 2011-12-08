@@ -47,10 +47,9 @@ public class XMLCreator {
     //No generics
     List myData;
     Document dom;
-    private String user = null;
-    private String pw = null;
+    File file=new File("ClientRecord.xml");
 
-    public XMLCreator(String user, String pw) {
+    public XMLCreator() {
 
         //create a list to hold the data
         myData = new ArrayList();
@@ -83,25 +82,47 @@ public class XMLCreator {
         } catch (ClassNotFoundException e) {
             throw new AssertionError(e);
         }
-        String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
-        //String user = "root";
-        //String pw = "";
+        String connectionStr = "jdbc:mysql://localhost/DisasterApp";
+        String user = "root";
+        String pw = "hello";
         try {
 
             con = DriverManager.getConnection(connectionStr, user, pw);
             PreparedStatement stat = con.prepareStatement("SELECT * FROM Cases");
+            PreparedStatement bldg = con.prepareStatement("Select * from Building");
             ResultSet rsAll = stat.executeQuery();
-            if (rsAll.next()) {
+            ResultSet rsBldg = bldg.executeQuery();
+            while (rsAll.next() && rsBldg.next()) {
                 Client c = new Client();
+
                 int clientID = rsAll.getInt("Client_Id");
+                int bldgId = rsBldg.getInt("Build_Id");
+                int caseID = rsAll.getInt("Case_Id");
+
                 DataDAO.Client client = new DataDAO.Client();
+                Building building = new DataDAO.Building();
+                Cases cases = new DataDAO.Cases();
                 DamageAssessment dmg = new DamageAssessment();
 
                 client.getByID(con, clientID);
+                building.getById(con, bldgId);
+                cases.getById(con, caseID);
                 dmg.getByID(con, rsAll.getInt("Damage_Assessment_Id"));
 
                 c.setFirstName(client.getfName());
                 c.setLastName(client.getlName());
+                String dwelling = building.getDwellingType();
+                
+                if ((dwelling.equals("S") || dwelling.equals("A")) && building.getLandlordName().isEmpty()) {
+                    c.setPreDisasterLivingSituation("Apartment or house that you own");
+                } else if ((dwelling.equals("S") || dwelling.equals("A")) && !building.getLandlordName().isEmpty()) {
+                    c.setPreDisasterLivingSituation("Room Apartment or house that you rent");
+                } else if (dwelling.equals("M")) {
+                    c.setPreDisasterLivingSituation("Other");
+                } else {
+                    c.setPreDisasterLivingSituation("Undetermined");
+                }
+
                 c.setAddressLine1(client.getAddress());
                 String aptNo = client.getAptNum();
                 if (aptNo != null && !aptNo.equals("")) {
@@ -112,12 +133,20 @@ public class XMLCreator {
                 c.setCounty(client.getCounty());
                 c.setZipcode(client.getZipCode());
                 c.setDmgAssmnt(dmg.getStructuralDamage());
-
+                c.setDmgAsmntOther(dmg.getWaterLevelBasement() + " " + dmg.getWaterLevelLivingArea());
+                c.setServiceNeeded1("Appliance Damage: Electric box- " + dmg.getElectriccalBox() + ";Furnace- "
+                        + dmg.getFurnace()+ ";Washer- " + dmg.getWasher() + ";Heater- " + dmg.getHotWaterHeater() +
+                        ";Dryer- "+ dmg.getDryer() + ";Stove- " + dmg.getStove() + ";Refrigerator- " +
+                        dmg.getRefrigerator());
+                c.setServiceNeeded2(cases.getComment()+" Reason: "+dmg.getReason());
                 c.setID(clientID + "");
                 c.setDisasterAffected("true");
-                c.setGender("undetermined");
+                c.setGender("Undetermined");
 
                 myData.add(c);
+
+
+
             }
 
         } catch (SQLException e) {
@@ -188,7 +217,8 @@ public class XMLCreator {
     private Element createClientElement(Client c, Node dataSetEle) {
         Element service, serviceId, serviceName, serviceCode, serviceDesc;
         Date today = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd'T'hh-mm-ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         Element clientEle = dom.createElement("Client");
         clientEle.setAttribute("sourceAgencyID", "");
@@ -201,7 +231,7 @@ public class XMLCreator {
         idEle.setAttribute("updated", sdf.format(today));
         if (c.getID() != null && !c.getID().equals("")) {
             idEle.setTextContent(c.getID());
-        }else{
+        } else {
             idEle.setTextContent("");
         }
         clientEle.appendChild(idEle);
@@ -211,7 +241,7 @@ public class XMLCreator {
         fNameEle.setAttribute("effective", sdf.format(today));
         if (c.getFirstName() != null && !c.getFirstName().equals("")) {
             fNameEle.setTextContent(c.getFirstName());
-        }else{
+        } else {
             fNameEle.setTextContent("");
         }
         clientEle.appendChild(fNameEle);
@@ -221,7 +251,7 @@ public class XMLCreator {
         lNameEle.setAttribute("updated", sdf.format(today));
         if (c.getLastName() != null && !c.getLastName().equals("")) {
             lNameEle.setTextContent(c.getLastName());
-        }else{
+        } else {
             lNameEle.setTextContent("");
         }
         clientEle.appendChild(lNameEle);
@@ -239,7 +269,7 @@ public class XMLCreator {
         Element disasterAffected = dom.createElement("DisasterAffected");
         if (c.getDisasterAffected() != null && !c.getDisasterAffected().equals("")) {
             disasterAffected.setTextContent(c.getDisasterAffected());
-        }else{
+        } else {
             disasterAffected.setTextContent("");
         }
         address.appendChild(disasterAffected);
@@ -248,7 +278,7 @@ public class XMLCreator {
         Element line1 = dom.createElement("Line1");
         if (c.getAddressLine1() != null && !c.getAddressLine1().equals("")) {
             line1.setTextContent(c.getAddressLine1());
-        }else{
+        } else {
             line1.setTextContent("");
         }
         address.appendChild(line1);
@@ -257,7 +287,7 @@ public class XMLCreator {
         Element line2 = dom.createElement("Line2");
         if (c.getAddressLine2() != null && !c.getAddressLine2().equals("")) {
             line2.setTextContent(c.getAddressLine2());
-        }else{
+        } else {
             line2.setTextContent("");
         }
         address.appendChild(line2);
@@ -266,7 +296,7 @@ public class XMLCreator {
         Element city = dom.createElement("City");
         if (c.getCity() != null && !c.getCity().equals("")) {
             city.setTextContent(c.getCity());
-        }else{
+        } else {
             city.setTextContent("");
         }
         address.appendChild(city);
@@ -275,7 +305,7 @@ public class XMLCreator {
         Element county = dom.createElement("County");
         if (c.getCounty() != null && !c.getCounty().equals("")) {
             county.setTextContent(c.getCounty());
-        }else{
+        } else {
             county.setTextContent("");
         }
         address.appendChild(county);
@@ -284,7 +314,7 @@ public class XMLCreator {
         Element state = dom.createElement("State");
         if (c.getState() != null && !c.getState().equals("")) {
             state.setTextContent(c.getState());
-        }else{
+        } else {
             state.setTextContent("");
         }
         address.appendChild(state);
@@ -293,7 +323,7 @@ public class XMLCreator {
         Element zipcode = dom.createElement("ZipCode");
         if (c.getZipcode() != null && !c.getZipcode().equals("")) {
             zipcode.setTextContent(c.getZipcode());
-        }else{
+        } else {
             zipcode.setTextContent("");
         }
         address.appendChild(zipcode);
@@ -316,8 +346,8 @@ public class XMLCreator {
         dobEle.setAttribute("updated", sdf.format(today));
         if (c.getDateOfBirth() != null && !c.getDateOfBirth().equals("")) {
             dobEle.setTextContent(c.getDateOfBirth());
-        }else{
-            dobEle.setTextContent("");
+        } else {
+            dobEle.setTextContent(dateFormat.format(today));
         }
         clientEle.appendChild(dobEle);
 
@@ -327,7 +357,7 @@ public class XMLCreator {
         gdrEle.setAttribute("updated", sdf.format(today));
         if (c.getGender() != null && !c.getGender().equals("")) {
             gdrEle.setTextContent(c.getGender());
-        }else{
+        } else {
             gdrEle.setTextContent("");
         }
         clientEle.appendChild(gdrEle);
@@ -336,9 +366,11 @@ public class XMLCreator {
         Element pdlsEle = dom.createElement("PreDisasterLivingSituation");
         pdlsEle.setAttribute("effective", sdf.format(today));
         pdlsEle.setAttribute("updated", sdf.format(today));
+
         if (c.getPreDisasterLivingSituation() != null && !c.getPreDisasterLivingSituation().equals("")) {
+
             pdlsEle.setTextContent(c.getPreDisasterLivingSituation());
-        }else{
+        } else {
             pdlsEle.setTextContent("");
         }
         clientEle.appendChild(pdlsEle);
@@ -349,7 +381,7 @@ public class XMLCreator {
         daEle.setAttribute("updated", sdf.format(today));
         if (c.getDmgAssmnt() != null && !c.getDmgAssmnt().equals("")) {
             daEle.setTextContent(c.getDmgAssmnt());
-        }else{
+        } else {
             daEle.setTextContent("");
         }
         clientEle.appendChild(daEle);
@@ -360,7 +392,7 @@ public class XMLCreator {
         daOtherEle.setAttribute("updated", sdf.format(today));
         if (c.getDmgAsmntOther() != null && !c.getDmgAsmntOther().equals("")) {
             daOtherEle.setTextContent(c.getDmgAsmntOther());
-        }else{
+        } else {
             daOtherEle.setTextContent("");
         }
         clientEle.appendChild(daOtherEle);
@@ -371,7 +403,7 @@ public class XMLCreator {
         splNeedsEle.setAttribute("updated", sdf.format(today));
         if (c.getNeeds() != null && !c.getNeeds().equals("")) {
             splNeedsEle.setTextContent(c.getNeeds());
-        }else{
+        } else {
             splNeedsEle.setTextContent("");
         }
         clientEle.appendChild(splNeedsEle);
@@ -382,7 +414,7 @@ public class XMLCreator {
         dNameEle.setAttribute("updated", sdf.format(today));
         if (c.getDisasterName() != null && !c.getDisasterName().equals("")) {
             dNameEle.setTextContent(c.getDisasterName());
-        }else{
+        } else {
             dNameEle.setTextContent("");
         }
         clientEle.appendChild(dNameEle);
@@ -393,8 +425,8 @@ public class XMLCreator {
         dDateEle.setAttribute("updated", sdf.format(today));
         if (c.getDisasterDate() != null && !c.getDisasterDate().equals("")) {
             dDateEle.setTextContent(c.getDisasterDate());
-        }else{
-            dDateEle.setTextContent("");
+        } else {
+            dDateEle.setTextContent(dateFormat.format(today));
         }
         clientEle.appendChild(dDateEle);
 
@@ -407,45 +439,45 @@ public class XMLCreator {
         _case.setAttribute("sourceAgencyName", "");
         cases.appendChild(_case);
         clientEle.appendChild(cases);
-//
-//        Element servicesNeeded = dom.createElement("ServicesNeeded");
-//        service = dom.createElement("ServiceNeeded");
-//        service.setAttribute("effective", "2009-06-11T00:38:50");
-//        service.setAttribute("updated", "2009-06-11T00:38:50");
-//        service.setAttribute("sourceAgencyID", c.getsourceAgencyID());
-//        service.setAttribute("sourceAgencyName", c.getsourceAgencyName());
-//        serviceId = dom.createElement("ID");
-//        serviceId.setTextContent("234423");
-//        service.appendChild(serviceId);
-//        serviceName = dom.createElement("ServiceName");
-//        serviceName.setTextContent("Heater Needed");
-//        service.appendChild(serviceName);
-//        serviceCode = dom.createElement("ServiceCode");
-//        serviceCode.setTextContent("HTR");
-//        service.appendChild(serviceCode);
-//        serviceDesc = dom.createElement("ServiceDescription");
-//        serviceDesc.setTextContent("Hot water heater has been damaged");
-//        service.appendChild(serviceDesc);
-//        servicesNeeded.appendChild(service);
-//        service = dom.createElement("ServiceNeeded");
-//        service.setAttribute("effective", "2009-06-11T00:38:50");
-//        service.setAttribute("updated", "2009-06-11T00:38:50");
-//        service.setAttribute("sourceAgencyID", c.getsourceAgencyID());
-//        service.setAttribute("sourceAgencyName", c.getsourceAgencyName());
-//        serviceId = dom.createElement("ID");
-//        serviceId.setTextContent("234424");
-//        service.appendChild(serviceId);
-//        serviceName = dom.createElement("ServiceName");
-//        serviceName.setTextContent("Stove needed");
-//        service.appendChild(serviceName);
-//        serviceCode = dom.createElement("ServiceCode");
-//        serviceCode.setTextContent("WTR");
-//        service.appendChild(serviceCode);
-//        serviceDesc = dom.createElement("ServiceDescription");
-//        serviceDesc.setTextContent("Client's stove has been damaged");
-//        service.appendChild(serviceDesc);
-//        servicesNeeded.appendChild(service);
-//        clientEle.appendChild(servicesNeeded);
+
+        Element servicesNeeded = dom.createElement("ServicesNeeded");
+        service = dom.createElement("ServiceNeeded");
+        service.setAttribute("effective", sdf.format(today));
+        service.setAttribute("updated", sdf.format(today));
+        service.setAttribute("sourceAgencyID", " ");
+        service.setAttribute("sourceAgencyName", " ");
+        serviceId = dom.createElement("ID");
+        serviceId.setTextContent("1");
+        service.appendChild(serviceId);
+        serviceName = dom.createElement("ServiceName");
+        serviceName.setTextContent("Appliance Damage");
+        service.appendChild(serviceName);
+        serviceCode = dom.createElement("ServiceCode");
+        serviceCode.setTextContent(" ");
+        service.appendChild(serviceCode);
+        serviceDesc = dom.createElement("ServiceDescription");
+        serviceDesc.setTextContent(c.getServiceNeeded1());
+        service.appendChild(serviceDesc);
+        servicesNeeded.appendChild(service);
+        service = dom.createElement("ServiceNeeded");
+        service.setAttribute("effective", sdf.format(today));
+        service.setAttribute("updated", sdf.format(today));
+        service.setAttribute("sourceAgencyID", " ");
+        service.setAttribute("sourceAgencyName", " ");
+        serviceId = dom.createElement("ID");
+        serviceId.setTextContent("2");
+        service.appendChild(serviceId);
+        serviceName = dom.createElement("ServiceName");
+        serviceName.setTextContent("Comments on Page 3");
+        service.appendChild(serviceName);
+        serviceCode = dom.createElement("ServiceCode");
+        serviceCode.setTextContent(" ");
+        service.appendChild(serviceCode);
+        serviceDesc = dom.createElement("ServiceDescription");
+        serviceDesc.setTextContent(c.getServiceNeeded2());
+        service.appendChild(serviceDesc);
+        servicesNeeded.appendChild(service);
+        clientEle.appendChild(servicesNeeded);
 
         return clientEle;
 
@@ -468,7 +500,7 @@ public class XMLCreator {
 
             //to generate a file output use fileoutputstream instead of system.out
             XMLSerializer serializer = new XMLSerializer(
-                    new FileOutputStream(new File("SampleClientRecord2.xml")), format);
+                    new FileOutputStream(file), format);
 
             serializer.serialize(dom);
 
@@ -477,9 +509,13 @@ public class XMLCreator {
         }
     }
 
-    public static void main(String[] args){
-               //create an instance
-        XMLCreator xce = new XMLCreator("","");
+    public File downloadHelp(){
+        return file;
+    }
+
+    public static void main(String[] args) {
+        //create an instance
+        XMLCreator xce = new XMLCreator();
 
         //run the example
         xce.export();

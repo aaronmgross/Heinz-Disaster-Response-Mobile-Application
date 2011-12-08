@@ -12,7 +12,8 @@ public class Client {
 
     private String sourceAgencyID, sourceAgencyName, ID, firstName, middleName, lastName, phone, dateOfBirth,
             gender, preDisasterLivingSituation, dmgAssmnt, dmgAsmntOther, needs, disasterName, disasterDate,
-            addressId, disasterAffected, addressLine1, addressLine2, city, county, state, zipcode;
+            addressId, disasterAffected, addressLine1, addressLine2, city, county, state, zipcode,serviceNeeded1,
+            serviceNeeded2;
 
     public void setID(String ID) {
         this.ID = ID;
@@ -64,6 +65,12 @@ public class Client {
 
     public void setPreDisasterLivingSituation(String preDisasterLivingSituation) {
         this.preDisasterLivingSituation = preDisasterLivingSituation;
+    }
+    public void setServiceNeeded1(String servNeeded1){
+        this.serviceNeeded1=servNeeded1;
+    }
+    public void setServiceNeeded2(String servNeeded2){
+        this.serviceNeeded2=servNeeded2;
     }
 
     public Client() {
@@ -223,6 +230,12 @@ public class Client {
         return needs;
     }
 
+    public String getServiceNeeded1(){
+        return serviceNeeded1;
+    }
+    public String getServiceNeeded2(){
+        return serviceNeeded2;
+    }
     public String getDisasterName() {
         return disasterName;
     }

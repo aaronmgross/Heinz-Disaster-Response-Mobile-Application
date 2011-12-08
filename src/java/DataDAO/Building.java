@@ -61,6 +61,23 @@ public class Building {
 
     }
 
+        public void getById(Connection con,int bldgID) throws SQLException{
+          PreparedStatement stat = con.prepareStatement("SELECT * FROM Building WHERE Build_Id = ? ");
+        stat.setInt(1, bldgID);
+        ResultSet rs = stat.executeQuery();
+
+        if (rs.next()) {
+           this.buildId = bldgID;
+            this.landlordName = rs.getString("Landlord_Name");
+            this.contactInfo = rs.getString("Contact_information");
+            this.dwellingType = rs.getString("Dwelling_Type");
+            this.insurance = rs.getString("Insurance");
+            this.ownership = rs.getString("Ownership");
+
+        }
+
+    }
+
     public int getId(Connection con) throws SQLException {
 
         PreparedStatement statement = null;
