@@ -80,8 +80,6 @@ CREATE TABLE Damage_Assessment
      Dryer VARCHAR (50) ,
      Stove VARCHAR (50) ,
      Refrigerator VARCHAR (50) ,
-     Start_Time DATE, 
-     Completion_Time DATE,
 	 PRIMARY KEY (Assessment_Id)
 	 ) 
 ;
@@ -94,6 +92,8 @@ CREATE TABLE Cases
      Damage_Assessment_Id INT (20)  NOT NULL , 
      Building_Id INT (20)  NOT NULL , 
      User_Id INT (20) , 
+     Start_Time DATETIME, 
+     Completion_Time DATETIME,
 	 PRIMARY KEY (Case_Id),
 	 FOREIGN KEY (User_Id) references D_User(User_Id) ,
 	 FOREIGN KEY (Client_Id) references Client(Client_Id) ,

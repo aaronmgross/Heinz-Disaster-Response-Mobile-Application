@@ -1,7 +1,6 @@
 package DataDAO;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +14,19 @@ public class DamageAssessment {
     private int numFloor;
     private String isBasement;
     private int waterLevelLivingArea;
+    private int waterLevelBasement;
+    private String isGasOn;
+    private String isElectricityOn;
+    private String isBasementOccupied;
+    private String OccupiedDescription;
+    private String reason;
+    private String electriccalBox;
+    private String furnace;
+    private String hotWaterHeater;
+    private String washer;
+    private String dryer;
+    private String stove;
+    private String refrigerator;
 
     public String getOccupiedDescription() {
         return OccupiedDescription;
@@ -64,13 +76,6 @@ public class DamageAssessment {
         this.electriccalBox = electriccalBox;
     }
 
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
 
     public String getFurnace() {
         return furnace;
@@ -144,13 +149,6 @@ public class DamageAssessment {
         this.refrigerator = refrigerator;
     }
 
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
 
     public String getStove() {
         return stove;
@@ -191,21 +189,6 @@ public class DamageAssessment {
     public void setWaterLevelLivingArea(int waterLevelLivingArea) {
         this.waterLevelLivingArea = waterLevelLivingArea;
     }
-    private int waterLevelBasement;
-    private String isGasOn;
-    private String isElectricityOn;
-    private String isBasementOccupied;
-    private String OccupiedDescription;
-    private String reason;
-    private String electriccalBox;
-    private String furnace;
-    private String hotWaterHeater;
-    private String washer;
-    private String dryer;
-    private String stove;
-    private String refrigerator;
-    private Date startTime;
-    private Date endTime;
 
     public DamageAssessment() {
     }
@@ -215,7 +198,7 @@ public class DamageAssessment {
             String isGasOn, String isElectricityOn, String isBasementOccupied,
             String desc, String reason, String electriccalBox, String furnace,
             String hotWaterHeater, String washer, String dryer, String stove,
-            String refrigerator, Date startTime, Date endTime) {
+            String refrigerator) {
 
         this.structuralDamage = sd == null ? "" : sd;
         this.debrisAmout = da == null ? "" : da;
@@ -236,8 +219,6 @@ public class DamageAssessment {
         this.dryer = dryer == null ? "" : dryer;
         this.stove = stove == null ? "" : stove;
         this.refrigerator = refrigerator == null ? "" : refrigerator;
-        this.startTime = startTime;
-        this.endTime = endTime;
     }
 
     public void insert(Connection con) throws SQLException {
@@ -271,8 +252,6 @@ public class DamageAssessment {
             stat.setString(15, dryer);
             stat.setString(16, stove);
             stat.setString(17, refrigerator);
-            stat.setDate(18, startTime);
-            stat.setDate(19, endTime);
             stat.executeUpdate();
             System.out.println("Successfully INSERT INTO Damage_Assessment");
 
@@ -315,8 +294,6 @@ public class DamageAssessment {
             stat.setString(15, dryer);
             stat.setString(16, stove);
             stat.setString(17, refrigerator);
-            stat.setDate(18, startTime);
-            stat.setDate(19, endTime);
 
             ResultSet rs = stat.executeQuery();
             while (rs.next()) {
@@ -364,8 +341,6 @@ public class DamageAssessment {
             this.dryer = rs.getString("Dryer");
             this.stove = rs.getString("Stove");
             this.refrigerator = rs.getString("Refrigerator");
-            this.startTime = rs.getDate("Start_Time");
-            this.endTime = rs.getDate("Completion_Time");
             ;
         }
     }

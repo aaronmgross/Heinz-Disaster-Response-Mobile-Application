@@ -81,6 +81,7 @@ public class Register extends HttpServlet {
             e.printStackTrace();
         } finally {
             try {
+                if(con!=null)
                 con.close();
             } catch (SQLException ex) {
                 Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);

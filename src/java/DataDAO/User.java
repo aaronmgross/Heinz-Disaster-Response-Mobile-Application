@@ -37,16 +37,16 @@ public class User {
     public User() {
     }
 
-    public static User lookup(String email, Connection con) throws SQLException {
+    public static User lookup(String email, Connection con) throws SQLException{
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        User user = null;
         try {
-            PreparedStatement pstmt = con.prepareStatement("SELECT * FROM D_User WHERE Email=?");
+             pstmt = con.prepareStatement("SELECT * FROM D_User WHERE Email=?");
             pstmt.setString(1, email);
-            ResultSet rs = pstmt.executeQuery();
+             rs = pstmt.executeQuery();
 
-            User user;
-            if (!rs.next()) {
-                user = null;
-            } else {
+            if (rs.next()) {
                 user = new User();
                 user.setUserId(rs.getInt("User_Id"));
                 user.setEmail(rs.getString("Email"));
@@ -57,21 +57,14 @@ public class User {
                 user.setRole(rs.getString("User_Role"));
                 user.setIsApproved(rs.getString("IsApproved"));
             }
-
-            rs.close();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+                        rs.close();
             pstmt.close();
-            return user;
-
-        } catch (Exception e) {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException e2) {
-                ;
-            }
-            throw new SQLException(e);
         }
+        return user;
     }
 
     public static List getUnapproved(Connection con) throws SQLException {
