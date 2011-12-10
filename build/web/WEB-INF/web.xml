@@ -3,7 +3,7 @@
     <servlet>
         <servlet-name>FillInForm</servlet-name>
         <servlet-class>FillInForm</servlet-class>
-         <init-param>
+        <init-param>
             <param-name>dbUser</param-name>
             <param-value>root</param-value>
         </init-param>
@@ -15,7 +15,7 @@
     <servlet>
         <servlet-name>ExportXML</servlet-name>
         <servlet-class>ExportXML</servlet-class>
-         <init-param>
+        <init-param>
             <param-name>dbUser</param-name>
             <param-value>root</param-value>
         </init-param>
@@ -39,7 +39,7 @@
     <servlet>
         <servlet-name>Register</servlet-name>
         <servlet-class>Register</servlet-class>
-         <init-param>
+        <init-param>
             <param-name>dbUser</param-name>
             <param-value>root</param-value>
         </init-param>
@@ -51,7 +51,7 @@
     <servlet>
         <servlet-name>ApproveUser</servlet-name>
         <servlet-class>ApproveUser</servlet-class>
-         <init-param>
+        <init-param>
             <param-name>dbUser</param-name>
             <param-value>root</param-value>
         </init-param>
@@ -59,6 +59,10 @@
             <param-name>dbPassword</param-name>
             <param-value>hello</param-value>
         </init-param>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteUser</servlet-name>
+        <servlet-class>DeleteUser</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>FillInForm</servlet-name>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>ApproveUser</servlet-name>
         <url-pattern>/ApproveUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteUser</servlet-name>
+        <url-pattern>/DeleteUser</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

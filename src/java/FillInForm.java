@@ -46,8 +46,6 @@ public class FillInForm extends HttpServlet {
             for (int i = 0; i < x.length(); i++) {
                 JSONObject j = x.getJSONObject(0);
 
-
-
                 int flag = StoreData(j, con,idsInserted);
                 System.out.println(flag);
                 if (flag == 1) {
