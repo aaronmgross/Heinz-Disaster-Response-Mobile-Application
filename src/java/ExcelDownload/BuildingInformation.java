@@ -11,7 +11,7 @@ package ExcelDownload;
 public class BuildingInformation {
 
     private String dwellingType, ownership, landlordName, contactInfo;
-    private String insuranceFloor = "";
+    private String insuranceFlood = "";
     private String insuranceStructure = "";
     private String insuranceContents = "";
 
@@ -23,12 +23,12 @@ public class BuildingInformation {
         this.insuranceContents = insuranceContents;
     }
 
-    public String getInsuranceFloor() {
-        return insuranceFloor;
+    public String getInsuranceFlood() {
+        return insuranceFlood;
     }
 
-    public void setInsuranceFloor(String insuranceFloor) {
-        this.insuranceFloor = insuranceFloor;
+    public void setInsuranceFlood(String insuranceFlood) {
+        this.insuranceFlood = insuranceFlood;
     }
 
     public String getInsuranceStructure() {

@@ -49,13 +49,13 @@ public class XMLCreator {
     Document dom;
     File file=new File("ClientRecord.xml");
 
-    public XMLCreator() {
+    public XMLCreator(String user, String pw) {
 
         //create a list to hold the data
         myData = new ArrayList();
         try {
             //initialize the list
-            loadData();
+            loadData(user, pw);
         } catch (SQLException ex) {
             System.out.println("Cannot close the JDBC connection");
         }
@@ -74,7 +74,7 @@ public class XMLCreator {
     /**
      * Add a list of clients to the list
      */
-    private void loadData() throws SQLException {
+    private void loadData(String user, String pw) throws SQLException {
         Connection con = null;
 
         try {
@@ -82,9 +82,7 @@ public class XMLCreator {
         } catch (ClassNotFoundException e) {
             throw new AssertionError(e);
         }
-        String connectionStr = "jdbc:mysql://localhost/DisasterApp";
-        String user = "root";
-        String pw = "hello";
+        String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
         try {
 
             con = DriverManager.getConnection(connectionStr, user, pw);
@@ -511,13 +509,5 @@ public class XMLCreator {
 
     public File downloadHelp(){
         return file;
-    }
-
-    public static void main(String[] args) {
-        //create an instance
-        XMLCreator xce = new XMLCreator();
-
-        //run the example
-        xce.export();
     }
 }
