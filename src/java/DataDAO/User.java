@@ -30,7 +30,6 @@ public class User {
         this.telephone = telephone;
         this.agency = agency;
         this.email = email;
-        //this.role = role;
 
     }
 
@@ -50,22 +49,41 @@ public class User {
                 user = new User();
                 user.setUserId(rs.getInt("User_Id"));
                 user.setEmail(rs.getString("Email"));
-                user.setPassword(rs.getString("Password"));
+                //user.setPassword(rs.getString("Password"));
                 user.setfName(rs.getString("Fname"));
                 user.setlName(rs.getString("Lname"));
                 user.setAgency(rs.getString("Agency"));
                 user.setRole(rs.getString("User_Role"));
                 user.setIsApproved(rs.getString("IsApproved"));
-            }
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
+            }           
         }finally{
-                        rs.close();
+            rs.close();
             pstmt.close();
         }
         return user;
     }
+
+    public static boolean CheckPassword(String email, Connection con,String pw) throws SQLException{
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        User user = null;
+        try {
+             pstmt = con.prepareStatement("SELECT * FROM D_User WHERE Email=? and Password=PASSWORD(?)");
+             pstmt.setString(1, email);
+             pstmt.setString(2, pw);
+             rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return true;
+            }
+            else return false;
+        }finally{
+            rs.close();
+            pstmt.close();
+        }
+    }
+
+
 
     public static List getUnapproved(Connection con) throws SQLException {
         List<User> l = new ArrayList<User>();
@@ -117,12 +135,8 @@ public class User {
                 temp.setRole(rs.getString("User_Role"));
                 l.add(temp);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (statement != null) {
+        }finally {           
                 statement.close();
-            }
         }
         return l;
     }
@@ -136,7 +150,7 @@ public class User {
             User temp;
             while (rs.next()) {
                 setUserId(rs.getInt("User_Id"));
-                setPassword(rs.getString("Password"));
+                //setPassword(rs.getString("Password"));
                 setfName(rs.getString("Fname"));
                 setlName(rs.getString("Lname"));
                 setTelephone(rs.getString("Telephone"));
@@ -145,9 +159,7 @@ public class User {
                 setIsApproved(rs.getString("IsApproved"));
                 setRole(rs.getString("User_Role"));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
+        }finally {
             if (statement != null) {
                 statement.close();
             }
@@ -157,7 +169,7 @@ public class User {
     public void update(Connection con, int id) throws SQLException {
         PreparedStatement statement = null;
         try {
-            statement = con.prepareStatement("UPDATE D_User SET Password=?, Lname=?, Fname=?, Telephone=?, Agency=?, Email=?, User_Role=?, IsApproved=? WHERE User_Id=?");
+            statement = con.prepareStatement("UPDATE D_User SET Password=PASSWORD(?), Lname=?, Fname=?, Telephone=?, Agency=?, Email=?, User_Role=?, IsApproved=? WHERE User_Id=?");
             statement.setString(1, password);
             statement.setString(2, lName);
             statement.setString(3, fName);
@@ -170,9 +182,7 @@ public class User {
             statement.executeUpdate();
             con.commit();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
+        }finally {
             if (statement != null) {
                 statement.close();
             }
@@ -183,7 +193,7 @@ public class User {
         int flag = -1;
         PreparedStatement statement = null;
         try {
-            statement = con.prepareStatement("Insert into D_User(Password,lName,fName,Telephone,Agency,Email) values(?,?,?,?,?,?)");
+            statement = con.prepareStatement("Insert into D_User(Password,lName,fName,Telephone,Agency,Email) values(PASSWORD(?),?,?,?,?,?)");
 
             statement.setString(1, password);
             statement.setString(2, lName);
@@ -191,21 +201,12 @@ public class User {
             statement.setString(4, telephone);
             statement.setString(5, agency);
             statement.setString(6, email);
-
             statement.executeUpdate();
             flag = 1;
-
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-            flag = -1;
-
-        } finally {
-            if (statement != null) {
-                statement.close();
-            }
-            return flag;
+        } finally {           
+            statement.close();            
         }
+        return flag;
     }
 
         public void delete(Connection con, int id) throws SQLException {
@@ -216,8 +217,6 @@ public class User {
             statement.executeUpdate();
             con.commit();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
         } finally {
             if (statement != null) {
                 statement.close();

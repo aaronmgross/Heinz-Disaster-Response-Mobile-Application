@@ -46,23 +46,25 @@ public class FillInForm extends HttpServlet {
             for (int i = 0; i < x.length(); i++) {
                 JSONObject j = x.getJSONObject(0);
 
-                int flag = StoreData(j, con,idsInserted);
-                System.out.println(flag);
-                if (flag == 1) {
-                    request.setAttribute("submitStatus", "OK");
-                    request.setAttribute("idsInserted", idsInserted);
-            request.setAttribute("formSuccessMessage", "The disaster assessment record has been sent to the server successfully.");
-                } else if (flag == 0) {
-                    request.setAttribute("FormSubmitMessage", "Your Assessment Form has already existed in database.");
-                    String destination = "/welcome.jsp";
-                    RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
-                    red.forward(request, response);
-                    break;
-                } else {
+                int flag = StoreData(j, con);
+                System.out.println("flag:"+flag);
+                if (flag == -2) {
+                    idsInserted=idsInserted + flag + ",";
+                    request.setAttribute("formSuccessMessage", "Your Assessment Form has already existed in database.");
+                    //break;
+                }
+                else if(flag == -1) {
                     request.setAttribute("submitStatus", "ERROR");
                     //request.setAttribute("idsInserted", idsInserted);
                     request.setAttribute("formFailureMessage", "The disaster assessment could not be saved to the server at this time. The assessment was stored locally on your device. "
-                    + "Please visit the Sync page to try again!");
+                            + "Please visit the Sync page to try again!");
+                }
+                else                
+                {
+                    idsInserted=idsInserted + flag + ",";
+                    request.setAttribute("submitStatus", "OK");
+                    request.setAttribute("idsInserted", idsInserted);
+                    request.setAttribute("formSuccessMessage", "The disaster assessment record has been sent to the server successfully.");
                 }
                 String destination = "/welcome.jsp";
                 RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
@@ -86,7 +88,7 @@ public class FillInForm extends HttpServlet {
         }
     }
 
-    public int StoreData(JSONObject j, Connection con,String idsInserted) {
+    public int StoreData(JSONObject j, Connection con) {
         java.util.Date utilDate = new java.util.Date();
 
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
@@ -147,7 +149,7 @@ public class FillInForm extends HttpServlet {
 
             //check whether it is already stored in database
             if (Cases.CheckDuplicate(con, volunteerId, sqlDate, sqlDate) != null) {
-                return 0;// return 0 means the record is duplicated. It exists in database
+                return -2;// return -2 means the record is duplicated. It exists in database
             }
             Client client = new Client(Address, apt, city, state, zip, "", "", lastName, firstName);
             client.Insert(con);
@@ -167,11 +169,12 @@ public class FillInForm extends HttpServlet {
 
             Cases caseInstance = new Cases(comments, clientId, damageAssessmentId, buildId, volunteerId, sqlDate, sqlDate);
             caseInstance.Insert(con);
-            idsInserted+= id;
-            return 1;
-        } catch (Exception e) {
+            
+            return id;
+        } catch (SQLException e) {
             return -1;
-        }
-
+        }catch(JSONException e){
+            return -1;
     }
+}
 }

@@ -49,10 +49,6 @@ public class Building {
             statement.setString(6, insuranceContents);
             statement.setString(7, ownership);
             statement.executeUpdate();
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-
         } finally {
             if (statement != null) {
                 statement.close();
@@ -61,21 +57,25 @@ public class Building {
 
     }
 
-        public void getById(Connection con,int bldgID) throws SQLException{
-          PreparedStatement stat = con.prepareStatement("SELECT * FROM Building WHERE Build_Id = ? ");
+    public void getById(Connection con, int bldgID) throws SQLException {
+        PreparedStatement stat = con.prepareStatement("SELECT * FROM Building WHERE Build_Id = ? ");
         stat.setInt(1, bldgID);
         ResultSet rs = stat.executeQuery();
+        try {
+            if (rs.next()) {
+                this.buildId = bldgID;
+                this.landlordName = rs.getString("Landlord_Name");
+                this.contactInfo = rs.getString("Contact_information");
+                this.dwellingType = rs.getString("Dwelling_Type");
+                this.insuranceContents = rs.getString("Insurance_Contents");
+                this.insuranceFlood = rs.getString("Insurance_Flood");
+                this.insuranceStructure = rs.getString("Insurance_Structure");
+                this.ownership = rs.getString("Ownership");
 
-        if (rs.next()) {
-           this.buildId = bldgID;
-            this.landlordName = rs.getString("Landlord_Name");
-            this.contactInfo = rs.getString("Contact_information");
-            this.dwellingType = rs.getString("Dwelling_Type");
-            this.insuranceContents = rs.getString("Insurance_Contents");
-            this.insuranceFlood = rs.getString("Insurance_Flood");
-            this.insuranceStructure=rs.getString("Insurance_Structure");
-            this.ownership = rs.getString("Ownership");
-
+            }
+        } finally {
+            stat.close();
+            rs.close();
         }
 
     }
@@ -95,18 +95,11 @@ public class Building {
             statement.setString(7, ownership);
 
             ResultSet rs = statement.executeQuery();
-            //buildId=100;
             while (rs.next()) {
                 buildId = rs.getInt("Build_Id");
-
+                return buildId;
             }
-            System.out.println("Successfully selected from Building");
-            return buildId;
-        } catch (SQLException e) {
-
-            e.printStackTrace();
             return -1;
-
         } finally {
             if (statement != null) {
                 statement.close();

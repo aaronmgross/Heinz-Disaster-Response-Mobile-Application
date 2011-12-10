@@ -51,14 +51,8 @@ public class Cases {
 
             statement.executeUpdate();
 
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-
-        } finally {
-            if (statement != null) {
+        }finally {          
                 statement.close();
-            }
         }
 
     }
@@ -77,6 +71,8 @@ public class Cases {
             this.startTime = rs.getDate("Start_Time");
             this.endTime = rs.getDate("Completion_Time");
         }
+           stat.close();
+           rs.close();
 
     }
 
@@ -98,13 +94,10 @@ public class Cases {
                 case1.setCaseId(rs.getInt("Case_Id"));
                 case1.setStartTime(rs.getDate("Start_Time"));
             }
-        } finally {
-            if (statement != null) {
-                statement.close();
-            }
-            rs.close();
+        } finally {          
+           statement.close();
+           rs.close();
         }
-
         return case1;
     }
 

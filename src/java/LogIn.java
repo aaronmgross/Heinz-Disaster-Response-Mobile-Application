@@ -60,13 +60,14 @@ public class LogIn extends HttpServlet {
             List<String> errors = new ArrayList<String>();
             request.setAttribute("errors", errors);
 
+
             UserInstance = User.lookup(email, con);
             if (UserInstance == null) {
                 errors.add("The e-mail address you entered is not registered. Please enter a valid e-mail address, or use the Register button to create an account.");
             } else if (UserInstance.getIsApproved().equals("N")) {
 
                 errors.add("Your account has not been approved yet by an administrator. Please contact your supervisor for more details.");
-            } else if (!UserInstance.getPassword().equals(pw)) {
+            } else if (!User.CheckPassword(email, con, pw)) {
                 errors.add("The password you entered was incorrect. Please try again.");
             }
 

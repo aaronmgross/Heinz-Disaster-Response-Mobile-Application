@@ -81,7 +81,7 @@ function initialize_disaster_session()
            }
 
         String successMessage = (String)request.getAttribute("formSuccessMessage");
-        String failureMessage = (String)request.getAttribute("formfailureMessage");
+        String failureMessage = (String)request.getAttribute("formFailureMessage");
 
         if(successMessage != null)
             out.println("<div class='success_message'><div class='instruction_text'>" + successMessage + "</div></div>");
