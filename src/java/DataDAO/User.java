@@ -104,6 +104,36 @@ public class User {
         return l;
     }
 
+    public static List getApproved(Connection con) throws SQLException {
+        List<User> l = new ArrayList<User>();
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement("SELECT User_Id,Fname,Lname,Telephone,Agency,Email,IsApproved,User_Role FROM D_User WHERE IsApproved = 'Y' AND User_Role = 'VOLUNTEER'");
+
+            ResultSet rs = statement.executeQuery();
+            User temp;
+            while (rs.next()) {
+                temp = new User();
+                temp.setUserId(rs.getInt("User_Id"));
+                temp.setfName(rs.getString("Fname"));
+                temp.setlName(rs.getString("Lname"));
+                temp.setTelephone(rs.getString("Telephone"));
+                temp.setAgency(rs.getString("Agency"));
+                temp.setEmail(rs.getString("Email"));
+                temp.setIsApproved(rs.getString("IsApproved"));
+                temp.setRole(rs.getString("User_Role"));
+                l.add(temp);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+        }
+        return l;
+    }
+
     public void getByID(Connection con, int id) throws SQLException {
         PreparedStatement statement = null;
         try {
@@ -183,7 +213,23 @@ public class User {
             }
             return flag;
         }
+    }
 
+        public void delete(Connection con, int id) throws SQLException {
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement("DELETE FROM D_User WHERE User_Id=?");
+            statement.setInt(1, userId);
+            statement.executeUpdate();
+            con.commit();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+        }
     }
 
     public String getAgency() {

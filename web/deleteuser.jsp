@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : approveuser
     Created on : Dec 1, 2011, 1:58:49 PM
     Author     : Yao
@@ -52,7 +52,7 @@ window.addEventListener('load', function(e) {
                 }
                 else
                 {
-                    document.forms['admin'].submit();
+                    return true;
                 }
 
             }
@@ -67,10 +67,10 @@ window.addEventListener('load', function(e) {
             </div>
 
             <div data-role="content">
-                <form name="admin" method="post" action="ApproveUser">
+                <form name="admin" method="post" action="DeleteUser">
 
                     <div class="sub_form">
-                        <div class="instruction_text">Please select the users you wish to approve. Upon approval, users will be able to access the disaster application and submit disaster assessments.</div>
+                        <div class="instruction_text">Please select the users you wish to delete.</div>
 
                  <div data-role="fieldcontain" class="iOS-fc-fix" style='margin:auto;text-align:center'>
                         <fieldset data-role="controlgroup">
@@ -94,18 +94,18 @@ window.addEventListener('load', function(e) {
                                     try {
                                         //database,For MySQL it would be "jdbc:mysql:///<dbname>",Optionally you can pass in a user id, & password
                                         con = DriverManager.getConnection(connectionStr, user, pw);
-                                        l = User.getUnapproved(con);
+                                        l = User.getApproved(con);
                                         User temp;
                                         if (l.isEmpty()) {
                                         }
                                         for (int i = 0; i < l.size(); i++) {
                                             temp = l.get(i);
                         %>
-                        
+
 				<input type='checkbox' id="<%=temp.getUserId()%>" name="chbox" value ="<%=temp.getUserId()%>" />
-				<label for='<%=temp.getUserId()%>'><%=temp.getfName()%> <%=temp.getlName()%>, <%=temp.getEmail()%></label>
-				
-			
+				<label for='<%=temp.getUserId()%>'><%=temp.getfName()%> <%=temp.getlName()%>, <%=temp.getEmail()%>></label>
+
+
 
                         <%
                                         }
@@ -117,7 +117,7 @@ window.addEventListener('load', function(e) {
                  </div>
 
             </div>
-	<a href='javascript:;' onClick="validation()" data-role="button" data-icon="arrow-r" data-iconpos="right">
+	<a href='javascript:;' onClick="document.forms['admin'].submit()" data-role="button" data-icon="arrow-r" data-iconpos="right">
 			<div class='mainlink_big_head'>Approve</div>
 			<div class='mainlink_subtitle'>selected users</div>
 	</a>
@@ -125,6 +125,6 @@ window.addEventListener('load', function(e) {
 
             </div>
         </div>
-        
+
     </body>
 </html>
