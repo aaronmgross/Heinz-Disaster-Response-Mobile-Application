@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import DataDAO.*;
 import java.util.Properties;
+import java.util.Random;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.*;
@@ -42,65 +43,90 @@ public class ForgotPassword extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-//        String email = request.getParameter("email");
-//        User u = null;
-//        String password = "";
-//        try {
-//            Class.forName("com.mysql.jdbc.Driver");
-//        } catch (ClassNotFoundException e) {
-//            throw new AssertionError(e);
-//        }
-//        String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
-//
-//        try {
-//            con = (Connection) DriverManager.getConnection(connectionStr, user, pw_con);
-//            u = User.lookup(email, con);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ForgotPassword.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//        if(u != null){
-//            password = u.getPassword();
-//        }
+        String email = request.getParameter("email");
+        User u = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new AssertionError(e);
+        }
+        String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
 
-        sendEmail("yaoyao19880529@gmail.com", "123");
+        try {
+            con = (Connection) DriverManager.getConnection(connectionStr, user, pw_con);
+            u = User.lookup(email, con);
+        } catch (SQLException ex) {
+            Logger.getLogger(ForgotPassword.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (u != null) {
+
+            String newPassword = genNewPassword();
+            u.setPassword(newPassword);
+            try {
+                u.update(con, u.getUserId());
+            } catch (SQLException ex) {
+                System.out.println("failed to update the new password");
+            }
+            sendEmail(email, newPassword);
+        }
+
     }
 
-    private void sendEmail(String toAddress, String pw) {
-       		Properties props = new Properties();
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.socketFactory.port", "465");
-		props.put("mail.smtp.socketFactory.class",
-				"javax.net.ssl.SSLSocketFactory");
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.port", "465");
+    private void sendEmail(String toAddress, String newPassword) {
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
 
-		Session session = Session.getInstance(props,
-			new javax.mail.Authenticator() {
-				protected PasswordAuthentication getPasswordAuthentication() {
-					return new PasswordAuthentication("disasterassessment","disasterassessment");
-				}
-			});
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
 
-		try {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("disasterassessment", "disasterassessment");
+                    }
+                });
 
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("account_update@redcross.org"));
-			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse(toAddress));
-			message.setSubject("Testing Subject");
-			message.setText("Dear Mail Crawler," +
-					"\n\n No spam to my email, please!");
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("account_update@redcross.org"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(toAddress));
+            message.setSubject("Disaster Assessment App Password Assistance");
+            message.setText("We received a request to reset the password associated with this e-mail address"
+                    + "\n\n Your new password is: " + newPassword
+                    + "\n\n Please log in using the new password and reset it as soon as possible. ");
 
-			Transport.send(message);
+            Transport.send(message);
 
-			System.out.println("Done");
+            System.out.println("Done");
 
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
-		}
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String genNewPassword() {
+        char[] symbols = new char[36];
+        char[] buf = new char[8];
+        Random random = new Random();
+
+        for (int idx = 0; idx < 10; ++idx) {
+            symbols[idx] = (char) ('0' + idx);
+        }
+        for (int idx = 10; idx < 36; ++idx) {
+            symbols[idx] = (char) ('a' + idx - 10);
+        }
+
+        for (int idx = 0; idx < buf.length; ++idx) {
+            buf[idx] = symbols[random.nextInt(symbols.length)];
+        }
+        return new String(buf);
     }
 }

@@ -42,22 +42,36 @@ public class FillInForm extends HttpServlet {
             String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
             con = DriverManager.getConnection(connectionStr, dbuser, dbpw);
             JSONArray x = new JSONArray(jsonArray);
+            String idsInserted = "";
             for (int i = 0; i < x.length(); i++) {
                 JSONObject j = x.getJSONObject(0);
 
                 int flag = StoreData(j, con);
-                if (flag == 1) {
-                    request.setAttribute("FormSubmitMessage", "Your Assessment Form has been submitted successfully!");
-                } else {
-                    request.setAttribute("FormSubmitMessage", "You failed to submit Assessment Form.");
+                System.out.println("flag:"+flag);
+                if (flag == -2) {
+                    idsInserted=idsInserted + flag + ",";
+                    request.setAttribute("formSuccessMessage", "Your Assessment Form has already existed in database.");
+                    //break;
+                }
+                else if(flag == -1) {
+                    request.setAttribute("submitStatus", "ERROR");
+                    //request.setAttribute("idsInserted", idsInserted);
+                    request.setAttribute("formFailureMessage", "The disaster assessment could not be saved to the server at this time. The assessment was stored locally on your device. "
+                            + "Please visit the Sync page to try again!");
+                }
+                else                
+                {
+                    idsInserted=idsInserted + flag + ",";
+                    request.setAttribute("submitStatus", "OK");
+                    request.setAttribute("idsInserted", idsInserted);
+                    request.setAttribute("formSuccessMessage", "The disaster assessment record has been sent to the server successfully.");
                 }
                 String destination = "/welcome.jsp";
-                //request.setAttribute("FormSubmitMessage", "Your Assessment Form has been submitted successfully!");
                 RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
                 red.forward(request, response);
             }
         } catch (Exception e) {
-            request.setAttribute("FormSubmitMessage", "You failed to submit the form!");
+            request.setAttribute("submitStatus", "JSON ERROR");
             String destination = "/welcome.jsp";
             //request.setAttribute("FormSubmitMessage", "Your Assessment Form has been submitted successfully!");
             RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
@@ -76,6 +90,7 @@ public class FillInForm extends HttpServlet {
 
     public int StoreData(JSONObject j, Connection con) {
         java.util.Date utilDate = new java.util.Date();
+
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
         try {
             int id = (Integer) j.get("id");
@@ -132,6 +147,10 @@ public class FillInForm extends HttpServlet {
             String reason = (String) j.get("txtArea_classification_reason");
             String comments = (String) j.get("txtArea_comment");
 
+            //check whether it is already stored in database
+            if (Cases.CheckDuplicate(con, volunteerId, sqlDate, sqlDate) != null) {
+                return -2;// return -2 means the record is duplicated. It exists in database
+            }
             Client client = new Client(Address, apt, city, state, zip, "", "", lastName, firstName);
             client.Insert(con);
             int clientId = client.getId(con);
@@ -144,16 +163,18 @@ public class FillInForm extends HttpServlet {
             System.out.println("BuildingId:" + buildId);
 
             DamageAssessment ds = new DamageAssessment(classification, "", "", num_of_floor, isBasement, waterLivingInt, waterBasementInt, isGasOn, isElectricOn, isBasementOccupied, basementComment, reason,
-            Electrical_service_box, Furnace, Heat_Water_Heater, Washer, Dryer, Stove, Regfrigerator, sqlDate, sqlDate);
+                    Electrical_service_box, Furnace, Heat_Water_Heater, Washer, Dryer, Stove, Regfrigerator);
             ds.insert(con);
             int damageAssessmentId = ds.getId(con);
 
-            Cases caseInstance = new Cases(comments, clientId, damageAssessmentId, buildId, volunteerId);
+            Cases caseInstance = new Cases(comments, clientId, damageAssessmentId, buildId, volunteerId, sqlDate, sqlDate);
             caseInstance.Insert(con);
-            return 1;
-        } catch (Exception e) {
+            
+            return id;
+        } catch (SQLException e) {
             return -1;
-        }
-
+        }catch(JSONException e){
+            return -1;
     }
+}
 }

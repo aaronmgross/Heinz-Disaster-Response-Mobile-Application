@@ -1,7 +1,6 @@
 package DataDAO;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +14,19 @@ public class DamageAssessment {
     private int numFloor;
     private String isBasement;
     private int waterLevelLivingArea;
+    private int waterLevelBasement;
+    private String isGasOn;
+    private String isElectricityOn;
+    private String isBasementOccupied;
+    private String OccupiedDescription;
+    private String reason;
+    private String electriccalBox;
+    private String furnace;
+    private String hotWaterHeater;
+    private String washer;
+    private String dryer;
+    private String stove;
+    private String refrigerator;
 
     public String getOccupiedDescription() {
         return OccupiedDescription;
@@ -62,14 +74,6 @@ public class DamageAssessment {
 
     public void setElectriccalBox(String electriccalBox) {
         this.electriccalBox = electriccalBox;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
     }
 
     public String getFurnace() {
@@ -144,14 +148,6 @@ public class DamageAssessment {
         this.refrigerator = refrigerator;
     }
 
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
     public String getStove() {
         return stove;
     }
@@ -191,21 +187,6 @@ public class DamageAssessment {
     public void setWaterLevelLivingArea(int waterLevelLivingArea) {
         this.waterLevelLivingArea = waterLevelLivingArea;
     }
-    private int waterLevelBasement;
-    private String isGasOn;
-    private String isElectricityOn;
-    private String isBasementOccupied;
-    private String OccupiedDescription;
-    private String reason;
-    private String electriccalBox;
-    private String furnace;
-    private String hotWaterHeater;
-    private String washer;
-    private String dryer;
-    private String stove;
-    private String refrigerator;
-    private Date startTime;
-    private Date endTime;
 
     public DamageAssessment() {
     }
@@ -215,7 +196,7 @@ public class DamageAssessment {
             String isGasOn, String isElectricityOn, String isBasementOccupied,
             String desc, String reason, String electriccalBox, String furnace,
             String hotWaterHeater, String washer, String dryer, String stove,
-            String refrigerator, Date startTime, Date endTime) {
+            String refrigerator) {
 
         this.structuralDamage = sd == null ? "" : sd;
         this.debrisAmout = da == null ? "" : da;
@@ -236,8 +217,6 @@ public class DamageAssessment {
         this.dryer = dryer == null ? "" : dryer;
         this.stove = stove == null ? "" : stove;
         this.refrigerator = refrigerator == null ? "" : refrigerator;
-        this.startTime = startTime;
-        this.endTime = endTime;
     }
 
     public void insert(Connection con) throws SQLException {
@@ -248,8 +227,7 @@ public class DamageAssessment {
                     + " Number_Of_Floor, Is_There_Basement, Water_Level_Living_Area,"
                     + " Water_Level_Basement, Is_Electricity_On, Is_Gas_On, Basement_Occupied,"
                     + "Occupied_Description, Classification_Reason, Electrical_service_box,"
-                    + "Furnace, Hot_Water_Heater, Washer, Dryer, Stove, Refrigerator,"
-                    + "Start_Time, Completion_Time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    + "Furnace, Hot_Water_Heater, Washer, Dryer, Stove, Refrigerator) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
             stat = con.prepareStatement(SQL);
             stat.setString(1, structuralDamage);
@@ -271,13 +249,8 @@ public class DamageAssessment {
             stat.setString(15, dryer);
             stat.setString(16, stove);
             stat.setString(17, refrigerator);
-            stat.setDate(18, startTime);
-            stat.setDate(19, endTime);
             stat.executeUpdate();
             System.out.println("Successfully INSERT INTO Damage_Assessment");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         } finally {
             if (stat != null) {
                 stat.close();
@@ -292,13 +265,10 @@ public class DamageAssessment {
             String sql = "select Assessment_Id from Damage_Assessment where Structural_Damage =? and Number_Of_Floor=? and Is_There_Basement=? "
                     + "and Water_Level_Living_Area=? and Water_Level_Basement=? and Is_Electricity_On=? and Is_Gas_On=? "
                     + "and Basement_Occupied=? and Occupied_Description=? and Classification_Reason=? and Electrical_service_box=? "
-                    + "and Furnace=? and Hot_Water_Heater=? and Washer=? and Dryer=? and Stove=? and Refrigerator=? "
-                    + "and Start_Time=? and Completion_Time=?";
+                    + "and Furnace=? and Hot_Water_Heater=? and Washer=? and Dryer=? and Stove=? and Refrigerator=?";
             System.out.println(sql);
             stat = con.prepareStatement(sql);
             stat.setString(1, structuralDamage);
-            //stat.setString(2, debrisAmout);
-            //stat.setString(3, bizInventoryLoss);
             stat.setInt(2, numFloor);
             stat.setString(3, isBasement);
             stat.setInt(4, waterLevelLivingArea);
@@ -315,21 +285,13 @@ public class DamageAssessment {
             stat.setString(15, dryer);
             stat.setString(16, stove);
             stat.setString(17, refrigerator);
-            stat.setDate(18, startTime);
-            stat.setDate(19, endTime);
 
             ResultSet rs = stat.executeQuery();
             while (rs.next()) {
-                assessmentId = rs.getInt("Assessment_Id");
-
+                return rs.getInt("Assessment_Id");
             }
             System.out.println("Successfully selected from Damage_Assessment");
-            return assessmentId;
-        } catch (SQLException e) {
-
-            e.printStackTrace();
             return -1;
-
         } finally {
             if (stat != null) {
                 stat.close();
@@ -342,31 +304,32 @@ public class DamageAssessment {
         PreparedStatement stat = con.prepareStatement("SELECT * FROM Damage_Assessment WHERE Assessment_Id = ? ");
         stat.setInt(1, dmgAsmtID);
         ResultSet rs = stat.executeQuery();
-
-        if (rs.next()) {
-            this.assessmentId = dmgAsmtID;
-            this.structuralDamage = rs.getString("Structural_Damage");
-            this.debrisAmout = rs.getString("Debris_Amount");
-            this.bizInventoryLoss = rs.getString("Business_Inventory_Loss");
-            this.numFloor = rs.getInt("Number_Of_Floor");
-            this.isBasement = isBasement = rs.getString("Is_There_Basement");
-            this.waterLevelLivingArea = rs.getInt("Water_Level_Living_Area");
-            this.waterLevelBasement = rs.getInt("Water_Level_Basement");
-            this.isGasOn = rs.getString("Is_Gas_On");
-            this.isElectricityOn = rs.getString("Is_Electricity_On");
-            this.isBasementOccupied = rs.getString("Basement_Occupied");
-            this.OccupiedDescription = rs.getString("Occupied_Description");
-            this.reason = rs.getString("Classification_Reason");
-            this.electriccalBox = rs.getString("Electrical_service_box");
-            this.furnace = rs.getString("Furnace");
-            this.hotWaterHeater = rs.getString("Hot_Water_Heater");
-            this.washer = rs.getString("Washer");
-            this.dryer = rs.getString("Dryer");
-            this.stove = rs.getString("Stove");
-            this.refrigerator = rs.getString("Refrigerator");
-            this.startTime = rs.getDate("Start_Time");
-            this.endTime = rs.getDate("Completion_Time");
-            ;
+        try {
+            if (rs.next()) {
+                this.assessmentId = dmgAsmtID;
+                this.structuralDamage = rs.getString("Structural_Damage");
+                this.debrisAmout = rs.getString("Debris_Amount");
+                this.bizInventoryLoss = rs.getString("Business_Inventory_Loss");
+                this.numFloor = rs.getInt("Number_Of_Floor");
+                this.isBasement = isBasement = rs.getString("Is_There_Basement");
+                this.waterLevelLivingArea = rs.getInt("Water_Level_Living_Area");
+                this.waterLevelBasement = rs.getInt("Water_Level_Basement");
+                this.isGasOn = rs.getString("Is_Gas_On");
+                this.isElectricityOn = rs.getString("Is_Electricity_On");
+                this.isBasementOccupied = rs.getString("Basement_Occupied");
+                this.OccupiedDescription = rs.getString("Occupied_Description");
+                this.reason = rs.getString("Classification_Reason");
+                this.electriccalBox = rs.getString("Electrical_service_box");
+                this.furnace = rs.getString("Furnace");
+                this.hotWaterHeater = rs.getString("Hot_Water_Heater");
+                this.washer = rs.getString("Washer");
+                this.dryer = rs.getString("Dryer");
+                this.stove = rs.getString("Stove");
+                this.refrigerator = rs.getString("Refrigerator");
+            }
+        } finally {
+            stat.close();
+            rs.close();
         }
     }
 }

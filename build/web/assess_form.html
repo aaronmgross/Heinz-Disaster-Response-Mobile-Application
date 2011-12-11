@@ -80,8 +80,8 @@ function save_disaster_entry_curbside()
 			"txtarea_basement_comment" : "",
                         "water_in_living_area" : document.getElementById("water_in_living_area_c").value,
 			"water_in_basement" : "",
-			"electric" : "",
-			"gas" : "",
+				"electric" : get_radio_value("electric_c"),
+				"gas" : get_radio_value("gas_c"),
 			"d_electrical" : "",
 			"d_furnace" : "",
 			"d_water" : "",
@@ -859,6 +859,36 @@ function fillAssessmentAddress()
 					</div>
 				</td>
 			</tr>
+			
+			
+			<tr>
+				<td class='form_table_label'>Is the electricity on?</td>
+				<td class='form_table_input'>
+					<div data-role="fieldcontain" class="iOS-fc-fix">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="electric_c" id="electric-1_c" value="yes" />
+						<label for="electric-1_c">Yes</label>
+						<input type="radio" name="electric_c" id="electric-2_c" value="no" />
+						 <label for="electric-2_c">No</label>
+						</fieldset>
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td class='form_table_label'>Is the gas on?</td>
+				<td class='form_table_input'>
+					<div data-role="fieldcontain" class="iOS-fc-fix">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="gas_c" id="gas-1_c" value="yes" />
+						<label for="gas-1_c">Yes</label>
+						<input type="radio" name="gas_c" id="gas-2_c" value="no" />
+						 <label for="gas-2_c">No</label>
+						</fieldset>
+					</div>
+				</td>
+			</tr>
+			
 			</table>
 		</div>
 		

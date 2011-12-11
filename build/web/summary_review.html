@@ -49,6 +49,17 @@ TODO:
 		else
 			return true;
 	}
+	
+	function checkRenterInfo()
+	{
+		var select = document.getElementById("owner_information");
+		var chosenOption = select.options[select.selectedIndex].value;
+
+		if (chosenOption == "Client rents (furnished)" || chosenOption == "Client rents (unfurnished)")
+			document.getElementById("renter_information").style.display = 'block';
+		else
+			document.getElementById("renter_information").style.display = 'none';
+	}
 
 	function setValues(a){
 	//	document.write(objGet('tel_house_num'));
@@ -123,7 +134,7 @@ TODO:
 				"d_fridge" : get_radio_value("d_fridge"),
 				"select_classification" : document.getElementById("select_classification").value,
 				"txtArea_classification_reason" : document.getElementById("txtArea_classification_reason").value,
-				"txtArea_comment" : document.getElementById("txtArea_comment").value,
+				"txtArea_comment" : document.getElementById("txtArea_comment").value
 				// TODO:
 				// lat
 				// long
@@ -148,7 +159,7 @@ TODO:
 		}
 	}
 
-
+var g;
 
 	function loadJSON()
 	{
@@ -173,9 +184,12 @@ TODO:
 			var myselect1 = $('select#owner_information');
 			myselect1.selectmenu();
 			myselect1.selectmenu("refresh");
+			if(document.getElementById("owner_information").value=="Client owns"){
+				g=1;
+			}
 			setValues("select_classification");
 			var myselect2 = $('select#select_classification');
-
+			
 			myselect2.selectmenu();
 			myselect2.selectmenu("refresh");
 
@@ -450,11 +464,16 @@ function checkattr(att){
 						</td></tr>
 
 
+						<div style='display:none' id="renter_information">
+							
 
-			<tr><td class='form_table_label'>		Landlord's name:</td>
-				<td class='form_table_input'> <input type="text" name="landlord_name" id="landlord_name" disabled style="border: 0px;color: #000000;">  </td></tr>
 
-				<tr><td class='form_table_label'>Landlord's phone #:</td><td class='form_table_input'><input type="text" name="landlord_tel" id="landlord_tel" disabled style="border: 0px;color: #000000;"> 	</td></tr>
+				Landlord's name:
+			 <input type="text" name="landlord_name" id="landlord_name" disabled style="border: 0px;color: #000000;" size="10">  
+
+				Landlord's phone #:<input type="text" name="landlord_tel" id="landlord_tel" disabled style="border: 0px;color: #000000;" size="10"> 	
+				</div>
+				
 <tr><td class='form_table_label'>
 					What type of insurance, if any, does the client have?<br /></td>
 			<td class='form_table_input'>		<div data-role="fieldcontain" class="iOS-fc-fix" style='margin:auto;text-align:center'>

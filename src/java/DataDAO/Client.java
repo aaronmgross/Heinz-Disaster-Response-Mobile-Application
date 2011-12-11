@@ -44,8 +44,8 @@ public class Client {
 
         PreparedStatement statement = null;
         try {
-            statement = con.prepareStatement("Insert into Client(Address,Apt_No,City,State,Zip_Code,Municipality,County,Last_Name,First_Name) values(?,?,?,?,?,?,?,?,?)");
-
+            statement = con.prepareStatement("Insert into Client(Address,Apt_No,City,State,Zip_Code,Municipality,"
+                    + "County,Last_Name,First_Name) values(?,?,?,?,?,?,?,?,?)");
             statement.setString(1, address);
             statement.setString(2, aptNum);
             statement.setString(3, city);
@@ -55,13 +55,7 @@ public class Client {
             statement.setString(7, county);
             statement.setString(8, lName);
             statement.setString(9, fName);
-
             statement.executeUpdate();
-
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-
         } finally {
             if (statement != null) {
                 statement.close();
@@ -89,20 +83,11 @@ public class Client {
 
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                clientId = rs.getInt("Client_Id");
-
+                return  rs.getInt("Client_Id");
             }
-            System.out.println("Successfully selected from Client");
-            return clientId;
-        } catch (SQLException e) {
-
-            e.printStackTrace();
             return -1;
-
-        } finally {
-            if (statement != null) {
+        }finally {           
                 statement.close();
-            }
         }
 
     }
@@ -111,7 +96,7 @@ public class Client {
         PreparedStatement stat = con.prepareStatement("SELECT * FROM Client WHERE Client_Id = ? ");
         stat.setInt(1, clientID);
         ResultSet rs = stat.executeQuery();
-
+        try{
         if (rs.next()) {
             this.clientId = clientID;
             this.fName = rs.getString("First_Name");
@@ -123,6 +108,10 @@ public class Client {
             this.county = rs.getString("County");
             this.zipCode = rs.getString("Zip_Code");
             this.municipality = rs.getString("Municipality");
+        }
+        }finally{
+            stat.close();
+            rs.close();
         }
     }
 
