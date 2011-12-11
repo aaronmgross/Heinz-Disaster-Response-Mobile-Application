@@ -52,7 +52,7 @@ window.addEventListener('load', function(e) {
                 }
                 else
                 {
-                    document.forms['admin'].submit();
+                    return true;
                 }
 
             }
@@ -117,7 +117,7 @@ window.addEventListener('load', function(e) {
                  </div>
 
             </div>
-	<a href='javascript:;' onClick="validation()" data-role="button" data-icon="arrow-r" data-iconpos="right">
+	<a href='javascript:;' onClick="document.forms['admin'].submit()" data-role="button" data-icon="arrow-r" data-iconpos="right">
 			<div class='mainlink_big_head'>Approve</div>
 			<div class='mainlink_subtitle'>selected users</div>
 	</a>

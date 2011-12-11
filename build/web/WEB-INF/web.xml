@@ -64,6 +64,10 @@
         <servlet-name>DeleteUser</servlet-name>
         <servlet-class>DeleteUser</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ForgotPassword</servlet-name>
+        <servlet-class>ForgotPassword</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>FillInForm</servlet-name>
         <url-pattern>/FillInForm</url-pattern>
@@ -87,6 +91,10 @@
     <servlet-mapping>
         <servlet-name>DeleteUser</servlet-name>
         <url-pattern>/DeleteUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ForgotPassword</servlet-name>
+        <url-pattern>/ForgotPassword</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
