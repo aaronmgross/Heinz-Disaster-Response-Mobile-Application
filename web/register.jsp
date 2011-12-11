@@ -34,7 +34,35 @@
             window.addEventListener('load', function(e) {
                 setTimeout(function() { window.scrollTo(0, 1); }, 1);
             }, false);
-
+			
+			
+			function validateEmailID()
+			{
+			var x=document.forms["registerForm"]["volunteer_email"].value;
+			var atpos=x.indexOf("@");
+			var dotpos=x.lastIndexOf(".");
+			if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
+			  {
+			  		document.getElementById("error_container1").style.display = "block";
+					document.getElementById('err3').innerHTML="Please check the email IDs you entered, they seem to be invalid";
+                  scroll(0,0);
+					return false;
+			  }
+			
+			return true;
+			}
+			function validateFields(){
+				
+				var v3=validateEmailID();
+				var v1=validateEmail();
+				var v2=validatePassword();
+				
+				if(v1==true && v2==true&&v3==true){
+					
+							submitForm("registerForm");
+							
+						}
+			}
             function validatePassword()
             {
 
@@ -43,12 +71,32 @@
 
                 if(pwd1 != pwd || pwd == "" || pwd == null)
                 {
-                    document.getElementById("error_container").style.display = "block";
+                    document.getElementById("error_container1").style.display = "block";
+					document.getElementById('err2').innerHTML="Please check the passwords that you entered - they need to match!";
                     scroll(0,0);
+					return false;
                 }
-                else
-                    submitForm("registerForm");
+                
+					return true;
             }
+
+
+			 function validateEmail()
+	            {
+
+	                var email=document.forms["registerForm"]["volunteer_email"].value;
+	                var email1=document.forms["registerForm"]["volunteer_email1"].value;
+
+	                if(email1 != email || email == "" || email == null)
+	                {
+	                    document.getElementById("error_container1").style.display = "block";
+		document.getElementById('err1').innerHTML="Please check the email IDs that you entered - they need to match!";
+	                    scroll(0,0);
+						return false;
+	                }
+						return true;
+	                
+	            }
 
             function submitForm(form_name) {
                 document.forms[form_name].submit();
@@ -64,14 +112,19 @@
 
         <div data-role="page">
             <div data-role='header' data-theme='b'>
-                <a href='index.jsp' data-rel="back">Back</a>
+                <a href='index1.html' data-transition="reverse">Back</a>
                 <h2>Register</h2>
             </div>
 
             <div data-role='content'>
-                <div id="error_container" class='failure_message' style='display:none'>
-                    <div class='instruction_text'>Sorry, please check the passwords that you entered - they need to match!</div>
-                </div>
+                <div id="error_container1" class='failure_message' style='display:none'>
+                    <div class='instruction_text' id='err1'></div>
+                
+                    <div class='instruction_text' id='err2'></div>
+                
+	                    <div class='instruction_text' id='err3'></div>
+	                </div>
+
 
                 <div class='sub_form'>
 
@@ -84,13 +137,16 @@
                     <form name="registerForm" method="post" action="Register">
 
                         <b>First Name:</b><br />
-                        <input type="text" name="volunteer_firstname" autocorrect="off"/>
+                        <input type="text" name="volunteer_firstname"/>
 
                         <b>Last Name:</b><br />
-                        <input type='text' name='volunteer_lastname' autocorrect="off"/>
+                        <input type='text' name='volunteer_lastname'/>
 
                         <b>E-mail Address:</b><br />
-                        <input type='text' name='volunteer_email' autocorrect="off" autocapitalization="on"/>
+                        <input type='text' name='volunteer_email'/>
+
+						<b>Confirm E-mail Address:</b><br />
+                        <input type='text' name='volunteer_email1'/>
 
                         <b>Password:</b><br />
                         <input type="password" name="volunteer_password"/>
@@ -98,7 +154,7 @@
                         <b>Re-type password:</b><br />
                         <input type="password" name="volunteer_password1"/>
 
-                        <a href='javascript:;' onClick="validatePassword()" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b"><div class='mainlink_big_head'>Register</div></a>
+                        <a href='javascript:;' onClick="validateFields()" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b"><div class='mainlink_big_head'>Register</div></a>
 
 
                     </form>
