@@ -64,9 +64,9 @@
         <servlet-name>DeleteUser</servlet-name>
         <servlet-class>DeleteUser</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>ExportExcel</servlet-name>
-        <servlet-class>ExportExcel</servlet-class>
+   <servlet>
+        <servlet-name>ForgotPassword</servlet-name>
+        <servlet-class>ForgotPassword</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>FillInForm</servlet-name>
@@ -95,6 +95,10 @@
     <servlet-mapping>
         <servlet-name>ExportExcel</servlet-name>
         <url-pattern>/ExportExcel</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
+        <servlet-name>ForgotPassword</servlet-name>
+        <url-pattern>/ForgotPassword</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
