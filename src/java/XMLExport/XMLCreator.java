@@ -40,7 +40,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date;
+
 
 public class XMLCreator {
 
@@ -48,11 +49,13 @@ public class XMLCreator {
     List myData;
     Document dom;
     File file=new File("ClientRecord.xml");
+    Date reqdDate;
 
-    public XMLCreator(String user, String pw) {
+    public XMLCreator(String user, String pw,Date time) {
 
         //create a list to hold the data
         myData = new ArrayList();
+        reqdDate=time;
         try {
             //initialize the list
             loadData(user, pw);
@@ -82,15 +85,20 @@ public class XMLCreator {
         } catch (ClassNotFoundException e) {
             throw new AssertionError(e);
         }
-        String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
+        String connectionStr = "jdbc:mysql://localhost/DisasterApp";
         try {
-
+        user = "root";
+        pw = "";
             con = DriverManager.getConnection(connectionStr, user, pw);
             PreparedStatement stat = con.prepareStatement("SELECT * FROM Cases");
             PreparedStatement bldg = con.prepareStatement("Select * from Building");
             ResultSet rsAll = stat.executeQuery();
             ResultSet rsBldg = bldg.executeQuery();
+           
             while (rsAll.next() && rsBldg.next()) {
+               
+               
+                if(rsAll.getDate("Start_Time").equals(reqdDate) ||rsAll.getDate("Start_Time").after(reqdDate) ){
                 Client c = new Client();
 
                 int clientID = rsAll.getInt("Client_Id");
@@ -143,7 +151,7 @@ public class XMLCreator {
 
                 myData.add(c);
 
-
+                }
 
             }
 
@@ -214,7 +222,8 @@ public class XMLCreator {
      */
     private Element createClientElement(Client c, Node dataSetEle) {
         Element service, serviceId, serviceName, serviceCode, serviceDesc;
-        Date today = new Date();
+        java.util.Date today = new java.util.Date();
+        
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
