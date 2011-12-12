@@ -18,7 +18,7 @@ CREATE TABLE D_User
 	 Password VARCHAR (50) NOT NULL,
      Lname VARCHAR (20)  NOT NULL , 
      Fname VARCHAR (20)  NOT NULL , 
-     Telephone VARCHAR (20) NOT NULL, 
+     Telephone VARCHAR (20) , 
      Agency VARCHAR (20) , 
      Email VARCHAR (100) NOT NULL,	 
      User_Role 	VARCHAR(15) NOT NULL DEFAULT 'VOLUNTEER',
