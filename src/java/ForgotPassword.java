@@ -62,6 +62,7 @@ public class ForgotPassword extends HttpServlet {
             Logger.getLogger(ForgotPassword.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        String message;
         if (u != null) {
 
             String newPassword = genNewPassword();
@@ -69,10 +70,17 @@ public class ForgotPassword extends HttpServlet {
             try {
                 u.update(con, u.getUserId());
             } catch (SQLException ex) {
-                System.out.println("failed to update the new password");
+                System.out.println("failed to update the new password.");
             }
             sendEmail(email, newPassword);
+            message = "Your new password has been sent to your email.";
+
+        } else {
+            message = "Your email doesn't exsit.";
         }
+        request.setAttribute("RegisterMessage", message);
+        RequestDispatcher red = getServletContext().getRequestDispatcher("/index.jsp");
+        red.forward(request, response);
 
     }
 

@@ -63,10 +63,26 @@
     <servlet>
         <servlet-name>DeleteUser</servlet-name>
         <servlet-class>DeleteUser</servlet-class>
+        <init-param>
+            <param-name>dbUser</param-name>
+            <param-value>root</param-value>
+        </init-param>
+        <init-param>
+            <param-name>dbPassword</param-name>
+            <param-value>hello</param-value>
+        </init-param>
     </servlet>
     <servlet>
         <servlet-name>ForgotPassword</servlet-name>
         <servlet-class>ForgotPassword</servlet-class>
+        <init-param>
+            <param-name>dbUser</param-name>
+            <param-value>root</param-value>
+        </init-param>
+        <init-param>
+            <param-name>dbPassword</param-name>
+            <param-value>hello</param-value>
+        </init-param>
     </servlet>
     <servlet-mapping>
         <servlet-name>FillInForm</servlet-name>

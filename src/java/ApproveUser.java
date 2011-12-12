@@ -50,20 +50,13 @@ public class ApproveUser extends HttpServlet {
             try {
                 con = DriverManager.getConnection(connectionStr, user, pw);
                 int id;
-                User u;
+                User u = new User();
 
                 for (int i = 0; i < c.length; i++) {
                     id = Integer.parseInt(c[i]);
-                    u = new User();
-                    u.getByID(con, id);
-                    u.setIsApproved("Y");
-                    u.update(con, id);
+                    u.approve(con, id);
                 }
-                message = c.length + " users have been approved";
-                request.setAttribute("message", message);
-                String destination = "/approveuser.jsp";
-                RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
-                red.forward(request, response);
+
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 message = "Errors";
@@ -75,6 +68,12 @@ public class ApproveUser extends HttpServlet {
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
+
+                message = c.length + " users have been approved";
+                request.setAttribute("message", message);
+                String destination = "/approveuser.jsp";
+                RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
+                red.forward(request, response);
             }
         }
     }

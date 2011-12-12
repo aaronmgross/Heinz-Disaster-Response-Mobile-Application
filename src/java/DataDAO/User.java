@@ -50,6 +50,7 @@ public class User {
                 user.setUserId(rs.getInt("User_Id"));
                 user.setEmail(rs.getString("Email"));
                 //user.setPassword(rs.getString("Password"));
+                user.setTelephone(rs.getString("Telephone"));
                 user.setfName(rs.getString("Fname"));
                 user.setlName(rs.getString("Lname"));
                 user.setAgency(rs.getString("Agency"));
@@ -180,7 +181,7 @@ public class User {
             statement.setString(8, IsApproved);
             statement.setInt(9, userId);
             statement.executeUpdate();
-            con.commit();
+            //con.commit();
 
         }finally {
             if (statement != null) {
@@ -294,5 +295,21 @@ public class User {
 
     public void setIsApproved(String IsApproved) {
         this.IsApproved = IsApproved;
+    }
+
+    public void approve(Connection con, int id) throws SQLException {
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement("UPDATE D_User SET IsApproved=? WHERE User_Id=?");
+            statement.setString(1, "Y");
+            statement.setInt(2, id);
+            statement.executeUpdate();
+            //con.commit();
+
+        }finally {
+            if (statement != null) {
+                statement.close();
+            }
+        }
     }
 }
