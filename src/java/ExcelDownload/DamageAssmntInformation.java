@@ -28,8 +28,7 @@ public class DamageAssmntInformation {
      dryer  ,
      stove  ,
      refrigerator  ;
-   private java.sql.Date  startTime,
-     completionTime ;
+  
   private int numberOfFloors ,waterLevelLivingArea,  waterLevelBasement ;
     public void setStructuralDamage(String damage){
         structuralDamage=damage;
@@ -156,16 +155,5 @@ public class DamageAssmntInformation {
     public String getRefrigerator(){
         return refrigerator;
     }
-     public void setStartTime(java.sql.Date st){
-        startTime=st;
-    }
-    public java.sql.Date getStartTime(){
-        return startTime;
-    }
-     public void setCompletionTime(java.sql.Date ct){
-        completionTime=ct;
-    }
-    public java.sql.Date getCompletionTime(){
-        return completionTime;
-    }
+    
 }

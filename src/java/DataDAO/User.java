@@ -225,6 +225,22 @@ public class User {
         }
     }
 
+            public void approve(Connection con, int id) throws SQLException {
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement("UPDATE D_User SET IsApproved=? WHERE User_Id=?");
+            statement.setString(1, "Y");
+            statement.setInt(2, id);
+            statement.executeUpdate();
+            //con.commit();
+
+        }finally {
+            if (statement != null) {
+                statement.close();
+            }
+        }
+    }
+
     public String getAgency() {
         return agency;
     }
@@ -297,19 +313,5 @@ public class User {
         this.IsApproved = IsApproved;
     }
 
-    public void approve(Connection con, int id) throws SQLException {
-        PreparedStatement statement = null;
-        try {
-            statement = con.prepareStatement("UPDATE D_User SET IsApproved=? WHERE User_Id=?");
-            statement.setString(1, "Y");
-            statement.setInt(2, id);
-            statement.executeUpdate();
-            //con.commit();
 
-        }finally {
-            if (statement != null) {
-                statement.close();
-            }
-        }
-    }
 }

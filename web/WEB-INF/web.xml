@@ -72,7 +72,7 @@
             <param-value>hello</param-value>
         </init-param>
     </servlet>
-    <servlet>
+   <servlet>
         <servlet-name>ForgotPassword</servlet-name>
         <servlet-class>ForgotPassword</servlet-class>
         <init-param>
@@ -109,6 +109,10 @@
         <url-pattern>/DeleteUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>ExportExcel</servlet-name>
+        <url-pattern>/ExportExcel</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
         <servlet-name>ForgotPassword</servlet-name>
         <url-pattern>/ForgotPassword</url-pattern>
     </servlet-mapping>
