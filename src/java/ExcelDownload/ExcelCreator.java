@@ -21,7 +21,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
-import java.sql.Date;
+//import java.sql.Date;
+import java.sql.Timestamp;
 
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -57,10 +58,10 @@ Workbook wb = new HSSFWorkbook();
    String sheetName="Client"+sheetIndex;
 
       String filename = "Client.xls";
-      Date reqdDate;
+      Timestamp reqdDate;
 
         FileOutputStream out = new FileOutputStream(filename);
-    public ExcelCreator(Date time) throws SQLException, FileNotFoundException, IOException {
+    public ExcelCreator(Timestamp time) throws SQLException, FileNotFoundException, IOException {
         reqdDate=time;
         initializeDocument();
         loadData();
@@ -374,9 +375,9 @@ cell.setCellStyle(cellStyle);
         } catch (ClassNotFoundException e) {
             throw new AssertionError(e);
         }
-        String connectionStr = "jdbc:mysql://localhost/DisasterApp";
+        String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
         String user = "root";
-        String pw = "";
+        String pw = "hello";
         try {
             con = DriverManager.getConnection(connectionStr, user, pw);
 
@@ -400,7 +401,7 @@ cell.setCellStyle(cellStyle);
 
 
             while (rsBldg.next() && rsClient.next() && rsDamageAsmnt.next() && rsClientCase.next()  ) {
- if(rsClientCase.getDate("Start_Time").equals(reqdDate) ||rsClientCase.getDate("Start_Time").after(reqdDate) ){
+ if(rsClientCase.getTimestamp("Start_Time").equals(reqdDate) ||rsClientCase.getTimestamp("Start_Time").after(reqdDate) ){
                 clients = new ClientInformation();
                 int clntId = rsClient.getInt("Client_Id");
                 DataDAO.Client client = new DataDAO.Client();

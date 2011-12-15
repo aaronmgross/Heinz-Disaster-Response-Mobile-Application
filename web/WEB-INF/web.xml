@@ -13,6 +13,18 @@
         </init-param>
     </servlet>
     <servlet>
+        <servlet-name>ExportExcel</servlet-name>
+        <servlet-class>ExportExcel</servlet-class>
+        <init-param>
+            <param-name>dbUser</param-name>
+            <param-value>root</param-value>
+        </init-param>
+        <init-param>
+            <param-name>dbPassword</param-name>
+            <param-value>hello</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
         <servlet-name>ExportXML</servlet-name>
         <servlet-class>ExportXML</servlet-class>
         <init-param>

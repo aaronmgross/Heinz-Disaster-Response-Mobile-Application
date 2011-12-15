@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -18,10 +19,10 @@ public class Cases {
     private int damageAssessmentId;
     private int buildingId;
     private int userId;
-    private java.sql.Date startTime;
-    private java.sql.Date endTime;
+    private java.sql.Timestamp startTime;
+    private java.sql.Timestamp endTime;
 
-    public Cases(String comment, int clientId, int damageAssessmentId, int buildingId, int userId, Date startTime, Date endTime) {
+    public Cases(String comment, int clientId, int damageAssessmentId, int buildingId, int userId, Timestamp startTime, Timestamp endTime) {
         this.comment = comment == null ? "" : comment;
         this.clientId = clientId;
         this.damageAssessmentId = damageAssessmentId;
@@ -46,8 +47,8 @@ public class Cases {
             statement.setInt(3, damageAssessmentId);
             statement.setInt(4, buildingId);
             statement.setInt(5, userId);
-            statement.setDate(6, startTime);
-            statement.setDate(7, endTime);
+            statement.setTimestamp(6, startTime);
+            statement.setTimestamp(7, endTime);
 
             statement.executeUpdate();
 
@@ -68,15 +69,15 @@ public class Cases {
             this.damageAssessmentId = rs.getInt("Damage_Assessment_Id");
             this.buildingId = rs.getInt("Building_Id");
             this.userId = rs.getInt("User_Id");
-            this.startTime = rs.getDate("Start_Time");
-            this.endTime = rs.getDate("Completion_Time");
+            this.startTime = rs.getTimestamp("Start_Time");
+            this.endTime = rs.getTimestamp("Completion_Time");
         }
            stat.close();
            rs.close();
 
     }
 
-    public static Cases CheckDuplicate(Connection con, int userID, java.sql.Date StartTime, java.sql.Date EndTime) throws SQLException {
+    public static Cases CheckDuplicate(Connection con, int userID, java.sql.Timestamp StartTime, java.sql.Timestamp EndTime) throws SQLException {
 
         PreparedStatement statement = null;
         ResultSet rs = null;
@@ -84,15 +85,15 @@ public class Cases {
         try {
             statement = con.prepareStatement("select * from Cases where User_Id=? and Start_Time=? and Completion_Time=?");
             statement.setInt(1, userID);
-            statement.setDate(2, StartTime);
-            statement.setDate(3, EndTime);
+            statement.setTimestamp(2, StartTime);
+            statement.setTimestamp(3, EndTime);
             rs = statement.executeQuery();
             if (!rs.next()) {
                 case1 = null;
             } else {
                 case1 = new Cases();
                 case1.setCaseId(rs.getInt("Case_Id"));
-                case1.setStartTime(rs.getDate("Start_Time"));
+                case1.setStartTime(rs.getTimestamp("Start_Time"));
             }
         } finally {          
            statement.close();
@@ -101,19 +102,19 @@ public class Cases {
         return case1;
     }
 
-    public Date getEndTime() {
+    public Timestamp getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(Timestamp endTime) {
         this.endTime = endTime;
     }
 
-    public Date getStartTime() {
+    public Timestamp getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(Timestamp startTime) {
         this.startTime = startTime;
     }
 

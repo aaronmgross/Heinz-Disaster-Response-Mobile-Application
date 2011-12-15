@@ -6,6 +6,7 @@
 package ExcelDownload;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -13,22 +14,22 @@ import java.sql.Date;
  */
 public class CaseInformation {
     private String comments;
-     private java.sql.Date  startTime,
+     private java.sql.Timestamp  startTime,
      completionTime ;
 
-    public Date getCompletionTime() {
+    public Timestamp getCompletionTime() {
         return completionTime;
     }
 
-    public void setCompletionTime(Date completionTime) {
+    public void setCompletionTime(Timestamp completionTime) {
         this.completionTime = completionTime;
     }
 
-    public Date getStartTime() {
+    public Timestamp getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(Timestamp startTime) {
         this.startTime = startTime;
     }
     public void setComment(String c){

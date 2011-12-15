@@ -64,7 +64,7 @@ public class ExportExcel extends HttpServlet {
     throws ServletException, IOException {
         try {
              String time=request.getParameter("excelTime");
-            ExcelCreator excel = new ExcelCreator(java.sql.Date.valueOf(time));
+            ExcelCreator excel = new ExcelCreator(java.sql.Timestamp.valueOf(time));
             File f=excel.downloadHelp();
              response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-Disposition", "attachment;filename="+f.getName());

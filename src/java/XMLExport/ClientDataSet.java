@@ -3,6 +3,7 @@ package XMLExport;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.sql.Timestamp;
 
 /*
  * To change this template, choose Tools | Templates
@@ -26,15 +27,16 @@ public class ClientDataSet {
 
     public ClientDataSet() {
         Date today = new Date();
+        Timestamp time = new Timestamp(today.getTime());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
         
         namespace = "http://www.clientdatastandard.org/dcds/schema/1.1";
         namespaceXSI = "http://www.w3.org/2001/XMLSchema-instance";
         schemaLocation = "http://www.clientdatastandard.org/dcds/schema/1.1 http://www.clientdatastandard.org/dcds/schema/1.1";
         dataSourceName = "can.communityos.org";
-        generationStamp = sdf.format(today);
+        generationStamp = sdf.format(time);
         schemaVersion = "1.1";
-        taxonomyVersion = sdf.format(today);
+        taxonomyVersion = sdf.format(time);
         generatorApp = "DisasterAssessment";
         generatorVendor = "CMU";
     }

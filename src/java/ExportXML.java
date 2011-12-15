@@ -9,7 +9,6 @@ import XMLExport.XMLCreator;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
-import java.sql.Date;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -43,10 +42,10 @@ public class ExportXML extends HttpServlet {
         }
         String connectionStr = "jdbc:mysql://localhost/DisasterApp";
         try {
-        user = "root";
-        pw = "";
+        //user = "root";
+        //pw = "hello";
+            //con = DriverManager.getConnection(connectionStr, user, pw);
             con = DriverManager.getConnection(connectionStr, user, pw);
-             con = DriverManager.getConnection(connectionStr, user, pw);
             PreparedStatement stat = con.prepareStatement("SELECT * FROM Cases");
         }
 catch (SQLException e) {
@@ -55,7 +54,7 @@ catch (SQLException e) {
          String time=request.getParameter("xmlTime");
          
     //create an instance
-    XMLCreator xce = new XMLCreator(user,pw,Date.valueOf(time));
+    XMLCreator xce = new XMLCreator(user,pw,java.sql.Timestamp.valueOf(time));
 
     //run the example
     xce.export ();

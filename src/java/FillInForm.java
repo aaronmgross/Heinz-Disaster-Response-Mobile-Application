@@ -14,6 +14,7 @@ import javax.servlet.RequestDispatcher;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
+import java.sql.Timestamp;
 
 /**
  *
@@ -51,7 +52,6 @@ public class FillInForm extends HttpServlet {
                 if (flag == -2) {
                     idsInserted=idsInserted + flag + ",";
                     request.setAttribute("formSuccessMessage", "Your Assessment Form has already existed in database.");
-                    //break;
                 }
                 else if(flag == -1) {
                     request.setAttribute("submitStatus", "ERROR");
@@ -91,13 +91,14 @@ public class FillInForm extends HttpServlet {
     public int StoreData(JSONObject j, Connection con) {
         java.util.Date utilDate = new java.util.Date();
 
-        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        Timestamp sqlDateTime = new Timestamp(utilDate.getTime());
         try {
             int id = (Integer) j.get("id");
             //System.out.println("id = " + id);
             String volunteerIdStr = (String) j.get("volunteer_id");
             int volunteerId = Integer.parseInt(volunteerIdStr);
             String volunteerName = (String) j.get("volunteer_name");
+            //String municipality = (String) j.get("municipality");
             //Date startTime= (Date)j.get("start_time");
             //Date endTime= (Date)j.get("end_time");
             String streetName = (String) j.get("street_name");
@@ -148,26 +149,24 @@ public class FillInForm extends HttpServlet {
             String comments = (String) j.get("txtArea_comment");
 
             //check whether it is already stored in database
-            if (Cases.CheckDuplicate(con, volunteerId, sqlDate, sqlDate) != null) {
+            if (Cases.CheckDuplicate(con, volunteerId, sqlDateTime, sqlDateTime) != null) {
                 return -2;// return -2 means the record is duplicated. It exists in database
             }
             Client client = new Client(Address, apt, city, state, zip, "", "", lastName, firstName);
             client.Insert(con);
             int clientId = client.getId(con);
-            System.out.println("clientId:" + clientId);
 
             Building building = new Building(landlordName, landlordPhone, dwellingType, insuranceInfo_f, insuranceInfo_s, insuranceInfo_c, ownerInfo);
             building.Insert(con);
 
-            int buildId = building.getId(con);
-            System.out.println("BuildingId:" + buildId);
+            int buildId = building.getId(con);           
 
             DamageAssessment ds = new DamageAssessment(classification, "", "", num_of_floor, isBasement, waterLivingInt, waterBasementInt, isGasOn, isElectricOn, isBasementOccupied, basementComment, reason,
                     Electrical_service_box, Furnace, Heat_Water_Heater, Washer, Dryer, Stove, Regfrigerator);
             ds.insert(con);
             int damageAssessmentId = ds.getId(con);
 
-            Cases caseInstance = new Cases(comments, clientId, damageAssessmentId, buildId, volunteerId, sqlDate, sqlDate);
+            Cases caseInstance = new Cases(comments, clientId, damageAssessmentId, buildId, volunteerId, sqlDateTime, sqlDateTime);
             caseInstance.Insert(con);
             
             return id;

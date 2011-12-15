@@ -40,7 +40,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.sql.Date;
+//import java.sql.Date;
+import java.sql.Timestamp;
 
 
 public class XMLCreator {
@@ -49,9 +50,9 @@ public class XMLCreator {
     List myData;
     Document dom;
     File file=new File("ClientRecord.xml");
-    Date reqdDate;
+    Timestamp reqdDate;
 
-    public XMLCreator(String user, String pw,Date time) {
+    public XMLCreator(String user, String pw,Timestamp time) {
 
         //create a list to hold the data
         myData = new ArrayList();
@@ -85,10 +86,10 @@ public class XMLCreator {
         } catch (ClassNotFoundException e) {
             throw new AssertionError(e);
         }
-        String connectionStr = "jdbc:mysql://localhost/DisasterApp";
+        String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
         try {
         user = "root";
-        pw = "";
+        pw = "hello";
             con = DriverManager.getConnection(connectionStr, user, pw);
             PreparedStatement stat = con.prepareStatement("SELECT * FROM Cases");
             PreparedStatement bldg = con.prepareStatement("Select * from Building");
@@ -98,7 +99,7 @@ public class XMLCreator {
             while (rsAll.next() && rsBldg.next()) {
                
                
-                if(rsAll.getDate("Start_Time").equals(reqdDate) ||rsAll.getDate("Start_Time").after(reqdDate) ){
+                if(rsAll.getTimestamp("Start_Time").equals(reqdDate) ||rsAll.getTimestamp("Start_Time").after(reqdDate) ){
                 Client c = new Client();
 
                 int clientID = rsAll.getInt("Client_Id");
