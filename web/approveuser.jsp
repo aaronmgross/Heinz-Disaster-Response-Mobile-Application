@@ -32,31 +32,6 @@ window.addEventListener('load', function(e) {
   }, false);
 </script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script language="javascript">
-
-            function validation()
-            {
-                var count=0;
-                for(vari=0;i<admin.chbox.length;i++)
-                {
-                    if(admin.chbox[i].checked)
-                    {
-                        count++;
-                    }
-                }
-
-                if(count==0)
-                {
-                    alert("check at least one");
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-
-            }
-        </script>
     <body>
 
         <div data-role="page" id="approve_form">

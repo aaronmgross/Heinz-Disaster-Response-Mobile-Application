@@ -32,31 +32,6 @@ window.addEventListener('load', function(e) {
   }, false);
 </script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script language="javascript">
-
-            function validation()
-            {
-                var count=0;
-                for(vari=0;i<admin.chbox.length;i++)
-                {
-                    if(admin.chbox[i].checked)
-                    {
-                        count++;
-                    }
-                }
-
-                if(count==0)
-                {
-                    alert("check at least one");
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-
-            }
-        </script>
     <body>
 
         <div data-role="page" id="approve_form">
@@ -121,7 +96,14 @@ window.addEventListener('load', function(e) {
 			<div class='mainlink_big_head'>Approve</div>
 			<div class='mainlink_subtitle'>selected users</div>
 	</a>
-               </form>
+                     <div data-role="content">
+
+        <p><a href="export_xml_and_excel.html" data-role="button" data-icon="arrow-r" data-iconpos="right">Click here to download XML and Excel files</a></p>
+        <div class='mainlink_big_head'></div>
+    </div>
+
+
+                    
 
             </div>
         </div>

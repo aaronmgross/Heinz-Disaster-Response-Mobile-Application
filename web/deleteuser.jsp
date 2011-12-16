@@ -59,11 +59,11 @@ window.addEventListener('load', function(e) {
         </script>
     <body>
 
-        <div data-role="page" id="approve_form">
+        <div data-role="page" id="delete_form">
 
             <div data-role="header" data-theme="b   ">
                 <a href="welcome.jsp" data-rel="back">Back</a>
-		<h2>Approve Users</h2>
+		<h2>Delete Users</h2>
             </div>
 
             <div data-role="content">
@@ -118,7 +118,7 @@ window.addEventListener('load', function(e) {
 
             </div>
 	<a href='javascript:;' onClick="document.forms['admin'].submit()" data-role="button" data-icon="arrow-r" data-iconpos="right">
-			<div class='mainlink_big_head'>Approve</div>
+			<div class='mainlink_big_head'>Delete</div>
 			<div class='mainlink_subtitle'>selected users</div>
 	</a>
                </form>
