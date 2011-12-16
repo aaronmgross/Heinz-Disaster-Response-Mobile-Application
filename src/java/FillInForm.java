@@ -171,6 +171,7 @@ public class FillInForm extends HttpServlet {
             
             return id;
         } catch (SQLException e) {
+            System.out.println(e);
             return -1;
         }catch(JSONException e){
             return -1;
