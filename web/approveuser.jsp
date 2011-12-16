@@ -121,7 +121,14 @@ window.addEventListener('load', function(e) {
 			<div class='mainlink_big_head'>Approve</div>
 			<div class='mainlink_subtitle'>selected users</div>
 	</a>
-               </form>
+                     <div data-role="content">
+
+        <p><a href="export_xml_and_excel.html" data-role="button" data-icon="arrow-r" data-iconpos="right">Click here to download XML and Excel files</a></p>
+        <div class='mainlink_big_head'></div>
+    </div>
+
+
+                    
 
             </div>
         </div>

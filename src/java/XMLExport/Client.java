@@ -13,7 +13,55 @@ public class Client {
     private String sourceAgencyID, sourceAgencyName, ID, firstName, middleName, lastName, phone, dateOfBirth,
             gender, preDisasterLivingSituation, dmgAssmnt, dmgAsmntOther, needs, disasterName, disasterDate,
             addressId, disasterAffected, addressLine1, addressLine2, city, county, state, zipcode,serviceNeeded1,
-            serviceNeeded2;
+            serviceNeeded2,serviceNeeded3,caseManagerName,caseManagerPhone,caseManagerEmail,startTime,endTime;
+
+    public String getCaseManagerEmail() {
+        return caseManagerEmail;
+    }
+
+    public void setCaseManagerEmail(String caseManagerEmail) {
+        this.caseManagerEmail = caseManagerEmail;
+    }
+
+    public String getCaseManagerName() {
+        return caseManagerName;
+    }
+
+    public void setCaseManagerName(String caseManagerName) {
+        this.caseManagerName = caseManagerName;
+    }
+
+    public String getCaseManagerPhone() {
+        return caseManagerPhone;
+    }
+
+    public void setCaseManagerPhone(String caseManagerPhone) {
+        this.caseManagerPhone = caseManagerPhone;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getServiceNeeded3() {
+        return serviceNeeded3;
+    }
+
+    public void setServiceNeeded3(String serviceNeeded3) {
+        this.serviceNeeded3 = serviceNeeded3;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
 
     public void setID(String ID) {
         this.ID = ID;

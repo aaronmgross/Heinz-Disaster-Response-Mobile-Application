@@ -86,16 +86,23 @@ public class XMLCreator {
         } catch (ClassNotFoundException e) {
             throw new AssertionError(e);
         }
-        String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
+        String connectionStr = "jdbc:mysql://localhost/DisasterApp";
         try {
         user = "root";
-        pw = "hello";
+       //pw = "hello";
+        pw="";
+        
             con = DriverManager.getConnection(connectionStr, user, pw);
             PreparedStatement stat = con.prepareStatement("SELECT * FROM Cases");
             PreparedStatement bldg = con.prepareStatement("Select * from Building");
+             PreparedStatement vtr = con.prepareStatement("Select * from D_User ");
             ResultSet rsAll = stat.executeQuery();
             ResultSet rsBldg = bldg.executeQuery();
-           
+            ResultSet rsVtr = vtr.executeQuery();
+            ArrayList volunteerList=new ArrayList();
+            while(rsVtr.next()){
+                volunteerList.add(rsVtr.getInt("User_Id"));
+            }
             while (rsAll.next() && rsBldg.next()) {
                
                
@@ -140,15 +147,34 @@ public class XMLCreator {
                 c.setCounty(client.getCounty());
                 c.setZipcode(client.getZipCode());
                 c.setDmgAssmnt(dmg.getStructuralDamage());
-                c.setDmgAsmntOther(dmg.getWaterLevelBasement() + " " + dmg.getWaterLevelLivingArea());
-                c.setServiceNeeded1("Appliance Damage: Electric box- " + dmg.getElectriccalBox() + ";Furnace- "
+               
+                c.setServiceNeeded1("Appliance Damaged? Electrical Service box- " + dmg.getElectriccalBox() + ";Furnace- "
                         + dmg.getFurnace()+ ";Washer- " + dmg.getWasher() + ";Heater- " + dmg.getHotWaterHeater() +
                         ";Dryer- "+ dmg.getDryer() + ";Stove- " + dmg.getStove() + ";Refrigerator- " +
                         dmg.getRefrigerator());
                 c.setServiceNeeded2(cases.getComment()+" Reason: "+dmg.getReason());
+                c.setServiceNeeded3("Water Level in Basement (inches):"+dmg.getWaterLevelBasement() + "" +
+                        "Water level in Living Area (inches): " + dmg.getWaterLevelLivingArea());
                 c.setID(clientID + "");
                 c.setDisasterAffected("true");
                 c.setGender("Undetermined");
+
+                 int vId=rsAll.getInt("User_Id");
+
+             for(int i=0;i<volunteerList.size();i++){
+                 if(vId==(Integer)volunteerList.get(i))
+                     break;
+
+             }
+
+
+              User users=new User();
+              users.getByID(con, vId);
+              c.setCaseManagerName(users.getfName()+" "+users.getlName());
+              c.setCaseManagerPhone(users.getTelephone());
+              c.setCaseManagerEmail(users.getEmail());
+              c.setStartTime(cases.getStartTime().toString());
+              c.setEndTime(cases.getEndTime().toString());
 
                 myData.add(c);
 
@@ -427,7 +453,6 @@ public class XMLCreator {
         }
         clientEle.appendChild(dNameEle);
 
-
         Element dDateEle = dom.createElement("DisasterEventDate");
         dDateEle.setAttribute("effective", sdf.format(today));
         dDateEle.setAttribute("updated", sdf.format(today));
@@ -437,6 +462,7 @@ public class XMLCreator {
             dDateEle.setTextContent(dateFormat.format(today));
         }
         clientEle.appendChild(dDateEle);
+        
 
 
         Element cases = dom.createElement("Cases");
@@ -445,6 +471,16 @@ public class XMLCreator {
         _case.setAttribute("updated", sdf.format(today));
         _case.setAttribute("sourceAgencyID", "");
         _case.setAttribute("sourceAgencyName", "");
+        Element _caseManagerName = dom.createElement("CaseManagerName");
+        _caseManagerName.setTextContent(c.getCaseManagerName());
+        Element _caseManagerPhone = dom.createElement("CaseManagerPhone");
+        _caseManagerPhone.setTextContent(c.getCaseManagerPhone());
+        Element _caseManagerEmail = dom.createElement("CaseManagerEmail");
+        _caseManagerEmail.setTextContent(c.getCaseManagerEmail());
+        _case.appendChild(_caseManagerName);
+        _case.appendChild( _caseManagerPhone);
+        _case.appendChild(_caseManagerEmail);
+
         cases.appendChild(_case);
         clientEle.appendChild(cases);
 
@@ -485,6 +521,29 @@ public class XMLCreator {
         serviceDesc.setTextContent(c.getServiceNeeded2());
         service.appendChild(serviceDesc);
         servicesNeeded.appendChild(service);
+
+        //Element dDateEle = dom.createElement("DisasterEventDate");
+        service = dom.createElement("ServiceNeeded");
+        service.setAttribute("effective", sdf.format(today));
+        service.setAttribute("updated", sdf.format(today));
+        service.setAttribute("sourceAgencyID", " ");
+        service.setAttribute("sourceAgencyName", " ");
+        serviceId = dom.createElement("ID");
+        serviceId.setTextContent("3");
+        service.appendChild(serviceId);
+        serviceName = dom.createElement("ServiceName");
+        serviceName.setTextContent("Water Level");
+        service.appendChild(serviceName);
+        serviceCode = dom.createElement("ServiceCode");
+        serviceCode.setTextContent(" ");
+        service.appendChild(serviceCode);
+        serviceDesc = dom.createElement("ServiceDescription");
+        serviceDesc.setTextContent(c.getServiceNeeded3());
+        service.appendChild(serviceDesc);
+        servicesNeeded.appendChild(service);
+
+       
+        
         clientEle.appendChild(servicesNeeded);
 
         return clientEle;
