@@ -48,11 +48,10 @@ public class DeleteUser extends HttpServlet {
             try {
                 con = DriverManager.getConnection(connectionStr, user, pw);
                 int id;
-                User u;
+                User u = new User();
 
                 for (int i = 0; i < c.length; i++) {
                     id = Integer.parseInt(c[i]);
-                    u = new User();
                     u.delete(con, id);
                 }
                 message = c.length + " users have been deleted";

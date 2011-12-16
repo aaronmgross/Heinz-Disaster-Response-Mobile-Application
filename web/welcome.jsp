@@ -115,6 +115,13 @@ function initialize_disaster_session()
             </a>
         </div>
 
+        <div id="admin_link" style="display:none">
+             <a href='deleteuser.jsp' data-role="button" data-icon="arrow-r" data-iconpos="right" rel="external">
+			<div class='mainlink_big_head'>Delete Users</div>
+			<div class='mainlink_subtitle'>new users</div>
+            </a>
+        </div>
+
         <script>
             if (sessionStorage.getItem("userRole") == "ADMIN")
                 document.getElementById("admin_link").style.display = "block";

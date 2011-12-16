@@ -214,9 +214,9 @@ public class User {
         PreparedStatement statement = null;
         try {
             statement = con.prepareStatement("DELETE FROM D_User WHERE User_Id=?");
-            statement.setInt(1, userId);
+            statement.setInt(1, id);
             statement.executeUpdate();
-            con.commit();
+            //con.commit();
 
         } finally {
             if (statement != null) {
