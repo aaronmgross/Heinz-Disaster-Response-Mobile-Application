@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  *
- * @author Michelle
+ * @author Xue Zhang
  */
 public class User {
 
@@ -49,7 +49,6 @@ public class User {
                 user = new User();
                 user.setUserId(rs.getInt("User_Id"));
                 user.setEmail(rs.getString("Email"));
-                //user.setPassword(rs.getString("Password"));
                 user.setTelephone(rs.getString("Telephone"));
                 user.setfName(rs.getString("Fname"));
                 user.setlName(rs.getString("Lname"));
@@ -216,7 +215,6 @@ public class User {
             statement = con.prepareStatement("DELETE FROM D_User WHERE User_Id=?");
             statement.setInt(1, id);
             statement.executeUpdate();
-            //con.commit();
 
         } finally {
             if (statement != null) {
@@ -232,8 +230,7 @@ public class User {
             statement.setString(1, "Y");
             statement.setInt(2, id);
             statement.executeUpdate();
-            //con.commit();
-
+           
         }finally {
             if (statement != null) {
                 statement.close();

@@ -1,16 +1,12 @@
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 import DataDAO.User;
 import javax.servlet.RequestDispatcher;
 
@@ -23,6 +19,7 @@ public class ApproveUser extends HttpServlet {
     private String user = null;
     private String pw = null;
 
+    /*Get the database user and password from config file*/
     @Override
     public void init() throws ServletException {
         user = getInitParameter("dbUser");
@@ -45,8 +42,6 @@ public class ApproveUser extends HttpServlet {
                 throw new AssertionError(e);
             }
             String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
-            //String user = "root";
-            //String pw = "";
             try {
                 con = DriverManager.getConnection(connectionStr, user, pw);
                 int id;
@@ -68,7 +63,6 @@ public class ApproveUser extends HttpServlet {
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
-
                 message = c.length + " users have been approved";
                 request.setAttribute("message", message);
                 String destination = "/approveuser.jsp";

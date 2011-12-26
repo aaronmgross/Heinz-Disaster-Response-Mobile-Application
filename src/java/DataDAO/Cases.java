@@ -4,12 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
  *
- * @author Michelle
+ * @author Xue Zhang
  */
 public class Cases {
 

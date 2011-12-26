@@ -1,9 +1,5 @@
 package XMLExport;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
  *
  * @author Soundarya R
@@ -12,8 +8,8 @@ public class Client {
 
     private String sourceAgencyID, sourceAgencyName, ID, firstName, middleName, lastName, phone, dateOfBirth,
             gender, preDisasterLivingSituation, dmgAssmnt, dmgAsmntOther, needs, disasterName, disasterDate,
-            addressId, disasterAffected, addressLine1, addressLine2, city, county, state, zipcode,serviceNeeded1,
-            serviceNeeded2,serviceNeeded3,caseManagerName,caseManagerPhone,caseManagerEmail,startTime,endTime;
+            addressId, disasterAffected, addressLine1, addressLine2, city, county, state, zipcode, serviceNeeded1,
+            serviceNeeded2, serviceNeeded3, caseManagerName, caseManagerPhone, caseManagerEmail, startTime, endTime;
 
     public String getCaseManagerEmail() {
         return caseManagerEmail;
@@ -114,15 +110,18 @@ public class Client {
     public void setPreDisasterLivingSituation(String preDisasterLivingSituation) {
         this.preDisasterLivingSituation = preDisasterLivingSituation;
     }
-    public void setServiceNeeded1(String servNeeded1){
-        this.serviceNeeded1=servNeeded1;
+
+    public void setServiceNeeded1(String servNeeded1) {
+        this.serviceNeeded1 = servNeeded1;
     }
-    public void setServiceNeeded2(String servNeeded2){
-        this.serviceNeeded2=servNeeded2;
+
+    public void setServiceNeeded2(String servNeeded2) {
+        this.serviceNeeded2 = servNeeded2;
     }
 
     public Client() {
     }
+
     ;
 
     public Client(String srcAgcyID, String srcAgcyNm, String id, String fn, String mn, String ln, String ph,
@@ -278,12 +277,14 @@ public class Client {
         return needs;
     }
 
-    public String getServiceNeeded1(){
+    public String getServiceNeeded1() {
         return serviceNeeded1;
     }
-    public String getServiceNeeded2(){
+
+    public String getServiceNeeded2() {
         return serviceNeeded2;
     }
+
     public String getDisasterName() {
         return disasterName;
     }

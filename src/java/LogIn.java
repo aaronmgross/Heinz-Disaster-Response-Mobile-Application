@@ -1,6 +1,5 @@
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -18,7 +17,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Michelle
+ * @author Xue Zhang
  */
 public class LogIn extends HttpServlet {
 
@@ -26,6 +25,7 @@ public class LogIn extends HttpServlet {
     private String user = null;
     private String pw_con = null;
 
+    /*Get the database user and password from config file*/
     @Override
     public void init() throws ServletException {
 
@@ -35,14 +35,9 @@ public class LogIn extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        String email = request.getParameter("username");
-        System.out.println("username:" + email);
-        String pw = request.getParameter("password");
-        System.out.println("password:" + pw);
+            throws ServletException, IOException {             
+        String email = request.getParameter("username");       
+        String pw = request.getParameter("password");     
         String disasterType = request.getParameter("Disaster");
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -50,9 +45,6 @@ public class LogIn extends HttpServlet {
             throw new AssertionError(e);
         }
         String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
-
-        //String user = "root";
-        //String pw_con = "";
         try {
             con = (Connection) DriverManager.getConnection(connectionStr, user, pw_con);
             User UserInstance = new User();
@@ -71,10 +63,7 @@ public class LogIn extends HttpServlet {
                 errors.add("The password you entered was incorrect. Please try again.");
             }
 
-            if (errors.size() > 0) {
-//                for (int i = 0; i < errors.size(); i++) {
-//                    System.out.println(errors.get(i));
-//                }
+            if (errors.size() > 0) {               
                 String destination = "/index.jsp";
                 RequestDispatcher red = getServletContext().getRequestDispatcher(destination);
                 red.forward(request, response);
@@ -99,7 +88,6 @@ public class LogIn extends HttpServlet {
                 Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
 
     }
 }

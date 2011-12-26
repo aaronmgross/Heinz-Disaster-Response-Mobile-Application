@@ -1,7 +1,6 @@
 
 import com.mysql.jdbc.Connection;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -15,7 +14,6 @@ import java.util.Properties;
 import java.util.Random;
 import javax.mail.*;
 import javax.mail.internet.*;
-import javax.activation.*;
 import javax.servlet.RequestDispatcher;
 
 /**
@@ -28,6 +26,7 @@ public class ForgotPassword extends HttpServlet {
     private String user = null;
     private String pw_con = null;
 
+    /*Get the database user and password from config file*/
     @Override
     public void init() throws ServletException {
 
@@ -35,13 +34,6 @@ public class ForgotPassword extends HttpServlet {
         pw_con = getInitParameter("dbPassword");
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

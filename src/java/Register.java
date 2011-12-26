@@ -15,7 +15,7 @@ import javax.servlet.RequestDispatcher;
 
 /**
  *
- * @author Michelle
+ * @author Xue Zhang
  */
 public class Register extends HttpServlet {
 
@@ -23,6 +23,7 @@ public class Register extends HttpServlet {
     private String user = null;
     private String pw_con = null;
 
+    /*Get the database user and password from config file*/
     @Override
     public void init() throws ServletException {
 
@@ -40,8 +41,6 @@ public class Register extends HttpServlet {
             throw new AssertionError(e);
         }
         String connectionStr = "jdbc:mysql://localhost/DisasterAssessment";
-        //String user = "root";
-        //String pw_con = "";
         try {
             con = (Connection) DriverManager.getConnection(connectionStr, user, pw_con);
             String firstName = request.getParameter("volunteer_firstname");
@@ -90,40 +89,4 @@ public class Register extends HttpServlet {
 
 
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 }

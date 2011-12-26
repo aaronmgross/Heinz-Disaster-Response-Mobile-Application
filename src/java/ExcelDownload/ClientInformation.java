@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package ExcelDownload;
 
 /**
@@ -10,68 +5,85 @@ package ExcelDownload;
  * @author Soundarya R
  */
 public class ClientInformation {
-    private String address,aptNo  ,
-     city ,
-     state  ,
-     zipCode  ,
-     municipality  ,
-     county  ,
-     lastName ,
-     firstName ;
-    public void setAddress(String add){
-        address=add;
+
+    private String address, aptNo,
+            city,
+            state,
+            zipCode,
+            municipality,
+            county,
+            lastName,
+            firstName;
+
+    public void setAddress(String add) {
+        address = add;
     }
-    public String getAddress(){
+
+    public String getAddress() {
         return address;
     }
-     public void setAptNo(String anum){
-        aptNo=anum;
+
+    public void setAptNo(String anum) {
+        aptNo = anum;
     }
-    public String getAptNo(){
+
+    public String getAptNo() {
         return aptNo;
     }
-     public void setCity(String c){
-        city=c;
+
+    public void setCity(String c) {
+        city = c;
     }
-    public String getCity(){
+
+    public String getCity() {
         return city;
     }
-     public void setState(String s){
-        state=s;
+
+    public void setState(String s) {
+        state = s;
     }
-    public String getState(){
+
+    public String getState() {
         return state;
     }
-     public void setZipCode(String zip){
-        zipCode=zip;
+
+    public void setZipCode(String zip) {
+        zipCode = zip;
     }
-    public String getZipCode(){
+
+    public String getZipCode() {
         return zipCode;
     }
-     public void setMunicipality(String mn){
-         municipality=mn;
+
+    public void setMunicipality(String mn) {
+        municipality = mn;
     }
-    public String getMunicipality(){
-        return  municipality;
+
+    public String getMunicipality() {
+        return municipality;
     }
-     public void setCounty(String ct){
-        county=ct;
+
+    public void setCounty(String ct) {
+        county = ct;
     }
-    public String getCounty(){
+
+    public String getCounty() {
         return county;
     }
-     public void setLastName(String ln){
-        lastName=ln;
+
+    public void setLastName(String ln) {
+        lastName = ln;
     }
-    public String getLastName(){
+
+    public String getLastName() {
         return lastName;
     }
-     public void setFirstName(String fn){
-        firstName=fn;
+
+    public void setFirstName(String fn) {
+        firstName = fn;
     }
-    public String getFirstName(){
+
+    public String getFirstName() {
         return firstName;
     }
-   
-
 }

@@ -1,9 +1,5 @@
 package XMLExport;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
  *
  * @author Soundarya R
@@ -11,52 +7,40 @@ package XMLExport;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
 //For jdk1.5 with built in xerces parser
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
-
-//For JDK 1.3 or JDK 1.4  with xerces 2.7.1
-//import org.apache.xml.serialize.XMLSerializer;
-//import org.apache.xml.serialize.OutputFormat;
-
 import DataDAO.*;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-//import java.sql.Date;
 import java.sql.Timestamp;
-
 
 public class XMLCreator {
 
     //No generics
     List myData;
     Document dom;
-    File file=new File("ClientRecord.xml");
+    File file = new File("ClientRecord.xml");
     Timestamp reqdDate;
 
-    public XMLCreator(String user, String pw,Timestamp time) {
+    public XMLCreator(String user, String pw, Timestamp time) {
 
         //create a list to hold the data
         myData = new ArrayList();
-        reqdDate=time;
+        reqdDate = time;
         try {
             //initialize the list
             loadData(user, pw);
@@ -88,100 +72,97 @@ public class XMLCreator {
         }
         String connectionStr = "jdbc:mysql://localhost/DisasterApp";
         try {
-        user = "root";
-       //pw = "hello";
-        pw="";
-        
+            user = "root";
+            pw = "hello";
+
             con = DriverManager.getConnection(connectionStr, user, pw);
             PreparedStatement stat = con.prepareStatement("SELECT * FROM Cases");
             PreparedStatement bldg = con.prepareStatement("Select * from Building");
-             PreparedStatement vtr = con.prepareStatement("Select * from D_User ");
+            PreparedStatement vtr = con.prepareStatement("Select * from D_User ");
             ResultSet rsAll = stat.executeQuery();
             ResultSet rsBldg = bldg.executeQuery();
             ResultSet rsVtr = vtr.executeQuery();
-            ArrayList volunteerList=new ArrayList();
-            while(rsVtr.next()){
+            ArrayList volunteerList = new ArrayList();
+            while (rsVtr.next()) {
                 volunteerList.add(rsVtr.getInt("User_Id"));
             }
             while (rsAll.next() && rsBldg.next()) {
-               
-               
-                if(rsAll.getTimestamp("Start_Time").equals(reqdDate) ||rsAll.getTimestamp("Start_Time").after(reqdDate) ){
-                Client c = new Client();
-
-                int clientID = rsAll.getInt("Client_Id");
-                int bldgId = rsBldg.getInt("Build_Id");
-                int caseID = rsAll.getInt("Case_Id");
-
-                DataDAO.Client client = new DataDAO.Client();
-                Building building = new DataDAO.Building();
-                Cases cases = new DataDAO.Cases();
-                DamageAssessment dmg = new DamageAssessment();
-
-                client.getByID(con, clientID);
-                building.getById(con, bldgId);
-                cases.getById(con, caseID);
-                dmg.getByID(con, rsAll.getInt("Damage_Assessment_Id"));
-
-                c.setFirstName(client.getfName());
-                c.setLastName(client.getlName());
-                String dwelling = building.getDwellingType();
-                
-                if ((dwelling.equals("S") || dwelling.equals("A")) && building.getLandlordName().isEmpty()) {
-                    c.setPreDisasterLivingSituation("Apartment or house that you own");
-                } else if ((dwelling.equals("S") || dwelling.equals("A")) && !building.getLandlordName().isEmpty()) {
-                    c.setPreDisasterLivingSituation("Room Apartment or house that you rent");
-                } else if (dwelling.equals("M")) {
-                    c.setPreDisasterLivingSituation("Other");
-                } else {
-                    c.setPreDisasterLivingSituation("Undetermined");
-                }
-
-                c.setAddressLine1(client.getAddress());
-                String aptNo = client.getAptNum();
-                if (aptNo != null && !aptNo.equals("")) {
-                    c.setAddressLine2("Apt " + aptNo);
-                }
-                c.setCity(client.getCity());
-                c.setState(client.getState());
-                c.setCounty(client.getCounty());
-                c.setZipcode(client.getZipCode());
-                c.setDmgAssmnt(dmg.getStructuralDamage());
-               
-                c.setServiceNeeded1("Appliance Damaged? Electrical Service box- " + dmg.getElectriccalBox() + ";Furnace- "
-                        + dmg.getFurnace()+ ";Washer- " + dmg.getWasher() + ";Heater- " + dmg.getHotWaterHeater() +
-                        ";Dryer- "+ dmg.getDryer() + ";Stove- " + dmg.getStove() + ";Refrigerator- " +
-                        dmg.getRefrigerator());
-                c.setServiceNeeded2(cases.getComment()+" Reason: "+dmg.getReason());
-                c.setServiceNeeded3("Water Level in Basement (inches):"+dmg.getWaterLevelBasement() + "" +
-                        "Water level in Living Area (inches): " + dmg.getWaterLevelLivingArea());
-                c.setID(clientID + "");
-                c.setDisasterAffected("true");
-                c.setGender("Undetermined");
-
-                 int vId=rsAll.getInt("User_Id");
-
-             for(int i=0;i<volunteerList.size();i++){
-                 if(vId==(Integer)volunteerList.get(i))
-                     break;
-
-             }
 
 
-              User users=new User();
-              users.getByID(con, vId);
-              c.setCaseManagerName(users.getfName()+" "+users.getlName());
-              c.setCaseManagerPhone(users.getTelephone());
-              c.setCaseManagerEmail(users.getEmail());
-              c.setStartTime(cases.getStartTime().toString());
-              c.setEndTime(cases.getEndTime().toString());
+                if (rsAll.getTimestamp("Start_Time").equals(reqdDate) || rsAll.getTimestamp("Start_Time").after(reqdDate)) {
+                    Client c = new Client();
 
-                myData.add(c);
+                    int clientID = rsAll.getInt("Client_Id");
+                    int bldgId = rsBldg.getInt("Build_Id");
+                    int caseID = rsAll.getInt("Case_Id");
+
+                    DataDAO.Client client = new DataDAO.Client();
+                    Building building = new DataDAO.Building();
+                    Cases cases = new DataDAO.Cases();
+                    DamageAssessment dmg = new DamageAssessment();
+
+                    client.getByID(con, clientID);
+                    building.getById(con, bldgId);
+                    cases.getById(con, caseID);
+                    dmg.getByID(con, rsAll.getInt("Damage_Assessment_Id"));
+
+                    c.setFirstName(client.getfName());
+                    c.setLastName(client.getlName());
+                    String dwelling = building.getDwellingType();
+
+                    if ((dwelling.equals("S") || dwelling.equals("A")) && building.getLandlordName().isEmpty()) {
+                        c.setPreDisasterLivingSituation("Apartment or house that you own");
+                    } else if ((dwelling.equals("S") || dwelling.equals("A")) && !building.getLandlordName().isEmpty()) {
+                        c.setPreDisasterLivingSituation("Room Apartment or house that you rent");
+                    } else if (dwelling.equals("M")) {
+                        c.setPreDisasterLivingSituation("Other");
+                    } else {
+                        c.setPreDisasterLivingSituation("Undetermined");
+                    }
+
+                    c.setAddressLine1(client.getAddress());
+                    String aptNo = client.getAptNum();
+                    if (aptNo != null && !aptNo.equals("")) {
+                        c.setAddressLine2("Apt " + aptNo);
+                    }
+                    c.setCity(client.getCity());
+                    c.setState(client.getState());
+                    c.setCounty(client.getCounty());
+                    c.setZipcode(client.getZipCode());
+                    c.setDmgAssmnt(dmg.getStructuralDamage());
+
+                    c.setServiceNeeded1("Appliance Damaged? Electrical Service box- " + dmg.getElectriccalBox() + ";Furnace- "
+                            + dmg.getFurnace() + ";Washer- " + dmg.getWasher() + ";Heater- " + dmg.getHotWaterHeater()
+                            + ";Dryer- " + dmg.getDryer() + ";Stove- " + dmg.getStove() + ";Refrigerator- "
+                            + dmg.getRefrigerator());
+                    c.setServiceNeeded2(cases.getComment() + " Reason: " + dmg.getReason());
+                    c.setServiceNeeded3("Water Level in Basement (inches):" + dmg.getWaterLevelBasement() + ""
+                            + "Water level in Living Area (inches): " + dmg.getWaterLevelLivingArea());
+                    c.setID(clientID + "");
+                    c.setDisasterAffected("true");
+                    c.setGender("Undetermined");
+
+                    int vId = rsAll.getInt("User_Id");
+
+                    for (int i = 0; i < volunteerList.size(); i++) {
+                        if (vId == (Integer) volunteerList.get(i)) {
+                            break;
+                        }
+
+                    }
+                    User users = new User();
+                    users.getByID(con, vId);
+                    c.setCaseManagerName(users.getfName() + " " + users.getlName());
+                    c.setCaseManagerPhone(users.getTelephone());
+                    c.setCaseManagerEmail(users.getEmail());
+                    c.setStartTime(cases.getStartTime().toString());
+                    c.setEndTime(cases.getEndTime().toString());
+
+                    myData.add(c);
 
                 }
 
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -250,7 +231,7 @@ public class XMLCreator {
     private Element createClientElement(Client c, Node dataSetEle) {
         Element service, serviceId, serviceName, serviceCode, serviceDesc;
         java.util.Date today = new java.util.Date();
-        
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -462,7 +443,7 @@ public class XMLCreator {
             dDateEle.setTextContent(dateFormat.format(today));
         }
         clientEle.appendChild(dDateEle);
-        
+
 
 
         Element cases = dom.createElement("Cases");
@@ -478,7 +459,7 @@ public class XMLCreator {
         Element _caseManagerEmail = dom.createElement("CaseManagerEmail");
         _caseManagerEmail.setTextContent(c.getCaseManagerEmail());
         _case.appendChild(_caseManagerName);
-        _case.appendChild( _caseManagerPhone);
+        _case.appendChild(_caseManagerPhone);
         _case.appendChild(_caseManagerEmail);
 
         cases.appendChild(_case);
@@ -542,8 +523,8 @@ public class XMLCreator {
         service.appendChild(serviceDesc);
         servicesNeeded.appendChild(service);
 
-       
-        
+
+
         clientEle.appendChild(servicesNeeded);
 
         return clientEle;
@@ -576,7 +557,7 @@ public class XMLCreator {
         }
     }
 
-    public File downloadHelp(){
+    public File downloadHelp() {
         return file;
     }
 }

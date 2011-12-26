@@ -7,7 +7,7 @@ import java.sql.*;
 
 /**
  *
- * @author Michelle
+ * @author Xue Zhang
  */
 public class Building {
 

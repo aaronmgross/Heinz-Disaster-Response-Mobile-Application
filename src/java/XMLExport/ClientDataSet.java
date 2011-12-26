@@ -1,14 +1,9 @@
 package XMLExport;
 
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.sql.Timestamp;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
  *
  * @author Soundarya R
@@ -29,7 +24,7 @@ public class ClientDataSet {
         Date today = new Date();
         Timestamp time = new Timestamp(today.getTime());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
-        
+
         namespace = "http://www.clientdatastandard.org/dcds/schema/1.1";
         namespaceXSI = "http://www.w3.org/2001/XMLSchema-instance";
         schemaLocation = "http://www.clientdatastandard.org/dcds/schema/1.1 http://www.clientdatastandard.org/dcds/schema/1.1";

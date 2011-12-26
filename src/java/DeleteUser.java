@@ -1,16 +1,12 @@
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 import DataDAO.User;
 import javax.servlet.RequestDispatcher;
 
@@ -23,6 +19,7 @@ public class DeleteUser extends HttpServlet {
     private String user = null;
     private String pw = null;
 
+    /*Get the database user and password from config file*/
     @Override
     public void init() throws ServletException {
         user = getInitParameter("dbUser");

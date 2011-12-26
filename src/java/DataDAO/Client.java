@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 
 /**
  *
- * @author Michelle
+ * @author Xue Zhang
  */
 public class Client {
 

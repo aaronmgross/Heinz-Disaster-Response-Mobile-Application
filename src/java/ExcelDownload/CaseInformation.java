@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package ExcelDownload;
 
 import java.sql.Date;
@@ -13,9 +8,10 @@ import java.sql.Timestamp;
  * @author Soundarya R
  */
 public class CaseInformation {
+
     private String comments;
-     private java.sql.Timestamp  startTime,
-     completionTime ;
+    private java.sql.Timestamp startTime,
+            completionTime;
 
     public Timestamp getCompletionTime() {
         return completionTime;
@@ -32,13 +28,12 @@ public class CaseInformation {
     public void setStartTime(Timestamp startTime) {
         this.startTime = startTime;
     }
-    public void setComment(String c){
-        comments=c;
+
+    public void setComment(String c) {
+        comments = c;
     }
-    public String getComment(){
+
+    public String getComment() {
         return comments;
     }
-
-
-
 }
